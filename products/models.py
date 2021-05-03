@@ -12,7 +12,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     contents = models.CharField(max_length=255)
-    brand = models.CharField(blank=True) # Blank?
+    brand = models.CharField(max_length=255, blank=True) # Blank?
     weight = models.IntegerField(blank=True)
     stock = models.IntegerField(default=0)
     active = models.BooleanField(default=True) # Default?
