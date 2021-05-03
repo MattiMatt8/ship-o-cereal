@@ -9,9 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Roboto&display=swap" rel="stylesheet"/>
   </head>
   <body>
-
+  {% include 'components/header.html' %}
   <div class="container mx-auto">
-    {% include 'components/header.html' %}
     {% block content %}
     {% endblock %}
   </div>
