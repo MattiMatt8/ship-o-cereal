@@ -27,16 +27,16 @@
     <!-- END Navbar -->
 
     <!-- Toolbar -->
-    <div class="w-1/2 flex row justify-end">
+    <div class="w-full flex row justify-end">
       <!-- Searchbar -->
-      <form class="block self-center mr-8">
+      <form class="block self-center">
         <label class="hidden" for="search-form">Search</label>
           <input class="border border-customGray rounded-full py-3 px-6 shadow-inner w-full h-8" placeholder="Search" type="text">
         <button class="hidden">Submit</button>
       </form>
       <!-- END Searchbar -->
       <!-- BEGIN Cart -->
-      <a href="#" class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-4 relative">
+      <a href="#" class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6 relative">
         {% include "components/icons/header-cart-icon.html" %}
         <div class="bg-customBlue rounded-full w-5 h-5 absolute -top-1 -right-1 flex items-center justify-center text-customGray">
             <p class="">1</p>
@@ -44,7 +44,7 @@
       </a>
       <!-- END Cart -->
       <!-- BEGIN User profile -->
-      <a href="#" class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-4">
+      <a href="#" class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6">
         {% include "components/icons/header-profile-icon.html" %}
       </a>
       <!-- END User profile -->

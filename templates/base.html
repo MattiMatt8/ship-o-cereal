@@ -12,10 +12,10 @@
   <div class="container mx-auto">
     {% include 'components/header.html' %}
   </div>
-  <div class="container mx-auto relative">
-    {% block content %}
-    {% endblock %}
-  </div>
+
+  {% block content %}
+  {% endblock %}
+
   {% include 'components/footer.html' %}
   </body>
 </html>

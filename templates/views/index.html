@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
+
   {% include "components/advertisement.html" %}
-  <p class="text-customBlue font-thin ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-extralight ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-light ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-normal ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-medium ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-semibold ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-bold ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-extrabold ...">The quick brown fox ...</p>
-  <p class="text-customBlue font-black ...">The quick brown fox ...</p>
+  <div class="container mx-auto my-10">
+    <h1 class="flex justify-center text-4xl">All products</h1>
+    <!-- Senda props -->
+    {% include 'components/section_preview.html' with category="Cereals" %}
+    <!-- Senda props -->
+    {% include 'components/section_preview.html' with category="Bowls" %}
+    <!-- Senda props -->
+    {% include 'components/section_preview.html' with category="Merchandise" %}
+  </div>
 {% endblock %}

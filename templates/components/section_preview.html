@@ -1,0 +1,17 @@
+<div class="flex row justify-between mb-4 mt-10">
+  <h2 class="text-2xl">{{ category }}</h2>
+  <a href="#" class="flex row items-center">
+    <span class="text-lg mr-3">View More</span>
+    <svg width="27" height="23" viewBox="0 0 27 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1.83331 11.5H25.1666" stroke="#484848" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M14.9583 1.29169L25.1666 11.5L14.9583 21.7084" stroke="#484848" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </a>
+</div>
+<div class="flex row justify-between">
+  {% include 'components/product_card.html' %}
+  {% include 'components/product_card.html' %}
+  {% include 'components/product_card.html' %}
+  {% include 'components/product_card.html' %}
+  {% include 'components/product_card.html' %}
+</div>
