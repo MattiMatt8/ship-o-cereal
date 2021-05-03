@@ -20,4 +20,6 @@ from products import urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', include('products.urls'), name="products"),
+    path('orders/', include('products.urls'), name="products"),
+    path('users/', include('products.urls'), name="products"),
 ]

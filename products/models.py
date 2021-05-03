@@ -13,11 +13,11 @@ class Label(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
-    contents = models.CharField(max_length=255)
-    brand = models.CharField(max_length=255, blank=True) # Blank?
-    weight = models.IntegerField(blank=True)
+    contents = models.CharField(max_length=255, blank=True, null=True)
+    brand = models.CharField(max_length=255, blank=True, null=True) # Blank?
+    weight = models.IntegerField(blank=True, null=True)
     stock = models.IntegerField(default=0)
-    active = models.BooleanField(default=True) # Default?
+    active = models.BooleanField(default=True, null=True) # Default?
     total_score = models.FloatField(default=0) # Need to check, review should update this each time
     total_reviews = models.IntegerField(default=0) # Need to check, review should update this each time
     price = models.FloatField()
