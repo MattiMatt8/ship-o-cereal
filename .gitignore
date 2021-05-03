@@ -503,6 +503,7 @@ pip-selfcheck.json
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
+.vscode
 
 ### Windows ###
 # Windows thumbnail cache files
