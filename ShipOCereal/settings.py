@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -72,11 +76,19 @@ WSGI_APPLICATION = 'ShipOCereal.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+SECRET_NAME = os.getenv("DB_NAME")
+SECRET_USER = os.getenv("DB_USER")
+SECRET_PASSWORD = os.getenv("DB_PASSWORD")
+SECRET_HOST = os.getenv("DB_HOST")
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': SECRET_NAME,
+        'USER': SECRET_USER,
+        'PASSWORD': SECRET_PASSWORD,
+        'HOST': SECRET_HOST,
+        'PORT': 5432
     }
 }
 
@@ -118,6 +130,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
