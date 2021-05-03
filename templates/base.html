@@ -10,10 +10,11 @@
   </head>
   <body>
 
-  <div class="container mx-auto" style="borer:1px solid red;">
+  <div class="container mx-auto">
     {% include 'components/header.html' %}
     {% block content %}
     {% endblock %}
-    {% include 'components/footer.html' %}
+  </div>
+  {% include 'components/footer.html' %}
   </body>
 </html>
