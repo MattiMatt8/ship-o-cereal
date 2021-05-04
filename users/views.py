@@ -5,3 +5,6 @@ def register(request):
     return render(request, "users/register.html", {
         "form": RegisterForm()
     })
+
+def profile(request):
+    ...
