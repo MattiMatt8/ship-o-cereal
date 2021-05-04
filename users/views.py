@@ -1,3 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from users.forms.RegisterForm import RegisterForm
 
+def register(request):
+    return render(request, "users/register.html", {
+        "form": RegisterForm()
+    })
