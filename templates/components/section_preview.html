@@ -9,9 +9,7 @@
   </a>
 </div>
 <div class="flex row justify-between">
-  {% include 'components/product_card.html' %}
-  {% include 'components/product_card.html' %}
-  {% include 'components/product_card.html' %}
-  {% include 'components/product_card.html' %}
-  {% include 'components/product_card.html' %}
+  {% for product in products %}
+    {% include 'components/product_card.html' with product=product %}
+  {% endfor %}
 </div>
