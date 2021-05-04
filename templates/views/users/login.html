@@ -1,48 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
-    <!--
-  <main class="container mx-auto my-10">
-    <h1 class="flex justify-center text-4xl">Login</h1>
-    <form method="post" class="flex flex-col mt-10">
-        {% csrf_token %}
-        <div class="m-10 text-4xl">
-            {{ form.non_field_errors }}
+    <main method="post" class="flex flex-col justify-center items-center mx-auto container mt-14">
+        <div href="#" class="rounded-full bg-customGray w-24 h-24 flex items-center justify-center mb-2 mt-3">
+            {% include "components/icons/login-profile-icon.html" %}
         </div>
-        <label for="{{ form.username.id_for_label }}" class="MY-CUSTOM-CLASS">Username:</label>
-        {{ form.username }}
-        <label for="{{ form.password.id_for_label }}" class="MY-CUSTOM-CLASS">Password:</label>
-        {{ form.password }}
-        <input type="submit" class="" value="Sign up"/>
-        <input type="submit" class="" value="Login"/>
-    </form>
-  </main>
--->
-  <main method="post" class="flex flex-col justify-center mx-auto container my-10">
-      <h1 class="flex justify-center text-4xl">Sign in</h1>
-      <form class="w-64">
-          <div class="mb-4">
-              <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-            Username
-          </label>
-          <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
+        <h1 class="text-4xl">Sign in</h1>
+        <form class="w-64 m-4 mb-7" method="post">
+            {% csrf_token %}
+            <div class="text-red-500 text-sm italic">
+                {% if form.non_field_errors %}
+                    <p>Incorrect username and/or password.</p>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <label for="{{ form.username.id_for_label }}" class="block text-gray-700 text-base mb-2" for="username">Username</label>
+                {{ form.username }}
+            </div>
+            <div class="mb-6">
+                <label for="{{ form.password.id_for_label }}" class="block text-gray-700 text-base mb-2" for="password">Password</label>
+                {{ form.password }}
+            </div>
+            <div class="flex items-center justify-between">
+                <a class="inline-block align-baseline text-base text-customViolet" href="{% url 'register' %}">Register</a>
+                <button class="bg-customBlue rounded-full text-customViolet text-base py-1 px-4 focus:outline-none"
+                        type="submit">Sign In
+                </button>
+            </div>
+        </form>
         </div>
-        <div class="mb-6">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-            Password
-          </label>
-          <input class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************">
-          <p class="text-red-500 text-xs italic">Please choose a password.</p>
-        </div>
-        <div class="flex items-center justify-between">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button">
-            Sign In
-          </button>
-          <a class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" href="#">
-            Register
-          </a>
-        </div>
-      </form>
-    </div>
-  </main>
-
+    </main>
 {% endblock %}

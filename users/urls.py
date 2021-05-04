@@ -4,6 +4,8 @@ from . import views
 from users.forms.LoginForm import LoginForm
 
 urlpatterns = [
-    path('login/', LoginView.as_view(template_name = "views/users/login.html", authentication_form=LoginForm), name="user_login"),
-    # path('register/', views.login, name="user_register"),
+    path("login/", LoginView.as_view(template_name="views/users/login.html", authentication_form=LoginForm,
+                                     redirect_authenticated_user=True), name="login"),
+    path("logout/", LogoutView.as_view(next_page="login"), name="logout"),
+    # path('register/', views.register, name="user_register"),
 ]
