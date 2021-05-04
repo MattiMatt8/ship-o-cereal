@@ -3,7 +3,7 @@
   <!--div class="bg-customBlue h-2/3 rounded-t-md text-white flex justify-center items-center text-customViolet">Image</div -->
   <a href="/products/{{ product.id }}" class="h-2/3">
     <img
-      src="{% static 'images/' %}{{ product.category }}/{{ product.picture }}"
+      src="{% static 'images/' %}{{ product.category }}/{{ product.image_set.first.name }}"
       class="rounded-t-md object-cover object-center h-56 w-full"
     />
   </a>
