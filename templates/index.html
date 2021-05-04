@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  {% include "components/advertisement.html" %}
+  <main class="container mx-auto my-10">
+    <h1 class="flex justify-center text-4xl">Top rated products!</h1>
+
+    <!-- Preview of top 5 products in categories -->
+    {% for k, v in categories.items %}
+      {% include 'components/section_preview.html' with category=k products=v %}
+  {% endfor %}
+  </main>
+{% endblock %}

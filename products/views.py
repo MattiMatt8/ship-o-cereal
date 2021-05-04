@@ -1,6 +1,10 @@
 from django.shortcuts import render, get_object_or_404
+from django.views.generic import ListView, DetailView, View
 from django.http import HttpResponse
-from products.models import Product
+from .models import Category, Product
+
+class CategoryListView(View):
+    model = Category
 
 
 def index(response):
@@ -11,5 +15,5 @@ def product_details(response, id):
     return render(
         response,
         "views/product_details.html",
-        {"product": get_object_or_404(Product, pk=id)},
+        {"product": get_object_or_404(Product, pk=id), "amount_list": range(1,11)},
     )

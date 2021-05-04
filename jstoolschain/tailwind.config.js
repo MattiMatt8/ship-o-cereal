@@ -8,6 +8,7 @@ module.exports = {
         customFaintBlue: "#a0efff",
         customGray: "#484848",
         customViolet: "#3F2E56",
+        customGreen: "#06B184",
       },
     },
   },
