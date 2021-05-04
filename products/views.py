@@ -14,6 +14,6 @@ def index(response):
 def product_details(response, id):
     return render(
         response,
-        "views/product_details.html",
+        "product_details.html",
         {"product": get_object_or_404(Product, pk=id), "amount_list": range(1,11)},
     )
