@@ -41,11 +41,18 @@ class Product(models.Model):
     price = models.FloatField()
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     percentage_off = models.FloatField(default=0)
-    picture = models.CharField(max_length=255)
     labels = models.ManyToManyField(Label, through="ProductLabel")
     reviews = models.ManyToManyField(User, through="Review")
 
     def __str__(self):  # Maybe add more to the return
+        return self.name
+
+
+class Image(models.Model):
+    name = models.CharField(max_length=255)
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+
+    def __str__(self):
         return self.name
 
 
