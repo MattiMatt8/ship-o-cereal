@@ -31,17 +31,21 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.DO_NOTHING)
     weight = models.IntegerField(blank=True, null=True)
     stock = models.IntegerField(default=0)
-    active = models.BooleanField(default=True, null=True) # Default?
-    total_score = models.FloatField(default=0) # Need to check, review should update this each time
-    total_reviews = models.IntegerField(default=0) # Need to check, review should update this each time
+    active = models.BooleanField(default=True, null=True)  # Default?
+    total_score = models.FloatField(
+        default=0
+    )  # Need to check, review should update this each time
+    total_reviews = models.IntegerField(
+        default=0
+    )  # Need to check, review should update this each time
     price = models.FloatField()
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     percentage_off = models.FloatField(default=0)
     picture = models.CharField(max_length=255)
-    labels = models.ManyToManyField(Label, through='ProductLabel')
-    reviews = models.ManyToManyField(User, through='Review')
+    labels = models.ManyToManyField(Label, through="ProductLabel")
+    reviews = models.ManyToManyField(User, through="Review")
 
-    def __str__(self): # Maybe add more to the return
+    def __str__(self):  # Maybe add more to the return
         return self.name
 
 
@@ -50,7 +54,7 @@ class ProductLabel(models.Model):
     label = models.ForeignKey(Label, on_delete=models.DO_NOTHING)
 
     class Meta:
-        unique_together = ('product', 'label')
+        unique_together = ("product", "label")
 
 
 class Review(models.Model):
@@ -61,7 +65,7 @@ class Review(models.Model):
     review = models.CharField(max_length=255)
 
     class Meta:
-        unique_together = ('user', 'product')
+        unique_together = ("user", "product")
 
-    def __str__(self): # todo: Add more to the return
+    def __str__(self):  # todo: Add more to the return
         return self.review
