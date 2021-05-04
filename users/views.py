@@ -1,5 +1,5 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def something(response):
+def register(response):
     return HttpResponse("something_else")
