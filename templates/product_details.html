@@ -6,13 +6,13 @@
       <!-- IMAGE -->
       <div class="">
         <img
-                class="object-cover object-center w-96 h-96 rounded-t-md"
-                src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
+          class="object-cover object-center w-96 h-96 rounded-t-md"
+          src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
         />
         <span class="font-light text-sm">Product number: {{ product.id }}</span>
       </div>
       <!-- META DATA -->
-      <div class="ml-16 flex flex-col justify-between">
+      <div class="ml-16 flex flex-col justify-between w-96">
         <!-- START Title and weight -->
         <div>
           <div class="flex flex-row items-end">
@@ -41,7 +41,7 @@
             <span></span>
           </div>
         </div>
-        <div class="w-3/6">
+        <div class="">
           <h3 class="text-xl font-medium">Product description</h3>
           <p>{{ product.description }}</p>
         </div>
