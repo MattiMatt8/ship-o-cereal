@@ -11,7 +11,21 @@ def index(request):
     context = {'categories':{}}
     categories = Category.objects.all()
     for category in categories:
-        context['categories'][category] = Product.objects.filter(category=category.id).order_by('-total_score')[:5]
+        # print([i for i in Product.objects.filter(category=category.id).order_by('-total_score')[:5]])
+
+        products = [ {
+            'id': product.id,
+            'name': product.name,
+            'weight': product.weight,
+            'price': product.price,
+            'category': category,
+            'picture': product.image_set.first().name
+
+
+        } for product in Product.objects.filter(category=category.id).order_by('-total_score')[:5] ]
+        print(products)
+
+        context['categories'][category] = products
 
 
     # print(context)
