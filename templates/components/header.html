@@ -2,9 +2,7 @@
   <div class="flex items-center my-4">
     <!-- Logo -->
     <div class="w-1/5">
-      <a href="/">
-        {% include "components/icons/header-logo.html" %}
-      </a>
+      <a href="/"> {% include "components/icons/header-logo.html" %} </a>
     </div>
     <!-- END logo -->
 
@@ -18,7 +16,7 @@
           <li class="mx-4">
             <a href="#">Bowls</a>
           </li>
-          <li class="mx-4" >
+          <li class="mx-4">
             <a href="#">Merchandise</a>
           </li>
         </ul>
@@ -27,24 +25,36 @@
     <!-- END Navbar -->
 
     <!-- Toolbar -->
-    <div class="w-full flex row justify-end">
+    <div class="w-full flex flex-row justify-end">
       <!-- Searchbar -->
       <form class="block self-center">
         <label class="hidden" for="search-form">Search</label>
-          <input class="border border-customGray rounded-full py-3 px-6 shadow-inner w-full h-8" placeholder="Search" type="text">
+        <input
+          class="border border-customGray rounded-full py-3 px-6 shadow-inner w-full h-8"
+          placeholder="Search"
+          type="text"
+        />
         <button class="hidden">Submit</button>
       </form>
       <!-- END Searchbar -->
       <!-- BEGIN Cart -->
-      <a href="#" class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6 relative">
+      <a
+        href="#"
+        class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6 relative"
+      >
         {% include "components/icons/header-cart-icon.html" %}
-        <div class="bg-customBlue rounded-full w-5 h-5 absolute -top-1 -right-1 flex items-center justify-center text-customGray">
-            <p class="">0</p>
+        <div
+          class="bg-customBlue rounded-full w-5 h-5 absolute -top-1 -right-1 flex items-center justify-center text-customGray"
+        >
+          <p class="">0</p>
         </div>
       </a>
       <!-- END Cart -->
       <!-- BEGIN User profile -->
-      <a href="#" class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6">
+      <a
+        href="#"
+        class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6"
+      >
         {% include "components/icons/header-profile-icon.html" %}
       </a>
       <!-- END User profile -->

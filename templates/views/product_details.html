@@ -1,53 +1,75 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-  <main class="container mx-auto my-10 text-customGray">
-    <div class="flex row">
-      <!-- IMAGE -->
-      <div class="">
-        <img class="object-cover object-center w-96 rounded-t-md" src="{%  static 'images/Cereal/' %}{{ product.picture }}" />
-        <span class="font-light text-sm">Product number: {{ product.id }}</span>
-      </div>
-      <!-- META DATA -->
-      <div class="ml-16">
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<main class="container mx-auto my-10 text-customGray">
+  <div class="flex flex-row">
+    <!-- IMAGE -->
+    <div class="">
+      <img
+        class="object-cover object-center w-96 h-96 rounded-t-md"
+        src="{%  static 'images/Cereal/' %}{{ product.picture }}"
+      />
+      <span class="font-light text-sm">Product number: {{ product.id }}</span>
+    </div>
+    <!-- META DATA -->
+    <div class="ml-16 flex flex-col justify-between">
       <!-- START Title and weight -->
-        <div class="flex row items-end">
-          <h1 class="font-medium text-5xl">{{ product.name }}</h1>
-          {% if product.weight != None %}
-            <span class="ml-4 font-light text-sm">{{ product.weight }}gr</span>
-          {% endif %}
-        </div>
-        <!-- END Title and weight -->
-        <!-- START Product rating -->
-        <div class="flex row my-2">
-          <!-- START Stars -->
-          <div class="flex row">
-            {% for item in "x"|ljust:"5" %}
-                {% include 'components/icons/star_filled.html' %}
-            {% endfor %}
-          </div>
-          <!-- END Stars -->
-          <span class="ml-4 font-light text-sm">{{ product.total_reviews }} reviews</span>
-        </div>
-        <!-- END Product rating -->
-        <div >
-          <span>In stock</span>
-          <span>(Checkmark)</span>
-        </div>
-        <div>
-          <h3>Product description</h3>
-          <p>{{ product.description }}</p>
-        </div>
-        <h3>${{ product.price }}</h3>
-        <!-- START Add to cart button -->
-        <div>
-
-        </div>
-        <!-- END Add to cart button -->
-
+      <div>
+      <div class="flex flex-row items-end">
+        <h1 class="font-medium text-5xl">{{ product.name }}</h1>
+        {% if product.weight != None %}
+        <span class="ml-4 font-light text-sm">{{ product.weight }}gr</span>
+        {% endif %}
       </div>
+      <!-- END Title and weight -->
+      <!-- START Product rating -->
+      <div class="flex flex-row my-2">
+        <!-- START Stars -->
+        <div class="flex flex-row">
+          {% for item in "x"|ljust:"5" %}
+            {% include 'components/icons/star_filled.html' %}
+          {% endfor %}
+        </div>
+        <!-- END Stars -->
+        <span class="ml-4 font-light text-sm"
+          >{{ product.total_reviews }} reviews</span
+        >
+      </div>
+      <!-- END Product rating -->
+      <div class="text-sm font-medium mb-16">
+        <span>In stock</span>
+        <span></span>
+      </div>
+      </div>
+      <div>
+        <h3 class="text-xl font-medium">Product description</h3>
+        <p>{{ product.description }}</p>
+      </div>
+          <div>
+
+      <!-- START Add to cart button -->
+      <div class="">
+        <h3 class="text-3xl mb-4">${{ product.price }}</h3>
+        <div>
+          <div class="relative inline">
+              <span class="mr-4">Magn</span>
+              <select class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
+                {% for amount in amount_list %}
+                  <option>{{ amount }}</option>
+                {% endfor %}
+              </select>
+              <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
+                  <path d="M6 9l6 6 6-6"></path>
+                </svg>
+              </span>
+            </div>
+            <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Button</button>
+        </div>
+      </div>
+      <!-- END Add to cart button -->
+              </div>
 
     </div>
-
-  </main>
+  </div>
+</main>
 {% endblock %}
