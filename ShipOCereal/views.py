@@ -1,5 +1,13 @@
 from django.shortcuts import render
-from products.models import Product
+from products.models import Category
+from django.views import generic
+
+
+class CategoryList(generic.ListView):
+    template_name = 'category_list.html'
+    model = Category
+
+
 
 def index(request):
     # TODO: Send in a context of top 5 products in cereals, bowls and merch (id, title, price, image)

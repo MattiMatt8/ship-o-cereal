@@ -41,7 +41,7 @@ class Product(models.Model):
     labels = models.ManyToManyField(Label, through='ProductLabel')
     reviews = models.ManyToManyField(User, through='Review')
 
-    def __str__(self): # Maybe add more to the return
+    def __str__(self):
         return self.name
 
 

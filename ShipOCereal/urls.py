@@ -21,6 +21,7 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
+    path('test/', views.CategoryList.as_view())
 
 #    path('orders/', include('products.urls'), name="products"),
 #    path('users/', include('products.urls'), name="products"),
