@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <main class="container mx-auto my-10">
+  <main class="container mx-auto my-10 text-customGray">
     <div class="flex row">
       <!-- IMAGE -->
       <div class="">
@@ -12,27 +12,25 @@
       <div class="ml-16">
       <!-- START Title and weight -->
         <div class="flex row items-end">
-          <h1 class="font-medium text-4xl">{{ product.name }}</h1>
+          <h1 class="font-medium text-5xl">{{ product.name }}</h1>
           {% if product.weight != None %}
             <span class="ml-4 font-light text-sm">{{ product.weight }}gr</span>
           {% endif %}
         </div>
         <!-- END Title and weight -->
         <!-- START Product rating -->
-        <div class="flex row">
+        <div class="flex row my-2">
           <!-- START Stars -->
           <div class="flex row">
-            <div>*</div>
-            <div>*</div>
-            <div>*</div>
-            <div>*</div>
-            <div>*</div>
+            {% for item in "x"|ljust:"5" %}
+                {% include 'components/icons/star_filled.html' %}
+            {% endfor %}
           </div>
           <!-- END Stars -->
-          <span>{{ product.total_reviews }} reviews</span>
+          <span class="ml-4 font-light text-sm">{{ product.total_reviews }} reviews</span>
         </div>
         <!-- END Product rating -->
-        <div>
+        <div >
           <span>In stock</span>
           <span>(Checkmark)</span>
         </div>
