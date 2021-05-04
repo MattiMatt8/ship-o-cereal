@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    Login test
+    <form method="post" class="">
+        {% csrf_token %}
+        {{ form }}
+    </form>
+
+{% endblock %}
