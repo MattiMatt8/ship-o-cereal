@@ -24,5 +24,5 @@ urlpatterns = [
     path("orders/", include("orders.urls"), name="orders"),
     path("products/", include("products.urls"), name="products"),
     path("admin/", admin.site.urls),
-    path("", include("products.urls")),  # Cereals, ..
+
 ]
