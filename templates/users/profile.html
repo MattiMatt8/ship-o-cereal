@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main class="container mx-auto my-16 text-customGray">
+
+  <div class="flex flex-col">
+    <div class="flex justify-center items-center bg-customGray w-20 h-20 rounded-full ">
+      {% include 'components/icons/login-profile-icon.html' %}
+    </div>
+    <h1 class="text-xl font-medium mt-2">Amy J. Mathew</h1>
+    <div class="flex flex-row mt-2">
+      <button class="p-1 rounded border mr-4">Orders</button>
+      <button class="p-1 rounded border">Search history</button>
+    </div>
+  </div>
+  <section class="flex flex-row">
+    <div>
+      <h2 class="text-xl font-medium">General</h2>
+      <div>
+
+      </div>
+    </div>
+
+
+  </section>
+
+
+  </main>
+{% endblock %}

@@ -7,4 +7,6 @@ def register(request):
     })
 
 def profile(request):
-    ...
+    # TODO: Provide all necessary user data in the context
+
+    return render(request, "users/profile.html")
