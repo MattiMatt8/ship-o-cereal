@@ -1,24 +1,26 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, View
+from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
+from django.views.generic import ListView
 from .models import Category, Product
 
 
-class ProductCategory(View):
-    def get(self, *args, **kwargs):
 
-        context = {}
-        try:
+class ProductCategory(ListView):
+    template_name = "category/category.html"
+    paginate_by = 3
 
-            # category_products = Product.objects.filter(category_id=category.id)
-            category = Category.objects.get(name=kwargs["category_name"])
-            category_products = category.product_set.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["category"] = self.category #Category.objects.get(name=kwargs["category_name"])
+        context["products"] = self.object_list
+        return context
 
-            context["category"] = category
-            context["products"] = category_products
-        except Category.DoesNotExist:
-            pass
+    def get_queryset(self):
+        self.category = get_object_or_404(Category, name=self.kwargs["category_name"])
+        return self.category.product_set.all()
 
-        return render(self.request, 'category/category.html', context)
+
+
 
 
 def product_details(response, id):
