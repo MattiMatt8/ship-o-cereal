@@ -1,3 +1,5 @@
+{% extends 'base.html' %}
+{% block content %}
 {% if category %}
 <h1> {{ category.name }}</h1>
   {%  if products %}
@@ -12,3 +14,4 @@
 {% else %}
   <h1>Category {{ category.name }} does not exist.</h1>
 {% endif %}
+{% endblock %}
