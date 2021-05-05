@@ -26,8 +26,8 @@ class Brand(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    description = models.CharField(max_length=255)
-    contents = models.CharField(max_length=255, blank=True, null=True)
+    description = models.CharField(max_length=1000)
+    contents = models.CharField(max_length=1000, blank=True, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.DO_NOTHING)
     weight = models.IntegerField(blank=True, null=True)
     stock = models.IntegerField(default=0)
