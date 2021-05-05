@@ -26,6 +26,7 @@ class Card(models.Model):
     last_name = models.CharField(max_length=255)
     ssn = models.CharField(max_length=255)
     card_num = models.CharField(max_length=255)
+    card_type = models.CharField(max_length=255)
     expiration_date = models.DateField()
 
 
@@ -39,7 +40,7 @@ class Address(models.Model):
     zip = models.ForeignKey(ZipCode, on_delete=models.DO_NOTHING)
     address = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
-    additional_comments = models.CharField(max_length=255)
+    additional_comments = models.CharField(max_length=255, blank=True, null=True)
 
 
 class SearchHistory(models.Model):
