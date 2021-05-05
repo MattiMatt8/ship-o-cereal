@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main class="container mx-auto my-10 text-customGray">
+    <h1 class="text-3xl mb-8">Cart</h1>
+    <!-- START Cart Items & View Amount -->
+    <div class="flex flex-row justify-between">
+      <!-- START Cart Items -->
+      <div class="">
+        <ul>
+          <!-- START Item -->
+            {% include 'components/cart_item.html' with product_name='hahah brooooo thats' %}
+            {% include 'components/cart_item.html' with product_name='hahah what' %}
+            {% include 'components/cart_item.html' with product_name='hahah broo' %}
+            {% include 'components/cart_item.html' with product_name='yepp' %}
+          <!-- END Item -->
+        </ul>
+      </div>
+      <!-- END Cart Items -->
+
+      <!-- START View Amount -->
+      <div class="">
+        <div class="bg-customBlue w-64 h-64">
+
+        </div>
+      </div>
+      <!-- END View Amount -->
+
+
+    </div>
+    <!-- END Cart Items & View Amount -->
+  </main>
+{% endblock %}
