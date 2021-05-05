@@ -7,11 +7,11 @@ from .models import Category, Product
 
 class ProductCategory(ListView):
     template_name = "category/category.html"
-    paginate_by = 7
+    paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category"] = self.category #Category.objects.get(name=kwargs["category_name"])
+        context["category"] = self.category
         context["products"] = self.object_list
         return context
 

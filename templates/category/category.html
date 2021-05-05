@@ -1,47 +1,70 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if category %}
-  <!-- Products displayed on page -->
-  {% if products %}
-    <h1 class="flex justify-center text-4xl"> {{ category.name }} </h1>
-      <main class="container mx-auto my-10">
-        <div class="flex flex-wrap">
-          {% for product in object_list %}
-            {% include 'components/product_card.html' with product=product %}
-          {% endfor %}
-        </div>
-      </main>
 
-  <!-- Products not available -->
-  {% else %}
-    <h1>Products not available</h1>
-  {% endif %}
+<!-- Products on page -->
+{% if products %}
+<main class="container mx-auto my-10">
+  <h1 class="flex justify-center text-6xl text-customGray"> {{ category.name }} </h1>
+  {% include "category/category_filters.html" %}
+  <div class="flex flex-wrap">
+    {% for product in object_list %}
+      {% include 'components/product_card.html' with product=product %}
+    {% endfor %}
+  </div>
+</main>
+{% endif %}
+<!-- END Products on page -->
 
-  <!-- Category not valid -->
-  {% else %}
-    <h1>Category {{ category.name }} does not exist.</h1>
-  {% endif %}
-
-
+<!-- Page numbers -->
 {% if is_paginated %}
-<ul class="pagination">
-  {% if page_obj.has_previous %}
-    <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-  {% else %}
-    <li class="disabled"><span>&laquo;</span></li>
+  <div class="flex justify-around text-2xl items-between">
+    <!-- Page before -->
+    {% if page_obj.has_previous %}
+    <span>
+      <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+    </span>
+    <!-- END Page before -->
+
+    <!-- No page before -->
+    {% else %}
+    <span class="disabled">
+      <span>&laquo;</span>
+    </span>
+    <!-- END No page before -->
   {% endif %}
+
+  <!-- All available pages -->
   {% for i in paginator.page_range %}
     {% if page_obj.number == i %}
-      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    <span class="active">
+      <span>{{ i }}
+        <span class="sr-only">(current)</span>
+      </span>
+    </span>
     {% else %}
-      <li><a href="?page={{ i }}">{{ i }}</a></li>
+    <span>
+      <a href="?page={{ i }}">{{ i }}</a>
+    </span>
     {% endif %}
   {% endfor %}
+  <!-- END All available pages -->
+
+  <!-- Next page -->
   {% if page_obj.has_next %}
-    <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+    <span>
+      <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+    </span>
+  <!-- END Next page -->
+
+  <!-- No next page -->
   {% else %}
-    <li class="disabled"><span>&raquo;</span></li>
+    <span class="disabled">
+      <span>&raquo;</span>
+    </span>
   {% endif %}
-</ul>
-{% endif %}
+  <!-- END no next page -->
+  {% endif %}
+  </div>
+
+<!-- END Products on page -->
 {% endblock %}

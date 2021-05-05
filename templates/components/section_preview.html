@@ -1,6 +1,6 @@
 <section>
   <div class="flex flex-row justify-between mb-4 mt-10 text-customGray">
-    <a href="#" class="text-3xl pr-3">{{ category }}</a>
+    <a href="{% url 'product-category' category_name=category.name %}" class="text-3xl pr-3">{{ category }}</a>
     <a href="#" class="flex flex-row items-center">
       <span class="text-lg px-3">View More</span>
       <svg
