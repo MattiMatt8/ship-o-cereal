@@ -1,8 +1,10 @@
 <li class="shadow-lg rounded-lg flex flex-col p-4 mb-4">
-    <h4 class="text-base">Address 1</h4>
-    <h3 class="text-base font-bold">507 Oak Meadow Ave. Kalamazoo, MI 49009</h3>
+    <h4 class="text-base">Address {{ num }}</h4>
+    <h3 class="text-base font-bold">{{ address }}</h3>
+    <h3 class="text-base font-bold">{{ city }} {{ zip_code }}</h3>
+    <h3 class="text-base font-bold">{{ country }}</h3>
     <div class="flex flex-row justify-end mt-2">
-        <a type="button" class="text-sm">Change</a>
-        <a type="button" class="text-red-500 text-sm ml-4">Delete</a>
+        <button type="button" class="text-sm focus:outline-none">Change</button>
+        <button type="button" class="text-red-500 text-sm ml-4 focus:outline-none">Delete</button>
     </div>
 </li>
