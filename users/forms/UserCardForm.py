@@ -1,13 +1,13 @@
 from django.forms import widgets, ModelForm
-from users.models import Address
+from users.models import Card
 
 
-class AddUserAddressForm(ModelForm):
+class UserCardForm(ModelForm):
     class Meta:
         FIELD_STYLE = "border border-customGray rounded py-3 px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
-        model = Address
-        fields = ("address", "country", "additional_comments", "zip", "city")
+        model = Card
+        fields = ("name", "number", "expiration_date")
         widgets = {
             "address": widgets.TextInput(
                 attrs={

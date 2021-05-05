@@ -2,7 +2,7 @@ from django.forms import widgets, ModelForm
 from users.models import Address
 
 
-class UpdateUserAddressForm(ModelForm):
+class UserAddressForm(ModelForm):
     class Meta:
         FIELD_STYLE = "border border-customGray rounded py-3 px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 

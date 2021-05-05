@@ -22,12 +22,12 @@ class Profile(models.Model):
 
 class Card(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    ssn = models.CharField(max_length=255)
-    card_num = models.CharField(max_length=255)
-    card_type = models.CharField(max_length=255)
-    expiration_date = models.DateField()
+    holder = models.CharField(max_length=255)
+    number = models.CharField(max_length=255)
+    month = models.IntegerField()
+    year = models.IntegerField()
+    # type = models.CharField(max_length=255)
+    # expiration_date = models.DateField()
 
 
 # class ZipCode(models.Model):

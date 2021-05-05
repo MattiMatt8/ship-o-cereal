@@ -82,7 +82,7 @@
                 <h2 class="text-xl font-medium mb-4">Cards</h2>
                 <ul>
                     {% for card in request.user.card_set.all %}
-                        {% include 'components/user_card.html' with card_type=card.card_type card_num=card.card_num|slice:"-4:" %}
+                        {% include 'components/user_card.html' with expiration_date=card.expiration_date card_num=card.number|slice:"-4:" %}
                     {% endfor %}
                 </ul>
                 <button type="button"
