@@ -74,19 +74,15 @@
     <span class="font-light text-sm">Product number: {{ product.id }}</span>
 
     <!-- END Image and meta data -->
-    <div class="flex flex-row w-72 mt-4">
-      <img
-              class="object-cover object-center w-24 h-24 mr-4"
-              src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
-      />
-      <img
-              class="object-cover object-center w-24 h-24 mr-4"
-              src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
-      />
-      <img
-              class="object-cover object-center w-24 h-24 mr-4"
-              src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
-      />
+    <div class="flex flex-row w-96 mt-4 wrap">
+      {% for image in product.image_set.all %}
+        <img
+                class="object-cover object-center w-24 h-24 mr-4"
+                src="{% static 'images/' %}{{ product.category.name }}/{{ image }}"
+        />
+      {% endfor %}
+
+
 
     </div>
 
