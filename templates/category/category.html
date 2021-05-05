@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if category %}
+  <!-- Products displayed on page -->
+  {% if products %}
+    <h1 class="flex justify-center text-4xl"> {{ category.name }} </h1>
+      <main class="container mx-auto my-10">
+        <div class="flex flex-wrap">
+          {% for product in object_list %}
+            {% include 'components/product_card.html' with product=product %}
+          {% endfor %}
+        </div>
+      </main>
+
+  <!-- Products not available -->
+  {% else %}
+    <h1>Products not available</h1>
+  {% endif %}
+
+  <!-- Category not valid -->
+  {% else %}
+    <h1>Category {{ category.name }} does not exist.</h1>
+  {% endif %}
+
+
+{% if is_paginated %}
+<ul class="pagination">
+  {% if page_obj.has_previous %}
+    <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+  {% else %}
+    <li class="disabled"><span>&laquo;</span></li>
+  {% endif %}
+  {% for i in paginator.page_range %}
+    {% if page_obj.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+    {% else %}
+      <li><a href="?page={{ i }}">{{ i }}</a></li>
+    {% endif %}
+  {% endfor %}
+  {% if page_obj.has_next %}
+    <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+  {% else %}
+    <li class="disabled"><span>&raquo;</span></li>
+  {% endif %}
+</ul>
+{% endif %}
+{% endblock %}

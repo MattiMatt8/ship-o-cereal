@@ -4,7 +4,6 @@
     <div class="w-1/5">
       <a href="/"> {% include "components/icons/header-logo.html" %} </a>
     </div>
-    <!-- END logo -->
 
     <!-- Navbar -->
     <div class="flex w-2/5...">
@@ -18,7 +17,6 @@
         </ul>
       </nav>
     </div>
-    <!-- END Navbar -->
 
     <!-- Toolbar -->
     <div class="w-full flex flex-row justify-end">
@@ -32,8 +30,8 @@
         />
         <button class="hidden">Submit</button>
       </form>
-      <!-- END Searchbar -->
-      <!-- BEGIN Cart -->
+
+      <!-- Cart -->
       <a
         href="#"
         class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6 relative"
@@ -45,16 +43,14 @@
           <p class="">0</p>
         </div>
       </a>
-      <!-- END Cart -->
-      <!-- BEGIN User profile -->
+
+      <!-- User profile -->
       <a
         href="{% url 'profile' %}"
         class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6"
       >
         {% include "components/icons/header-profile-icon.html" %}
       </a>
-      <!-- END User profile -->
     </div>
-    <!-- END Toolbar -->
   </div>
 </header>
