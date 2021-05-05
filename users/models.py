@@ -15,7 +15,7 @@ from products.models import Product
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    picture = models.CharField(max_length=255, null=True)
+    picture = models.CharField(max_length=255, blank=True, null=True)
     phone = models.CharField(max_length=255)
     # cart = models.ManyToManyField(Product, through=CartItem)
 
