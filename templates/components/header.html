@@ -10,15 +10,11 @@
     <div class="flex w-2/5...">
       <nav>
         <ul class="flex text-customViolet text-xl">
+          {% for category in categories %}
           <li class="mx-4">
-            <a href="#">Cereal</a>
+            <a href="{% url 'product-category' category_name=category.name %}">{{ category.name }}</a>
           </li>
-          <li class="mx-4">
-            <a href="#">Bowls</a>
-          </li>
-          <li class="mx-4">
-            <a href="#">Merchandise</a>
-          </li>
+          {% endfor %}
         </ul>
       </nav>
     </div>
@@ -52,7 +48,7 @@
       <!-- END Cart -->
       <!-- BEGIN User profile -->
       <a
-        href="#"
+        href="{% url 'profile' %}"
         class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6"
       >
         {% include "components/icons/header-profile-icon.html" %}

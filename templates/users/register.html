@@ -7,47 +7,53 @@
         <h1 class="text-4xl">Sign up</h1>
         <form class="w-64 m-4 mb-7" method="post">
             {% csrf_token %}
-{#            <div class="text-red-500 text-sm italic">#}
-{#                {% if form.non_field_errors %}#}
-{#                    <p>Incorrect username and/or password.</p>#}
-{#                {% endif %}#}
-{#            </div>#}
-            <div class="mb-6">
-                <label for="{{ form.first_name.id_for_label }}" class="block text-gray-700 text-base mb-2" for="password">Password</label>
+            <div class="mb-4">
+                <div class="text-red-500 text-sm italic">{{ form.first_name.errors }}</div>
+                <label for="{{ form.first_name.id_for_label }}" class="block text-gray-700 text-base mb-2">First name</label>
                 {{ form.first_name }}
             </div>
-            <div class="mb-6">
-                <label for="{{ form.last_name.id_for_label }}" class="block text-gray-700 text-base mb-2" for="password">Password</label>
+            <div class="mb-4">
+                <div class="text-red-500 text-sm italic">{{ form.last_name.errors }}</div>
+                <label for="{{ form.last_name.id_for_label }}" class="block text-gray-700 text-base mb-2">Last name</label>
                 {{ form.last_name }}
             </div>
-            <div class="mb-6">
-                <label for="{{ form.phone.id_for_label }}" class="block text-gray-700 text-base mb-2" for="password">Password</label>
+            <div class="mb-4">
+                <div class="text-red-500 text-sm italic">{{ form.phone.errors }}</div>
+                <label for="{{ form.phone.id_for_label }}" class="block text-gray-700 text-base mb-2">Phone number</label>
                 {{ form.phone }}
             </div>
             <div class="mb-4">
-                <label for="{{ form.username.id_for_label }}" class="block text-gray-700 text-base mb-2" for="username">Username</label>
+                <div class="text-red-500 text-sm italic">{{ form.username.errors }}</div>
+                <label for="{{ form.username.id_for_label }}" class="block text-gray-700 text-base mb-2">Username</label>
                 {{ form.username }}
+                <p class="text-sm font-thin">150 characters or fewer.</p>
+                <p class="text-sm font-thin">Letters, digits and @/./+/-/_ only.</p>
             </div>
             <div class="mb-4">
-                <label for="{{ form.email.id_for_label }}" class="block text-gray-700 text-base mb-2" for="username">Username</label>
+                {{ form.email.errors }}
+                <label for="{{ form.email.id_for_label }}" class="block text-gray-700 text-base mb-2">Email</label>
                 {{ form.email }}
             </div>
-            <div class="mb-6">
-                <label for="{{ form.password1.id_for_label }}" class="block text-gray-700 text-base mb-2" for="password">Password</label>
+            <div class="mb-4">
+                <div class="text-red-500 text-sm italic">{{ form.password1.errors }}</div>
+                <label for="{{ form.password1.id_for_label }}" class="block text-gray-700 text-base mb-2">Password</label>
                 {{ form.password1 }}
+                <p class="text-sm font-thin">Not similar to other personal information.</p>
+                <p class="text-sm font-thin">Must contain at least 8 characters.</p>
+                <p class="text-sm font-thin">No commonly used passwords.</p>
+                <p class="text-sm font-thin">Not entirely numeric.</p>
             </div>
             <div class="mb-6">
-                <label for="{{ form.password2.id_for_label }}" class="block text-gray-700 text-base mb-2" for="password">Password</label>
+                <div class="text-red-500 text-sm italic">{{ form.password2.errors }}</div>
+                <label for="{{ form.password2.id_for_label }}" class="block text-gray-700 text-base mb-2">Password confirmation</label>
                 {{ form.password2 }}
             </div>
             <div class="flex items-center justify-between">
-                <a class="inline-block align-baseline text-base text-customViolet" href="{% url 'register' %}">Register</a>
+                <a class="inline-block align-baseline text-base text-customViolet" href="{% url 'login' %}">Sign in</a>
                 <button class="bg-customBlue rounded-full text-customViolet text-base py-1 px-4 focus:outline-none"
-                        type="submit">Sign Up
+                        type="submit">Register
                 </button>
             </div>
-            <h1>-------- SPACER ------------</h1>
-            {{ form }}
         </form>
         </div>
     </main>
