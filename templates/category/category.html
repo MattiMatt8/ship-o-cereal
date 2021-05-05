@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
 {% if category %}
-<h1> {{ category.name }}</h1>
-  {%  if products %}
-    <div class="flex flex-row justify-between mb-4 mt-10 text-customGray">
-      <div class="flex flex-row justify-between">
-        {% for product in object_list %}
-          {% include 'components/product_card.html' with product=product %}
-        {% endfor %}
-      </div>
-    </div>
+  <!-- Products displayed on page -->
+  {% if products %}
+    <h1 class="flex justify-center text-4xl"> {{ category.name }} </h1>
+      <main class="container mx-auto my-10">
+        <div class="flex flex-wrap">
+          {% for product in object_list %}
+            {% include 'components/product_card.html' with product=product %}
+          {% endfor %}
+        </div>
+      </main>
+
+  <!-- Products not available -->
   {% else %}
-  <h1>Products not available</h1>
+    <h1>Products not available</h1>
   {% endif %}
-{% else %}
-  <h1>Category {{ category.name }} does not exist.</h1>
-{% endif %}
+
+  <!-- Category not valid -->
+  {% else %}
+    <h1>Category {{ category.name }} does not exist.</h1>
+  {% endif %}
 
 
 {% if is_paginated %}
