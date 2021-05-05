@@ -18,6 +18,11 @@ from django.urls import path, include
 
 from . import views
 
+handler400 = 'ShipOCereal.views.bad_request'
+handler403 = 'ShipOCereal.views.permission_denied'
+handler404 = 'ShipOCereal.views.page_not_found'
+handler500 = 'ShipOCereal.views.server_error'
+
 urlpatterns = [
     path("", views.HomePageView.as_view(), name="index"),
     path("", include("users.urls"), name="users"),
