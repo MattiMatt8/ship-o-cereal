@@ -9,11 +9,11 @@
             <h1 class="text-2xl font-medium mt-2">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
             <div class="flex flex-row mt-3 mb-4">
                 <button type="button"
-                        class="rounded border border-customViolet text-base py-1 px-4 mb-3 mr-3 focus:outline-none">
+                        class="rounded border border-customViolet text-base py-1 px-4 mb-3 mr-3 focus:outline-none hover:shadow-md">
                     Orders
                 </button>
                 <button type="button"
-                        class="rounded border border-customViolet text-base py-1 px-4 mb-3 focus:outline-none">Search
+                        class="rounded border border-customViolet text-base py-1 px-4 mb-3 focus:outline-none hover:shadow-md">Search
                     history
                 </button>
             </div>
@@ -54,10 +54,10 @@
                         {{ form.picture }}
                     </div>
                     <div class="flex flex-col w-36">
-                        <button class="bg-customBlue rounded text-customViolet text-base py-1 px-4 mb-3 focus:outline-none"
+                        <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base py-1 px-4 mb-3 focus:outline-none"
                                 type="submit">Save changes
                         </button>
-                        <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4"
+                        <a class="text-center text-base text-customViolet hover:shadow-md rounded border border-customViolet py-1 px-4"
                            href="{% url 'logout' %}">Sign
                             out</a>
                     </div>
