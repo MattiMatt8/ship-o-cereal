@@ -1,0 +1,58 @@
+<div class="flex flex-col">
+  <h1 class="text-2xl text-customGray">Filter</h1>
+  <!-- Filter & Order by menu -->
+  <div class="flex flex-row justify-between">
+    <!-- Filter options -->
+    <div class="flex">
+      <!-- Dropdown menu for filtering brands -->
+      <div class="relative">
+        <select
+          class="rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-64 h-9 pl-3 pr-10"
+        >
+          <option>{{ brand }}</option>
+          {% for brand in brands %}
+            <option>{{ brand }}</option>
+          {% endfor %}
+        </select>
+        <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
+            <path d="M6 9l6 6 6-6"></path>
+          </svg>
+        </span>
+      </div>
+      <!-- END Dropdown menu for filtering brands -->
+
+      <!-- Checkbox filters -->
+      <div class="">
+        {% for label in labels %}
+          <label for="{{ label.name.id_for_label }}" class="inline-flex items-center">
+            <input type="checkbox" class="form-checkbox h-5 w-5 text-green" checked>
+              <span class="ml-2">
+                {{ label.name }}
+              </span>
+          </label>
+        {% endfor %}
+      </div>
+      <!-- END Checkbox filters -->
+    </div>
+    <!-- END Filter options -->
+
+    <!-- Dropdown menu for ordering products -->
+    <div class="relative">
+      <select
+        class="rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-64 h-9 pl-3 pr-10"
+      >
+        {% for brand in brands %}
+          <option>{{ brand }}</option>
+        {% endfor %}
+      </select>
+      <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </span>
+    </div>
+    <!-- END Dropdown menu for ordering products -->
+  </div>
+  <!-- END Filter & Order by menu -->
+</div>

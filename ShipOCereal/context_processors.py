@@ -1,10 +1,26 @@
-from products.models import Category
+from products.models import (Category, Brand, Label)
 
 
 def menu_categories(request):
     """
-    Context processor that provides access to product categories as context variables.
+    Context processor that provides access to product categories as a context variable.
     """
-    categories = Category.objects.all()
 
-    return {"categories": categories}
+    return {"categories": Category.objects.all()}
+
+
+def product_brands(request):
+    """
+    Context processor that provides access to product brands as a context variable.
+    """
+
+    return {"brands": Brand.objects.all()}
+
+
+def product_labels(request):
+    """
+        Context processor that provides access to product labels as a context variable.
+        """
+
+    return {"labels": Label.objects.all()}
+
