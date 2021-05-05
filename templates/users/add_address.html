@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <main class="container mx-auto my-16 text-customGray">
+        <div class="w-80 mt-10 mb-4">
+            <h2 class="text-2xl font-medium mb-2">New address</h2>
+            <form method="post" class="flex flex-col">
+                {% csrf_token %}
+                <div class="mb-2">
+                    <div class="text-red-500 text-sm italic">{{ form.address.errors }}</div>
+                    <label for="{{ form.address.id_for_label }}"
+                           class="block text-gray-700 text-base mb-2">Address</label>
+                    {{ form.address }}
+                </div>
+                <div class="mb-2">
+                    <div class="text-red-500 text-sm italic">{{ form.city.errors }}</div>
+                    <label for="{{ form.city.id_for_label }}" class="block text-gray-700 text-base mb-2">City</label>
+                    {{ form.city }}
+                </div>
+                <div class="mb-2">
+                    <div class="text-red-500 text-sm italic">{{ form.zip.errors }}</div>
+                    <label for="{{ form.zip.id_for_label }}"
+                           class="block text-gray-700 text-base mb-2">Zip code</label>
+                    {{ form.zip }}
+                </div>
+                <div class="mb-2">
+                    <div class="text-red-500 text-sm italic">{{ form.country.errors }}</div>
+                    <label for="{{ form.country.id_for_label }}"
+                           class="block text-gray-700 text-base mb-2">Country</label>
+                    {{ form.country }}
+                </div>
+                <div class="mb-6">
+                    <div class="text-red-500 text-sm italic">{{ form.additional_comments.errors }}</div>
+                    <label for="{{ form.additional_comments.id_for_label }}" class="block text-gray-700 text-base mb-2">Additional
+                        comments</label>
+                    {{ form.additional_comments }}
+                </div>
+                <div class="flex justify-end mb-3">
+                    <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
+                            type="submit">Add address
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}

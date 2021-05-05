@@ -1,10 +1,14 @@
-<li class="shadow-lg rounded-lg flex flex-col p-4 mb-4">
+<li class="shadow-lg rounded-lg flex flex-col py-4 px-6 mb-4">
     <h4 class="text-base">Address {{ num }}</h4>
-    <h3 class="text-base font-bold">{{ address }}</h3>
-    <h3 class="text-base font-bold">{{ city }} {{ zip_code }}</h3>
-    <h3 class="text-base font-bold">{{ country }}</h3>
+    <h3 class="text-base font-bold">{{ address.address }}</h3>
+    <h3 class="text-base font-bold">{{ address.city }} {{ address.zip }}</h3>
+    <h3 class="text-base font-bold">{{ address.country }}</h3>
+    <h3 class="text-base font-bold">
+        {% if address.additional_comments is not None %}
+            {{ address.additional_comments }}
+        {% endif %}
+    </h3>
     <div class="flex flex-row justify-end mt-2">
-        <button type="button" class="text-sm focus:outline-none">Change</button>
-        <button type="button" class="text-red-500 text-sm ml-4 focus:outline-none">Delete</button>
+        <a type="button" class="text-sm focus:outline-none" href="addresses/{{ address.id }}">Change</a>
     </div>
 </li>

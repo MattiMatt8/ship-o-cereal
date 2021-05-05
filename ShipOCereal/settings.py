@@ -69,9 +69,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'ShipOCereal.context_processors.menu_categories',
-                'ShipOCereal.context_processors.product_brands',
-                'ShipOCereal.context_processors.product_labels'
+                'products.context_processors.menu_categories',
+                'products.context_processors.product_brands',
+                'products.context_processors.product_labels'
             ],
         },
     },

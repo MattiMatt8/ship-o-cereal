@@ -22,25 +22,27 @@ class Profile(models.Model):
 
 class Card(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    ssn = models.CharField(max_length=255)
-    card_num = models.CharField(max_length=255)
-    card_type = models.CharField(max_length=255)
-    expiration_date = models.DateField()
+    holder = models.CharField(max_length=255)
+    number = models.CharField(max_length=255)
+    month = models.IntegerField()
+    year = models.IntegerField()
+    # type = models.CharField(max_length=255)
+    # expiration_date = models.DateField()
 
 
-class ZipCode(models.Model):
-    zip = models.IntegerField(primary_key=True)
-    city = models.CharField(max_length=255)
+# class ZipCode(models.Model):
+#     zip = models.IntegerField(primary_key=True)
+#     city = models.CharField(max_length=255)
 
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    zip = models.ForeignKey(ZipCode, on_delete=models.DO_NOTHING)
+    # zip = models.ForeignKey(ZipCode, on_delete=models.DO_NOTHING)
     address = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     additional_comments = models.CharField(max_length=255, blank=True, null=True)
+    zip = models.IntegerField()
+    city = models.CharField(max_length=255)
 
 
 class SearchHistory(models.Model):

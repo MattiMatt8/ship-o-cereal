@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- Products on page -->
-{% if products %}
+{% if object_list %}
 <main class="container mx-auto my-10">
   <h1 class="flex justify-center text-6xl text-customGray"> {{ category.name }} </h1>
   {% include "category/category_filters.html" %}
@@ -17,7 +17,7 @@
 
 <!-- Page numbers -->
 {% if is_paginated %}
-  <div class="flex justify-center">
+  <div class="flex justify-around text-2xl items-between">
     <!-- Page before -->
     {% if page_obj.has_previous %}
     <span>
