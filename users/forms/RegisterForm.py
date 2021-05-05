@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import UserCreationForm, UsernameField
-from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django import forms
 from django.forms import widgets
 from django.contrib.auth import password_validation
@@ -75,26 +75,3 @@ class RegisterForm(UserCreationForm):
                 }
             )
         }
-
-    #
-    #
-    #
-    #
-    # username = UsernameField(
-    #     widget=forms.TextInput(
-    #         attrs={
-    #             "class": FIELD_STYLE,
-    #             "autofocus": True
-    #         }
-    #     )
-    # )
-    # password = forms.CharField(
-    #     label=_("Password"),
-    #     strip=False,
-    #     widget=forms.PasswordInput(
-    #         attrs={
-    #             "class": FIELD_STYLE,
-    #             "autocomplete": "current-password"
-    #         }
-    #     ),
-    # )
