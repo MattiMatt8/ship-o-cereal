@@ -4,23 +4,17 @@ from django.views.generic import ListView
 from .models import Category, Product
 
 
-
 class ProductCategory(ListView):
     template_name = "category/category.html"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["category"] = self.category
-        context["products"] = self.object_list
         return context
 
     def get_queryset(self):
-        self.category = get_object_or_404(Category, name=self.kwargs["category_name"])
-        return self.category.product_set.all()
-
-
-
+        category = get_object_or_404(Category, name=self.kwargs["category_name"])
+        return category.product_set.all()
 
 
 def product_details(response, id):
