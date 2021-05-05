@@ -30,17 +30,19 @@ class Card(models.Model):
     expiration_date = models.DateField()
 
 
-class ZipCode(models.Model):
-    zip = models.IntegerField(primary_key=True)
-    city = models.CharField(max_length=255)
+# class ZipCode(models.Model):
+#     zip = models.IntegerField(primary_key=True)
+#     city = models.CharField(max_length=255)
 
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    zip = models.ForeignKey(ZipCode, on_delete=models.DO_NOTHING)
+    # zip = models.ForeignKey(ZipCode, on_delete=models.DO_NOTHING)
     address = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
     additional_comments = models.CharField(max_length=255, blank=True, null=True)
+    zip = models.IntegerField()
+    city = models.CharField(max_length=255)
 
 
 class SearchHistory(models.Model):

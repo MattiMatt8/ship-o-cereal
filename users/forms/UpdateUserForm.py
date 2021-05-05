@@ -1,11 +1,10 @@
-from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.forms import widgets, ModelForm
 from django.contrib.auth.models import User
 
 
 class UpdateUserForm(ModelForm):
-    FIELD_STYLE = "border border-customGray rounded py-3 px-4 shadow-inner w-full h-8 focus:outline-none"
+    FIELD_STYLE = "border border-customGray rounded py-3 px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
     phone = forms.CharField(
         widget=forms.TextInput(
@@ -27,7 +26,7 @@ class UpdateUserForm(ModelForm):
         required=False
     )
     class Meta:
-        FIELD_STYLE = "border border-customGray rounded py-3 px-4 shadow-inner w-full h-8 focus:outline-none"
+        FIELD_STYLE = "border border-customGray rounded py-3 px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
         model = User
         fields = ("first_name", "last_name", "email")
