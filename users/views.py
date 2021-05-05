@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from users.forms.RegisterForm import RegisterForm
 from users.models import Profile
@@ -20,6 +21,7 @@ def register(request):
     })
 
 
+@login_required
 def profile(request):
     # TODO: Provide all necessary user data in the context
 
