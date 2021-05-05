@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404
-from django.core.paginator import (Paginator, EmptyPage, PageNotAnInteger)
 from django.views.generic import ListView
 from .models import Category, Product
+from .filters import ProductFilter
 
 
-class ProductCategory(ListView):
-    template_name = "category/category.html"
+class ProductsInCategoryListView(ListView):
+    template_name = "products/category.html"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
@@ -15,6 +15,7 @@ class ProductCategory(ListView):
     def get_queryset(self):
         category = get_object_or_404(Category, name=self.kwargs["category_name"])
         return category.product_set.all()
+
 
 
 def product_details(response, id):
