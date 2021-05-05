@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from .models import Category, Product
-from .filters import ProductFilter
+#from .filters import ProductFilter
 
 
 class ProductsInCategoryListView(ListView):
-    template_name = "products/category.html"
+    template_name = "category/category.html"
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
