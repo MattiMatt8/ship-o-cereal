@@ -8,5 +8,6 @@ urlpatterns = [
                                      redirect_authenticated_user=True), name="login"),
     path("logout/", LogoutView.as_view(next_page="login"), name="logout"),
     path('register/', views.register, name="register"),
-    path("profile/", views.profile, name="profile")
+    path("profile/", views.profile, name="profile"),
+    path("cart/", views.cart, name="cart"),
 ]
