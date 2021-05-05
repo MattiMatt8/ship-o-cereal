@@ -7,7 +7,7 @@ from .models import Category, Product
 
 class ProductCategory(ListView):
     template_name = "category/category.html"
-    paginate_by = 3
+    paginate_by = 7
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
