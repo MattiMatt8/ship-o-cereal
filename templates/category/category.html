@@ -17,53 +17,54 @@
 
 <!-- Page numbers -->
 {% if is_paginated %}
-<ul>
-  <!-- Page before -->
-  {% if page_obj.has_previous %}
-  <li>
-    <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
-  </li>
-  <!-- END Page before -->
-
-  <!-- No page before -->
-  {% else %}
-  <li class="disabled">
-    <span>&laquo;</span>
-  </li>
-  <!-- END No page before -->
-{% endif %}
-
-<!-- All available pages -->
-{% for i in paginator.page_range %}
-  {% if page_obj.number == i %}
-  <li class="active">
-    <span>{{ i }}
-      <span class="sr-only">(current)</span>
+  <div class="flex justify-center">
+    <!-- Page before -->
+    {% if page_obj.has_previous %}
+    <span>
+      <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
     </span>
-  </li>
-  {% else %}
-  <li>
-    <a href="?page={{ i }}">{{ i }}</a>
-  </li>
+    <!-- END Page before -->
+
+    <!-- No page before -->
+    {% else %}
+    <span class="disabled">
+      <span>&laquo;</span>
+    </span>
+    <!-- END No page before -->
   {% endif %}
-{% endfor %}
-<!-- END All available pages -->
 
-<!-- Next page -->
-{% if page_obj.has_next %}
-  <li>
-    <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-  </li>
-<!-- END Next page -->
+  <!-- All available pages -->
+  {% for i in paginator.page_range %}
+    {% if page_obj.number == i %}
+    <span class="active">
+      <span>{{ i }}
+        <span class="sr-only">(current)</span>
+      </span>
+    </span>
+    {% else %}
+    <span>
+      <a href="?page={{ i }}">{{ i }}</a>
+    </span>
+    {% endif %}
+  {% endfor %}
+  <!-- END All available pages -->
 
-<!-- No next page -->
-{% else %}
-  <li class="disabled">
-    <span>&raquo;</span>
-  </li>
-{% endif %}
-<!-- END no next page -->
-</ul>
-{% endif %}
+  <!-- Next page -->
+  {% if page_obj.has_next %}
+    <span>
+      <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+    </span>
+  <!-- END Next page -->
+
+  <!-- No next page -->
+  {% else %}
+    <span class="disabled">
+      <span>&raquo;</span>
+    </span>
+  {% endif %}
+  <!-- END no next page -->
+  {% endif %}
+  </div>
+
 <!-- END Products on page -->
 {% endblock %}
