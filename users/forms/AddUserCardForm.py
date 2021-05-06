@@ -18,7 +18,7 @@ class AddUserCardForm(ModelForm):
             "number": widgets.TextInput(
                 attrs={
                     "class": FIELD_STYLE,
-                    "placeholder": "1111222233334444"
+                    "placeholder": "1111-2222-3333-4444"
                 }
             ),
             "month": widgets.Select(
