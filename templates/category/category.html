@@ -4,10 +4,14 @@
 <!-- Products on page -->
 <main class="container mx-auto my-10">
 {% include 'components/back_button.html' %}
+<form method="get">
+        {{ filter.form.as_p }}
+        <input type="submit" />
+    </form>
 {% if object_list %}
   {% include "category/category_filters.html" %}
   <div class="flex flex-wrap -mx-8">
-    {% for product in object_list %}
+    {% for product in filter.qs %}
       <div class="p-4 w-1/5 flex justify-center items-start">
         {% include 'components/product_card.html' with product=product %}
       </div>
