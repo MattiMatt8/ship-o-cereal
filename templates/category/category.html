@@ -2,69 +2,24 @@
 {% block content %}
 
 <!-- Products on page -->
-{% if object_list %}
 <main class="container mx-auto my-10">
-  <h1 class="flex justify-center text-6xl text-customGray"> {{ category.name }} </h1>
+{% if object_list %}
   {% include "category/category_filters.html" %}
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap -mx-8">
     {% for product in object_list %}
-      {% include 'components/product_card.html' with product=product %}
+      <div class="p-4 w-1/5 flex justify-center items-start">
+        {% include 'components/product_card.html' with product=product %}
+      </div>
     {% endfor %}
   </div>
-</main>
 {% endif %}
 <!-- END Products on page -->
 
-<!-- Page numbers -->
-{% if is_paginated %}
-  <div class="flex justify-around text-2xl items-between">
-    <!-- Page before -->
-    {% if page_obj.has_previous %}
-    <span>
-      <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
-    </span>
-    <!-- END Page before -->
-
-    <!-- No page before -->
-    {% else %}
-    <span class="disabled">
-      <span>&laquo;</span>
-    </span>
-    <!-- END No page before -->
-  {% endif %}
-
-  <!-- All available pages -->
-  {% for i in paginator.page_range %}
-    {% if page_obj.number == i %}
-    <span class="active">
-      <span>{{ i }}
-        <span class="sr-only">(current)</span>
-      </span>
-    </span>
-    {% else %}
-    <span>
-      <a href="?page={{ i }}">{{ i }}</a>
-    </span>
-    {% endif %}
-  {% endfor %}
-  <!-- END All available pages -->
-
-  <!-- Next page -->
-  {% if page_obj.has_next %}
-    <span>
-      <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-    </span>
-  <!-- END Next page -->
-
-  <!-- No next page -->
-  {% else %}
-    <span class="disabled">
-      <span>&raquo;</span>
-    </span>
-  {% endif %}
-  <!-- END no next page -->
-  {% endif %}
+  <div class="flex justify-center mt-8">
+    {% include 'components/pagination.html' with is_paginated=is_paginated paginator=paginator page_obj=page_obj %}
   </div>
+
+</main>
 
 <!-- END Products on page -->
 {% endblock %}

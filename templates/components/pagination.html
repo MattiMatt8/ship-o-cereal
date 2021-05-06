@@ -1,0 +1,25 @@
+{% if is_paginated %}
+
+<div class="flex flex-row text-customGray">
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}" class="block border rounded-full p-2 mx-1 items-center justify-center flex bg-customBlue">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+      </a>
+    {% endif %}
+
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <a class="block border rounded-full p-3 mx-1 w-10 h-10 items-center justify-center flex bg-customGray text-white">{{ i }}</a>
+      {% else %}
+        <a href="?page={{ i }}" class="block border rounded-full p-3 mx-1 w-10 h-10 items-center justify-center flex bg-white">{{ i }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}" class="block border rounded-full p-2 mx-1 w-10 h-10 items-center justify-center flex bg-customBlue">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+    </a>
+    {% endif %}
+  </div>
+
+{% endif %}
