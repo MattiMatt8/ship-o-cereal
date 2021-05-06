@@ -21,7 +21,6 @@ class FilteredListView(FilterView):
             if k != "page":
                 filters += f"&{k}={v}"
         context["filters"] = filters
-        print(filters)
         return context
 
 
