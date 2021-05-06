@@ -10,7 +10,6 @@ from .filters import ProductFilter
 class FilteredListView(FilterView):
     filterset_class = None
 
-    @method_decorator(ensure_csrf_cookie)
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
@@ -39,6 +38,7 @@ class ProductsInCategoryListView(FilteredListView):
         return category.product_set.all()
 
 
+@ensure_csrf_cookie
 def product_details(response, id):
     return render(
         response,

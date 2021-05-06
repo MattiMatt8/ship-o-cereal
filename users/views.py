@@ -120,17 +120,33 @@ def delete_card(request, id):
     return redirect("profile")
 
 
+class TheCart:
+    def __int__(self):
+        self.cart = {}
+    def add(self, id):
+        if id in self.cart:
+            self.cart[id] += 1
+        else:
+            self.cart[id] = 1
+
 def carting(request, id):
     if request.method == "POST":
         print("CARTING")
         print("CARTING", request)
         print("CARTING",id)
         if "cart" in request.session:
-            request.session["cart"].append("123")
+            if isinstance(request.session["cart"], TheCart):
+                print("added id")
+                request.session["cart"].add(id)
+            else:
+                print("initi22 cart id")
+                request.session["cart"] = TheCart()
+                request.session["cart"].add(id)
         else:
-            request.session["cart"] = ["HUH"]
-        request.session["cart"] = "DSFJ:SDLKDFJLKLJKSDJLKDFLJKSLDF"
-        print("cart",request.session["cart"])
+            print("initi cart id")
+            request.session["cart"] = TheCart()
+            request.session["cart"].add(id)
+        print("cart",request.session["cart"].cart)
         return JsonResponse({"data": "Item added to cart."})
     return JsonResponse({"error": "Method not supported."})
 
