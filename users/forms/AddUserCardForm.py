@@ -26,15 +26,13 @@ class AddUserCardForm(ModelForm):
             "month": widgets.Select(
                 attrs={
                     "class": "border border-customGray rounded px-4 shadow-inner w-24 h-8 placeholder-gray-300 focus:outline-none",
-                    "placeholder": "2012",
                     "required": True
                 },
                 choices=[(None, "Month")] + [(num, num) for num in range(1, 13)]
             ),
             "year": widgets.Select(
                 attrs={
-                    "class": "border border-customGray rounded px-4 shadow-inner ml-2 w-28 h-8 placeholder-gray-300 focus:outline-none",
-                    "placeholder": "2012"
+                    "class": "border border-customGray rounded px-4 shadow-inner ml-2 w-28 h-8 placeholder-gray-300 focus:outline-none"
                 },
                 choices=[(None, "Year")] + [(num, num) for num in range(now().year, now().year + 21)]
             )

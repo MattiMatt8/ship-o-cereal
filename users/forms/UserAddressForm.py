@@ -1,5 +1,5 @@
 from django.forms import widgets, ModelForm
-from users.models import Address
+from users.models import Country, Address
 
 
 class UserAddressForm(ModelForm):
@@ -7,19 +7,19 @@ class UserAddressForm(ModelForm):
         FIELD_STYLE = "border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
         model = Address
-        fields = ("address", "country", "additional_comments", "zip", "city")
+        fields = ("street_name", "country", "additional_comments", "zip", "city")
         widgets = {
-            "address": widgets.TextInput(
+            "street_name": widgets.TextInput(
                 attrs={
                     "class": FIELD_STYLE,
                     "placeholder": "123 Main Street, Unit 21"
                 }
             ),
-            "country": widgets.TextInput(
+            "country": widgets.Select(
                 attrs={
-                    "class": FIELD_STYLE,
-                    "placeholder": "United States"
-                }
+                    "class": FIELD_STYLE
+                },
+                choices=[(None,"Select country")] + [(i.country,i.country) for i in Country.objects.all()]
             ),
             "zip": widgets.TextInput(
                 attrs={
@@ -40,3 +40,4 @@ class UserAddressForm(ModelForm):
                 }
             )
         }
+

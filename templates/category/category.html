@@ -3,6 +3,7 @@
 
 <!-- Products on page -->
 <main class="container mx-auto my-10">
+{% include 'components/back_button.html' %}
 {% if object_list %}
   {% include "category/category_filters.html" %}
   <div class="flex flex-wrap -mx-8">

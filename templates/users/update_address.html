@@ -6,10 +6,16 @@
             <form method="post" class="flex flex-col">
                 {% csrf_token %}
                 <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.address.errors }}</div>
-                    <label for="{{ form.address.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Address</label>
-                    {{ form.address }}
+                    <div class="text-red-500 text-sm italic">{{ form.street_name.errors }}</div>
+                    <label for="{{ form.street_name.id_for_label }}"
+                           class="block text-gray-700 text-base mb-2">Street name</label>
+                    {{ form.street_name }}
+                </div>
+                <div class="mb-2">
+                    <div class="text-red-500 text-sm italic">{{ form.house_number.errors }}</div>
+                    <label for="{{ form.house_number.id_for_label }}"
+                           class="block text-gray-700 text-base mb-2">House number</label>
+                    {{ form.house_number }}
                 </div>
                 <div class="mb-2">
                     <div class="text-red-500 text-sm italic">{{ form.city.errors }}</div>
@@ -19,7 +25,7 @@
                 <div class="mb-2">
                     <div class="text-red-500 text-sm italic">{{ form.zip.errors }}</div>
                     <label for="{{ form.zip.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Zip code</label>
+                           class="block text-gray-700 text-base mb-2">Postal code</label>
                     {{ form.zip }}
                 </div>
                 <div class="mb-2">

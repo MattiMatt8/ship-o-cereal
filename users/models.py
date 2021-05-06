@@ -43,7 +43,8 @@ class Card(models.Model):
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     # zip = models.ForeignKey(ZipCode, on_delete=models.DO_NOTHING)
-    address = models.CharField(max_length=255)
+    street_name = models.CharField(max_length=255)
+    house_number = models.IntegerField()
     country = models.CharField(max_length=255)
     additional_comments = models.CharField(max_length=255, blank=True, null=True)
     zip = models.IntegerField()
@@ -54,3 +55,7 @@ class SearchHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(default=now)
     search = models.CharField(max_length=255)
+
+
+class Country(models.Model):
+    country = models.CharField(max_length=255, primary_key=True)
