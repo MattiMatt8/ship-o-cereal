@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from . import views
+from . import views, settings
+from django.conf.urls.static import static
 
 handler400 = 'ShipOCereal.views.bad_request'
 handler403 = 'ShipOCereal.views.permission_denied'
@@ -29,5 +30,8 @@ urlpatterns = [
     path("orders/", include("orders.urls"), name="orders"),
     path("products/", include("products.urls"), name="products"),
     path("admin/", admin.site.urls),
-
 ]
+
+if settings.DEBUG:
+        urlpatterns += static(settings.MEDIA_URL,
+                              document_root=settings.MEDIA_ROOT)

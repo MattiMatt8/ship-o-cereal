@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+
+from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
 from users.forms.UpdateUserForm import UpdateUserForm
 from users.forms.RegisterForm import RegisterForm
@@ -24,17 +26,35 @@ def register(request):
         "form": form
     })
 
+#
+# @login_required
+# def profile(request):
+#     if request.method == "POST":
+#         form = UpdateUserForm(data=request.POST, files=request.FILES, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             profile = request.user.profile
+#             profile.phone = request.POST["phone"]
+#             print("FILES",request.FILES)
+#             print("PIC",request.POST["picture"])
+#             profile.picture = request.POST["picture"]
+#             profile.save()
+#     else:
+#         form = UpdateUserForm(instance=request.user,
+#                               initial={"phone": request.user.profile.phone, "picture": request.user.profile.picture})
+#     return render(request, "users/profile.html", {
+#         "form": form
+#     })
+
 
 @login_required
 def profile(request):
     if request.method == "POST":
-        form = UpdateUserForm(data=request.POST, instance=request.user)
+        form = UpdateUserForm(data=request.POST, files=request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            profile = request.user.profile
-            profile.phone = request.POST["phone"]
-            profile.picture = request.POST["picture"]
-            profile.save()
+            profile_form = ProfileForm(data=request.POST, files=request.FILES, instance=request.user.profile)
+            profile_form.save()
     else:
         form = UpdateUserForm(instance=request.user,
                               initial={"phone": request.user.profile.phone, "picture": request.user.profile.picture})

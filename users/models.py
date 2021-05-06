@@ -13,11 +13,16 @@ from products.models import Product
 #         unique_together = ('user', 'product')
 
 
+def make_filename(instance, filename):
+    return "profile_images/" + str(instance.user.id) + "." + filename.split(".")[-1]
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    picture = models.CharField(max_length=255, blank=True, null=True)
+    # picture = models.CharField(max_length=255, blank=True, null=True)
+    picture = models.ImageField(upload_to=make_filename, blank=True, null=True)
     phone = models.CharField(max_length=255)
     # cart = models.ManyToManyField(Product, through=CartItem)
+
 
 
 class Card(models.Model):
