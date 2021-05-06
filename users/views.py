@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from users.forms.UserAddressForm import UserAddressForm
 from users.forms.UpdateUserForm import UpdateUserForm
 from users.forms.RegisterForm import RegisterForm
+from users.forms.AddUserCardForm import AddUserCardForm
+from users.forms.UpdateUserCardForm import UpdateUserCardForm
 from users.models import Profile
 
 
@@ -24,7 +26,7 @@ def register(request):
 
 
 @login_required
-def profile(request): # TODO: Test with no address and no card how it looks like
+def profile(request):
     if request.method == "POST":
         form = UpdateUserForm(data=request.POST, instance=request.user)
         if form.is_valid():
@@ -80,29 +82,41 @@ def delete_address(request, id):
 
 
 @login_required
-def add_card(request):
+def add_card(request): # TODO: Possibly fix that card number can't be letters
     if request.method == "POST":
-        form = UserAddressForm(data=request.POST)
+        form = AddUserCardForm(data=request.POST)
         if form.is_valid():
-            address = form.save(commit=False)
-            address.user_id = request.user.id
-            address.save()
+            card = form.save(commit=False)
+            card.user_id = request.user.id
+            card.save()
             return redirect("profile")
     else:
-        form = UserAddressForm()
-    return render(request, "users/add_address.html", {
+        form = AddUserCardForm()
+    return render(request, "users/add_card.html", {
         "form": form
     })
 
 
 @login_required
 def update_card(request, id):
-    pass
+    card = get_object_or_404(request.user.card_set, pk=id)
+    if request.method == "POST":
+        form = UpdateUserCardForm(data=request.POST, instance=card)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+    else:
+        form = UpdateUserCardForm(instance=card)
+    return render(request, "users/update_card.html", {
+        "form": form
+    })
 
 
 @login_required
-def delete_card(request, id): #
-    pass
+def delete_card(request, id):
+    card = get_object_or_404(request.user.card_set, pk=id)
+    card.delete()
+    return redirect("profile")
 
 
 def cart(request):
