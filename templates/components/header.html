@@ -12,7 +12,7 @@
         <ul class="flex text-customViolet text-xl">
           {% for category in categories %}
             <li class="mx-4">
-              <a href="{% url 'product-category' category_name=category.name %}">{{ category.name }}</a>
+              <a class="border-b-2 border-customBlue border-opacity-0 hover:border-opacity-75" href="{% url 'product-category' category_name=category.name %}">{{ category.name }}</a>
             </li>
           {% endfor %}
         </ul>

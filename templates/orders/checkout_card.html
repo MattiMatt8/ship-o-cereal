@@ -2,20 +2,21 @@
 {% block content %}
   <main class="container mx-auto my-16 text-customGray">
     <h1 class="text-3xl mb-2">Checkout</h1>
-    <h3 class="text-xl">Select a shipping address</h3>
+    <h3 class="text-xl">Select a card</h3>
     <!-- START Card Container-->
     <div class="flex flex-row justify-between">
       <div>
         <ul class="flex flex-col mt-6 mb-6">
-          {% for address in user.address_set.all %}
+          {% for card in user.card_set.all %}
 
             <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
               <label>
                 <div class="px-4 py-6">
                   <input type="radio" name="address" class="mx-2">
-                  <span class="text-md font-medium mr-2">Address {{ forloop.counter }}</span>
+                  <span class="text-md font-medium mr-2">Card {{ forloop.counter }}</span>
                   <span
-                      class="text-md font-light">{{ address.street_name }}, {{ address.house_number }}, {{ address.city }}, {{ address.zip }}, {{ address.country }}, {{ address.additional_comments }}</span>
+                      class="text-md font-light">XXXX-XXXX-XXXX-{{ card.number|slice:"-4:" }}</span>
+                  <input type="text" class="border rounded w-12 text-center ml-4" maxlength="3" placeholder="CVC" pattern="\d*">
                 </div>
               </label>
             </li>
@@ -23,20 +24,23 @@
           {% endfor %}
         </ul>
         <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="addresses/new">New address
+           href="addresses/new">New card
         </a>
       </div>
       <div class="flex flex-col">
           <div>
-          <h4 class="text-center mb-4 font-light text-sm">Step 1</h4>
-          <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
+          <h4 class="text-center mb-4 font-light text-sm">Step 2</h4>
           <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
+          <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
           <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
             </div>
       </div>
     </div>
-    <div class="w-full mt-10 flex flex-row justify-end">
+    <div class="w-full mt-10 flex flex-row justify-between">
     <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+           href="addresses/new">Previous step
+        </a>
+      <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
            href="addresses/new">New step
         </a>
       </div>
