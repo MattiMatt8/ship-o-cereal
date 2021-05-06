@@ -123,3 +123,15 @@ def cart(request):
     # TODO: Provide all necessary cart data for user
 
     return render(request, "users/cart.html")
+
+
+# TODO: Check if these should exist in another app, maybe a cart app? idk bro
+
+def checkout_address(request):
+    pass
+
+def checkout_card(request):
+    pass
+
+def checkout_confirm(request):
+    pass
