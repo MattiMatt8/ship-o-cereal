@@ -17,4 +17,4 @@ function fixCardFormatting(e) {
     e.target.value = new_str;
 }
 
-document.getElementById("id_number").addEventListener("keyup", fixCardFormatting)
+document.getElementById("id_number").addEventListener("keyup", fixCardFormatting);
