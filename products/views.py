@@ -27,14 +27,13 @@ class FilteredListView(FilterView):
         context["filters"] = filters
         return context
 
-#product.label_set.all()
+
 class ProductsInCategoryListView(FilteredListView):
     paginate_by = 10
     filterset_class = ProductFilter
     context_object_name = "products"
     template_name = "category/category.html"
 
-    @method_decorator(ensure_csrf_cookie)
     def get_queryset(self):
         category = get_object_or_404(Category, name=self.kwargs["category_name"])
         return category.product_set.all()
