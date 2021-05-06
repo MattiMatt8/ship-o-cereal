@@ -1,10 +1,10 @@
 {% load static %}
 <div class="rounded-md w-64 shadow-lg bg-gray-50 text-customGray flex flex-col">
   <!--div class="bg-customBlue h-2/3 rounded-t-md text-white flex justify-center items-center text-customViolet">Image</div -->
-  <a href="/products/{{ product.id }}" class="h-2/3">
+  <a href="/products/{{ product.id }}" class="h-56">
     <img
       src="{% static 'images/' %}{{ product.category }}/{{ product.image_set.first.name }}"
-      class="rounded-t-md object-cover object-center h-56 w-full"
+      class="rounded-t-md object-cover object-center h-full w-full"
     />
   </a>
   <div class="p-4">

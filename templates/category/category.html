@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- Products on page -->
-{% if products %}
+{% if object_list %}
 <main class="container mx-auto my-10">
   <h1 class="flex justify-center text-6xl text-customGray"> {{ category.name }} </h1>
   {% include "category/category_filters.html" %}
