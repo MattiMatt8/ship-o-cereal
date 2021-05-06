@@ -6,19 +6,17 @@
     <div class="flex">
       <!-- Dropdown menu for filtering brands -->
       <div class="relative">
-        <select
-          class="rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-64 h-9 pl-3 pr-10"
-        >
-          <option>Select brand ..</option>
-          {% for brand in brands %}
-            <option>{{ brand }}</option>
-          {% endfor %}
-        </select>
-        <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-          <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
-            <path d="M6 9l6 6 6-6"></path>
-          </svg>
-        </span>
+        <form action="" method="get">
+          <div>
+            {{ filterset.form.brand }}
+            <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+              <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                   class="w-4 h-4" viewBox="0 0 24 24">
+                <path d="M6 9l6 6 6-6"></path>
+              </svg>
+            </span>
+          </div>
+        </form>
       </div>
       <!-- END Dropdown menu for filtering brands -->
 
@@ -27,7 +25,7 @@
         {% for label in labels %}
           <div class="my-auto pl-3">
             <label for="{{ label.name.id_for_label }}" class="inline-flex items-center">
-            <input type="checkbox" class="form-checkbox h-5 w-5">
+              <input type="checkbox" class="form-checkbox h-5 w-5">
               <span class="ml-2">{{ label.name }}</span>
             </label>
           </div>
@@ -40,7 +38,7 @@
     <!-- Dropdown menu for ordering products -->
     <div class="relative">
       <select
-        class="rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-32 h-9 pl-3 pr-10"
+              class="rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-32 h-9 pl-3 pr-10"
       >
         <option>Order by ..</option>
         {% for brand in brands %}
@@ -48,7 +46,8 @@
         {% endfor %}
       </select>
       <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             class="w-4 h-4" viewBox="0 0 24 24">
           <path d="M6 9l6 6 6-6"></path>
         </svg>
       </span>

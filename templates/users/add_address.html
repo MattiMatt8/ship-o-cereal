@@ -1,51 +1,52 @@
 {% extends 'base.html' %}
 {% block content %}
-    <main class="container mx-auto my-16 text-customGray">
-        <div class="w-80 mt-10 mb-4">
-            <h2 class="text-2xl font-medium mb-2">New address</h2>
-            <form method="post" class="flex flex-col">
-                {% csrf_token %}
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.street_name.errors }}</div>
-                    <label for="{{ form.street_name.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Street name</label>
-                    {{ form.street_name }}
-                </div>
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.house_number.errors }}</div>
-                    <label for="{{ form.house_number.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">House number</label>
-                    {{ form.house_number }}
-                </div>
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.city.errors }}</div>
-                    <label for="{{ form.city.id_for_label }}" class="block text-gray-700 text-base mb-2">City</label>
-                    {{ form.city }}
-                </div>
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.zip.errors }}</div>
-                    <label for="{{ form.zip.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Postal code</label>
-                    {{ form.zip }}
-                </div>
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.country.errors }}</div>
-                    <label for="{{ form.country.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Country</label>
-                    {{ form.country }}
-                </div>
-                <div class="mb-6">
-                    <div class="text-red-500 text-sm italic">{{ form.additional_comments.errors }}</div>
-                    <label for="{{ form.additional_comments.id_for_label }}" class="block text-gray-700 text-base mb-2">Additional
-                        comments (optional)</label>
-                    {{ form.additional_comments }}
-                </div>
-                <div class="flex justify-end mb-3">
-                    <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
-                            type="submit">Add address
-                    </button>
-                </div>
-            </form>
+  <main class="container mx-auto my-16 text-customGray">
+    {% include 'components/back_button.html' %}
+    <div class="w-80 mb-4">
+      <h2 class="text-2xl font-medium mb-2">New address</h2>
+      <form method="post" class="flex flex-col">
+        {% csrf_token %}
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.street_name.errors }}</div>
+          <label for="{{ form.street_name.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Street name</label>
+          {{ form.street_name }}
         </div>
-    </main>
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.house_number.errors }}</div>
+          <label for="{{ form.house_number.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">House number</label>
+          {{ form.house_number }}
+        </div>
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.city.errors }}</div>
+          <label for="{{ form.city.id_for_label }}" class="block text-gray-700 text-base mb-2">City</label>
+          {{ form.city }}
+        </div>
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.zip.errors }}</div>
+          <label for="{{ form.zip.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Postal code</label>
+          {{ form.zip }}
+        </div>
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.country.errors }}</div>
+          <label for="{{ form.country.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Country</label>
+          {{ form.country }}
+        </div>
+        <div class="mb-6">
+          <div class="text-red-500 text-sm italic">{{ form.additional_comments.errors }}</div>
+          <label for="{{ form.additional_comments.id_for_label }}" class="block text-gray-700 text-base mb-2">Additional
+            comments (optional)</label>
+          {{ form.additional_comments }}
+        </div>
+        <div class="flex justify-end mb-3">
+          <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
+                  type="submit">Add address
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
 {% endblock %}
