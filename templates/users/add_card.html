@@ -1,40 +1,40 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <main class="container mx-auto mt-20 mb-36 text-customGray">
-        {% include 'components/back_button.html' %}
-        <div class="w-80">
-            <h2 class="text-2xl font-medium mb-2">New card</h2>
-            <form method="post" class="flex flex-col">
-                {% csrf_token %}
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.holder.errors }}</div>
-                    <label for="{{ form.holder.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Card holder</label>
-                    {{ form.holder }}
-                </div>
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.number.errors }}</div>
-                    <label for="{{ form.number.id_for_label }}" class="block text-gray-700 text-base mb-2">Card number</label>
-                    {{ form.number }}
-                </div>
-                <div class="mb-6">
-                    <div class="text-red-500 text-sm italic">{{ form.month.errors }}</div>
-                    <div class="text-red-500 text-sm italic">{{ form.year.errors }}</div>
-                    <label for="{{ form.month.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Expiration date</label>
-                    <div class="flex flex-row">
-                        {{ form.month }}
-                        {{ form.year }}
-                    </div>
-                </div>
-                <div class="flex justify-end mb-3">
-                    <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
-                            type="submit">Add card
-                    </button>
-                </div>
-            </form>
+  <main class="container mx-auto mt-20 mb-36 text-customGray">
+    {% include 'components/back_button.html' %}
+    <div class="w-80">
+      <h2 class="text-2xl font-medium mb-2">New card</h2>
+      <form method="post" class="flex flex-col">
+        {% csrf_token %}
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.holder.errors }}</div>
+          <label for="{{ form.holder.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Card holder</label>
+          {{ form.holder }}
         </div>
-    </main>
-    <script src="{% static 'js/card.js' %}"></script>
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.number.errors }}</div>
+          <label for="{{ form.number.id_for_label }}" class="block text-gray-700 text-base mb-2">Card number</label>
+          {{ form.number }}
+        </div>
+        <div class="mb-6">
+          <div class="text-red-500 text-sm italic">{{ form.month.errors }}</div>
+          <div class="text-red-500 text-sm italic">{{ form.year.errors }}</div>
+          <label for="{{ form.month.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Expiration date</label>
+          <div class="flex flex-row">
+            {{ form.month }}
+            {{ form.year }}
+          </div>
+        </div>
+        <div class="flex justify-end mb-3">
+          <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
+                  type="submit">Add card
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="{% static 'js/card.js' %}"></script>
 {% endblock %}

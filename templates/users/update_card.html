@@ -1,42 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
-    <main class="container mx-auto mt-20 mb-36 text-customGray">
-        {% include 'components/back_button.html' %}
-        <div class="w-80">
-            <h2 class="text-2xl font-medium mb-2">Change card</h2>
-            <form method="post" class="flex flex-col">
-                {% csrf_token %}
-                <div class="mb-2">
-                    <div class="text-red-500 text-sm italic">{{ form.holder.errors }}</div>
-                    <label for="{{ form.holder.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Card holder</label>
-                    {{ form.holder }}
-                </div>
-                <div class="mb-2">
-                    <label for="{{ form.holder.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Card number (not editable)</label>
-                    <input readonly class="border bg-gray-100 border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
-                            value="XXXX-XXXX-XXXX-{{ form.instance.number|slice:"-4:" }}"/>
-                </div>
-                <div class="mb-6">
-                    <div class="text-red-500 text-sm italic">{{ form.month.errors }}</div>
-                    <div class="text-red-500 text-sm italic">{{ form.year.errors }}</div>
-                    <label for="{{ form.month.id_for_label }}"
-                           class="block text-gray-700 text-base mb-2">Expiration date</label>
-                    <div class="flex flex-row">
-                        {{ form.month }}
-                        {{ form.year }}
-                    </div>
-                </div>
-                <div class="flex justify-between mb-5">
-                    <a class="text-center text-base text-customViolet rounded bg-red-400 py-1 px-4 focus:outline-none hover:shadow-md"
-                       href="delete">Delete
-                    </a>
-                    <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base py-1 px-4 focus:outline-none"
-                            type="submit">Update card
-                    </button>
-                </div>
-            </form>
+  <main class="container mx-auto mt-20 mb-36 text-customGray">
+    {% include 'components/back_button.html' %}
+    <div class="w-80">
+      <h2 class="text-2xl font-medium mb-2">Change card</h2>
+      <form method="post" class="flex flex-col">
+        {% csrf_token %}
+        <div class="mb-2">
+          <div class="text-red-500 text-sm italic">{{ form.holder.errors }}</div>
+          <label for="{{ form.holder.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Card holder</label>
+          {{ form.holder }}
         </div>
-    </main>
+        <div class="mb-2">
+          <label for="{{ form.holder.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Card number (not editable)</label>
+          <input readonly
+                 class="border bg-gray-100 border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
+                 value="XXXX-XXXX-XXXX-{{ form.instance.number|slice:"-4:" }}"/>
+        </div>
+        <div class="mb-6">
+          <div class="text-red-500 text-sm italic">{{ form.month.errors }}</div>
+          <div class="text-red-500 text-sm italic">{{ form.year.errors }}</div>
+          <label for="{{ form.month.id_for_label }}"
+                 class="block text-gray-700 text-base mb-2">Expiration date</label>
+          <div class="flex flex-row">
+            {{ form.month }}
+            {{ form.year }}
+          </div>
+        </div>
+        <div class="flex justify-between mb-5">
+          <a class="text-center text-base text-customViolet rounded bg-red-400 py-1 px-4 focus:outline-none hover:shadow-md"
+             href="delete">Delete
+          </a>
+          <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base py-1 px-4 focus:outline-none"
+                  type="submit">Update card
+          </button>
+        </div>
+      </form>
+    </div>
+  </main>
 {% endblock %}
