@@ -34,7 +34,6 @@ class ProductsInCategoryListView(FilteredListView):
     context_object_name = "products"
     template_name = "category/category.html"
 
-    @method_decorator(ensure_csrf_cookie)
     def get_queryset(self):
         category = get_object_or_404(Category, name=self.kwargs["category_name"])
         return category.product_set.all()
