@@ -7,24 +7,30 @@ class UserAddressForm(ModelForm):
         FIELD_STYLE = "border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
         model = Address
-        fields = ("street_name", "country", "additional_comments", "zip", "city")
+        fields = ("street_name", "house_number", "country", "additional_comments", "zip", "city")
         widgets = {
             "street_name": widgets.TextInput(
                 attrs={
                     "class": FIELD_STYLE,
-                    "placeholder": "123 Main Street, Unit 21"
+                    "placeholder": "Varick Street"
+                }
+            ),
+            "house_number": widgets.NumberInput(
+                attrs={
+                    "class": FIELD_STYLE,
+                    "placeholder": "121"
                 }
             ),
             "country": widgets.Select(
                 attrs={
                     "class": FIELD_STYLE
                 },
-                choices=[(None,"Select country")] + [(i.country,i.country) for i in Country.objects.all()]
+                choices=[(None,"Select country")] + [(i.country,i.country) for i in Country.objects.all().order_by("country")]
             ),
             "zip": widgets.TextInput(
                 attrs={
                     "class": FIELD_STYLE,
-                    "placeholder": "10001"
+                    "placeholder": "10013"
                 }
             ),
             "city": widgets.TextInput(

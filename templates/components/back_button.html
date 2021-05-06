@@ -1,3 +1,4 @@
-<a href="{{request.META.HTTP_REFERER}}" class="flex flex-row">
-    {% include 'components/icons/back-arrow.html' %} Back
-</a>
+<div class="flex flex-row text-customViolet">
+    {% include 'components/icons/back-arrow.html' %}
+    <a class="ml-1 mb-5 text-xl leading-6 h-full" href="{{request.META.HTTP_REFERER}}">Back</a>
+</div>
