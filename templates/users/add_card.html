@@ -2,7 +2,8 @@
 {% load static %}
 {% block content %}
     <main class="container mx-auto mt-20 mb-36 text-customGray">
-        <div class="w-80 mt-10">
+        {% include 'components/back_button.html' %}
+        <div class="w-80">
             <h2 class="text-2xl font-medium mb-2">New card</h2>
             <form method="post" class="flex flex-col">
                 {% csrf_token %}

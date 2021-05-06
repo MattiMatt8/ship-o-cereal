@@ -20,7 +20,7 @@
 <!-- END Products on page -->
 
   <div class="flex justify-center mt-8">
-    {% include 'components/pagination.html' with is_paginated=is_paginated paginator=paginator page_obj=page_obj %}
+    {% include 'components/pagination.html' with filters=filters is_paginated=is_paginated paginator=paginator page_obj=page_obj %}
   </div>
 
 </main>

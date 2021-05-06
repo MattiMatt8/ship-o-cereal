@@ -16,6 +16,12 @@ class FilteredListView(FilterView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
+        filters = ""
+        for k,v in context['filterset'].data.items():
+            if k != "page":
+                filters += f"&{k}={v}"
+        context["filters"] = filters
+        print(filters)
         return context
 
 
