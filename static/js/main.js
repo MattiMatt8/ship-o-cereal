@@ -18,8 +18,8 @@ function getCookie(name) {
 }
 const CSRF_TOKEN = getCookie('csrftoken');
 
-function addToCart(id) {
-    axios.post(MAIN_URL + id, null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+function addToCart(id, quantity=1) {
+    axios.post(MAIN_URL + id, {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             console.log(response.data)
         })
@@ -27,5 +27,3 @@ function addToCart(id) {
             console.log(error);
         });
 }
-
-addToCart(5);

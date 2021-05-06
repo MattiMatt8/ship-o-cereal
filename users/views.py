@@ -1,3 +1,5 @@
+from array import array
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
 from django.http import JsonResponse
@@ -9,6 +11,7 @@ from users.forms.RegisterForm import RegisterForm
 from users.forms.AddUserCardForm import AddUserCardForm
 from users.forms.UpdateUserCardForm import UpdateUserCardForm
 from users.models import Profile
+import json
 
 
 def register(request):
@@ -120,33 +123,21 @@ def delete_card(request, id):
     return redirect("profile")
 
 
-class TheCart:
-    def __int__(self):
-        self.cart = {}
-    def add(self, id):
-        if id in self.cart:
-            self.cart[id] += 1
-        else:
-            self.cart[id] = 1
-
 def carting(request, id):
     if request.method == "POST":
-        print("CARTING")
-        print("CARTING", request)
-        print("CARTING",id)
-        if "cart" in request.session:
-            if isinstance(request.session["cart"], TheCart):
-                print("added id")
-                request.session["cart"].add(id)
-            else:
-                print("initi22 cart id")
-                request.session["cart"] = TheCart()
-                request.session["cart"].add(id)
+        cart = request.session.get("cart")
+        body = json.loads(request.body.decode('utf-8'))
+        quantity = body.get("quantity")
+        str_id = str(id)
+        if not cart or not isinstance(cart, dict):
+            cart = dict()
+            request.session["cart"] = cart
+        if cart.get(str_id):
+            cart[str_id] += quantity
+            request.session.modified = True
         else:
-            print("initi cart id")
-            request.session["cart"] = TheCart()
-            request.session["cart"].add(id)
-        print("cart",request.session["cart"].cart)
+            cart[str_id] = quantity
+            request.session.modified = True
         return JsonResponse({"data": "Item added to cart."})
     return JsonResponse({"error": "Method not supported."})
 
