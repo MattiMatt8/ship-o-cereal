@@ -1,7 +1,12 @@
+import json
+
 from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+
+from products.models import Product
+from users.cart import Cart
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
 from users.forms.UpdateUserForm import UpdateUserForm
@@ -156,3 +161,24 @@ def checkout_confirm(request):
 def checkout_finished(request):
     return render(request, "orders/checkout_finished.html")
 
+# APIS for AJAX
+
+def cart_add(request, id):
+    if request.method == "POST":
+        cart = Cart(request)
+        product = get_object_or_404(Product, pk=id)
+        body_unicode = request.body.decode('utf-8')
+        body = json.loads(body_unicode)
+        content = body.get('content', False)
+
+        # TODO: Needs validation on content, it should have "quantity" and "override_quantity",
+        # TODO: quantity == int >> true, override_quantity == bool >> true
+        cart.add(product=product, quantity=content['quantity'], override_quantity=content['override_quantity'])
+
+        return JsonResponse({"data": "Item added to cart."}, status=200)
+
+
+
+
+def cart_remove(request, product_id):
+    pass

@@ -1,4 +1,4 @@
-const MAIN_URL = "/cart/";
+const MAIN_URL = "/cart2";
 
 // Function getCookie from: https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
 function getCookie(name) {
@@ -19,7 +19,7 @@ function getCookie(name) {
 const CSRF_TOKEN = getCookie('csrftoken');
 
 function addToCart(id) {
-    axios.post(MAIN_URL + id, null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+    axios.post(`${MAIN_URL}/add/${id}/`, {'content': {'quantity': 4, 'override_quantity': false}}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             console.log(response.data)
         })
