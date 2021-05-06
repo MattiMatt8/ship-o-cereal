@@ -22,14 +22,15 @@
 
       <!-- Checkbox filters -->
       <div class="flex">
-        {% for label in labels %}
-          <div class="my-auto pl-3">
-            <label for="{{ label.name.id_for_label }}" class="inline-flex items-center">
-              <input type="checkbox" class="form-checkbox h-5 w-5">
-              <span class="ml-2">{{ label.name }}</span>
-            </label>
-          </div>
-        {% endfor %}
+      {% for field in filterset.form.labels %}
+        {{ field }}
+      {% endfor %}
+{#          <div class="my-auto pl-3">#}
+{#            <label for="{{ label.name.id_for_label }}" class="inline-flex items-center">#}
+{#              <input type="checkbox" class="form-checkbox h-5 w-5">#}
+{#              <span class="ml-2">{{ label.name }}</span>#}
+{#            </label>#}
+{#          </div>#}
       </div>
       <!-- END Checkbox filters -->
     </div>
