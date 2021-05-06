@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 
 class RegisterForm(UserCreationForm):
-    FIELD_STYLE = "border border-customGray rounded-full py-3 px-6 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
+    FIELD_STYLE = "border border-customGray rounded-full px-6 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
     phone = forms.CharField(
         widget=forms.TextInput(
@@ -44,7 +44,7 @@ class RegisterForm(UserCreationForm):
     )
 
     class Meta:
-        FIELD_STYLE = "border border-customGray rounded-full py-3 px-6 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
+        FIELD_STYLE = "border border-customGray rounded-full px-6 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
         model = User
         fields = ("username", "first_name", "last_name", "email")

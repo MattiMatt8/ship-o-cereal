@@ -4,7 +4,7 @@ from django import forms
 
 
 class LoginForm(AuthenticationForm):
-    FIELD_STYLE = "border border-customGray rounded-full py-3 px-6 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
+    FIELD_STYLE = "border border-customGray rounded-full px-6 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
 
     username = UsernameField(
         widget=forms.TextInput(
