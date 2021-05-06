@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import QuerySet
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
@@ -116,6 +118,21 @@ def delete_card(request, id):
     card = get_object_or_404(request.user.card_set, pk=id)
     card.delete()
     return redirect("profile")
+
+
+def carting(request, id):
+    if request.method == "POST":
+        print("CARTING")
+        print("CARTING", request)
+        print("CARTING",id)
+        if "cart" in request.session:
+            request.session["cart"].append("123")
+        else:
+            request.session["cart"] = ["HUH"]
+        request.session["cart"] = "DSFJ:SDLKDFJLKLJKSDJLKDFLJKSLDF"
+        print("cart",request.session["cart"])
+        return JsonResponse({"data": "Item added to cart."})
+    return JsonResponse({"error": "Method not supported."})
 
 
 def cart(request):

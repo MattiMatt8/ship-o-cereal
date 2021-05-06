@@ -1,4 +1,7 @@
 from django.shortcuts import render, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 from products.models import Product, Category
 from django.views.generic import View
 
@@ -8,8 +11,8 @@ class HomePageView(View):
     Renders the top 5 products for each category on the home page.
     """
 
+    @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):
-
         # Context containing each category mapped to the
         # corresponding top 5 products
         context = {"categories": {}}

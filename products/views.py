@@ -1,4 +1,6 @@
 from django.shortcuts import render, get_object_or_404
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import ListView
 from django_filters.views import FilterView
 from .models import Category, Product
@@ -8,6 +10,7 @@ from .filters import ProductFilter
 class FilteredListView(FilterView):
     filterset_class = None
 
+    @method_decorator(ensure_csrf_cookie)
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
@@ -31,6 +34,7 @@ class ProductsInCategoryListView(FilteredListView):
     context_object_name = "products"
     template_name = "category/category.html"
 
+    @method_decorator(ensure_csrf_cookie)
     def get_queryset(self):
         category = get_object_or_404(Category, name=self.kwargs["category_name"])
         return category.product_set.all()
