@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
     <main class="container mx-auto my-16 text-customGray">
         <div class="w-80 mt-10 mb-4">
@@ -32,7 +31,7 @@
                 <div class="mb-6">
                     <div class="text-red-500 text-sm italic">{{ form.additional_comments.errors }}</div>
                     <label for="{{ form.additional_comments.id_for_label }}" class="block text-gray-700 text-base mb-2">Additional
-                        comments</label>
+                        comments (optional)</label>
                     {{ form.additional_comments }}
                 </div>
                 <div class="flex justify-between mb-3">
@@ -47,5 +46,4 @@
             </form>
         </div>
     </main>
-    <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
-{% load static %}
 {% block content %}
     <main class="container mx-auto my-16 text-customGray">
-
         <div class="flex flex-col">
             <div class="flex justify-center items-center bg-customGray w-20 h-20 rounded-full ">
                 {% include 'components/icons/login-profile-icon.html' %}
@@ -59,8 +57,7 @@
                         <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base py-1 px-4 mb-3 focus:outline-none"
                                 type="submit">Save changes
                         </button>
-                        <a type="button"
-                           class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+                        <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
                            href="{% url 'logout' %}">Sign out
                         </a>
                     </div>
@@ -73,8 +70,7 @@
                         {% include 'components/user_address.html' with num=forloop.counter address=address %}
                     {% endfor %}
                 </ul>
-                <a type="button"
-                   class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+                <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
                    href="addresses/new">New address
                 </a>
             </div>
@@ -82,15 +78,13 @@
                 <h2 class="text-xl font-medium mb-4">Cards</h2>
                 <ul>
                     {% for card in request.user.card_set.all %}
-                        {% include 'components/user_card.html' with expiration_date=card.expiration_date card_num=card.number|slice:"-4:" %}
+                        {% include 'components/user_card.html' with card_id=card.id month=card.month year=card.year last_numbers=card.number|slice:"-4:" %}
                     {% endfor %}
                 </ul>
-                <button type="button"
-                        class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-                        href="#">New card
-                </button>
+                <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+                   href="cards/new">New card
+                </a>
             </div>
         </section>
     </main>
-    <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
