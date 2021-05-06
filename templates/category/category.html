@@ -2,16 +2,16 @@
 {% block content %}
 
 <!-- Products on page -->
-{% if object_list %}
 <main class="container mx-auto my-10">
-  <h1 class="flex justify-center text-6xl text-customGray"> {{ category.name }} </h1>
+{% if object_list %}
   {% include "category/category_filters.html" %}
-  <div class="flex flex-wrap">
+  <div class="flex flex-wrap justify-between -m-4">
     {% for product in object_list %}
-      {% include 'components/product_card.html' with product=product %}
+      <div class="m-4">
+        {% include 'components/product_card.html' with product=product %}
+      </div>
     {% endfor %}
   </div>
-</main>
 {% endif %}
 <!-- END Products on page -->
 
@@ -65,6 +65,8 @@
   <!-- END no next page -->
   {% endif %}
   </div>
+
+</main>
 
 <!-- END Products on page -->
 {% endblock %}
