@@ -5,7 +5,7 @@
 <main class="container mx-auto my-10">
 {% if object_list %}
   {% include "category/category_filters.html" %}
-  <div class="flex flex-wrap -mx-4">
+  <div class="flex flex-wrap -mx-8">
     {% for product in object_list %}
       <div class="p-4 w-1/5 flex justify-center items-start">
         {% include 'components/product_card.html' with product=product %}
