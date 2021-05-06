@@ -26,7 +26,7 @@ class FilteredListView(FilterView):
         context["filters"] = filters
         return context
 
-#product.label_set.all()
+
 class ProductsInCategoryListView(FilteredListView):
     paginate_by = 10
     filterset_class = ProductFilter
