@@ -4,20 +4,19 @@
 <!-- Products on page -->
 <main class="container mx-auto my-10">
 {% include 'components/back_button.html' %}
-<form method="get">
-        {{ filter.form.as_p }}
-        <input type="submit" />
-    </form>
-{% if object_list %}
-  {% include "category/category_filters.html" %}
-  <div class="flex flex-wrap -mx-8">
-    {% for product in filter.qs %}
-      <div class="p-4 w-1/5 flex justify-center items-start">
-        {% include 'components/product_card.html' with product=product %}
-      </div>
-    {% endfor %}
-  </div>
-{% endif %}
+{% include "category/category_filters.html" %}
+<form action="" method="get">
+    {{ filterset.form.as_p }}
+    <input type="submit" />
+  </form>
+<div class="flex flex-wrap -mx-8">
+  {% for product in products %}
+    <div class="p-4 w-1/5 flex justify-center items-start">
+      {% include 'components/product_card.html' with product=product %}
+    </div>
+  {% endfor %}
+</div>
+
 <!-- END Products on page -->
 
   <div class="flex justify-center mt-8">
