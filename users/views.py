@@ -151,7 +151,12 @@ def checkout_address(request):
     return render(request, "orders/checkout_address.html")
 
 def checkout_card(request):
-    pass
+    return render(request, "orders/checkout_card.html")
+
 
 def checkout_confirm(request):
-    pass
+    return render(request, "orders/checkout_confirm.html")
+
+def checkout_finished(request):
+    return render(request, "orders/checkout_finished.html")
+
