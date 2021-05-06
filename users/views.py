@@ -148,7 +148,7 @@ def cart(request):
 # TODO: Check if these should exist in another app, maybe a cart app? idk bro
 
 def checkout_address(request):
-    pass
+    return render(request, "orders/checkout_address.html")
 
 def checkout_card(request):
     pass
