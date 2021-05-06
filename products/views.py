@@ -17,13 +17,14 @@ class FilteredListView(FilterView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         filters = ""
+
         for k,v in context['filterset'].data.items():
             if k != "page":
                 filters += f"&{k}={v}"
         context["filters"] = filters
         return context
 
-
+#product.label_set.all()
 class ProductsInCategoryListView(FilteredListView):
     paginate_by = 10
     filterset_class = ProductFilter
