@@ -17,7 +17,6 @@ class ProductFilter(FilterSet):
             }
         )
 
-
     labels = ModelMultipleChoiceFilter(
         queryset=Label.objects.all(),
         widget=forms.CheckboxSelectMultiple(),
