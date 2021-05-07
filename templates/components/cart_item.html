@@ -1,32 +1,39 @@
 {% load static %}
 
 <li id="product-id-{{ product.id }}" class="shadow-lg hover:shadow-xl rounded flex flex-row items-center p-4 mb-4">
-  <img src="{% static static %}images/{{ product.category }}/{{ product.image_set.first }}" class="object-cover object-center w-16"/>
+  <img src="{% static static %}images/{{ product.category }}/{{ product.image_set.first }}"
+       class="object-cover object-center w-16"/>
   <h3 class="text-xl ml-4 w-full">{{ product.name }}</h3>
   <span class="ml-8">${{ price }}</span>
   <!-- START Select Amount -->
   <div class="relative inline ml-4">
-    <select class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-      <option value="1" {% if quantity == 1 %}selected{% endif %}>1</option>
-      <option value="2" {% if quantity == 2 %}selected{% endif %}>2</option>
-      <option value="3" {% if quantity == 3 %}selected{% endif %}>3</option>
-      <option value="4" {% if quantity == 4 %}selected{% endif %}>4</option>
-      <option value="5" {% if quantity == 5 %}selected{% endif %}>5</option>
-      <option value="6" {% if quantity == 6 %}selected{% endif %}>6</option>
-      <option value="7" {% if quantity == 7 %}selected{% endif %}>7</option>
-      <option value="8" {% if quantity == 8 %}selected{% endif %}>8</option>
-      <option value="9" {% if quantity == 9 %}selected{% endif %}>9</option>
-      <option value="10" {% if quantity >= 10 %}selected{% endif %}>10</option>
-    </select>
-    <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-              <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                   class="w-4 h-4" viewBox="0 0 24 24">
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </span>
+    <div class="{% if quantity is None %} hidden {% endif %} text-customGray amountParent">
+      <div class="custom-number-input w-32">
+        <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
+          <button
+              class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
+              data-product-id="{{ product.id }}"
+              data-action="decrement"
+              type="button">
+            <span class="m-auto text-2xl font-thin">−</span>
+          </button>
+          <input
+              type="text"
+              class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
+              name="custom-input-number" value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"/>
+          <button data-action="increment"
+                  data-product-id="{{ product.id }}"
+                  class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer">
+            <span class="m-auto text-2xl font-thin">+</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- END Select Amount -->
   <button data-product-id="{{ product.id }}" class="ml-4 focus:outline-none delete-btn">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+    </svg>
   </button>
 </li>
