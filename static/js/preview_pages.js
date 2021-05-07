@@ -12,6 +12,7 @@ const buttons = document.getElementsByClassName('buy-btn');
 for (let button of buttons) {
     button.addEventListener('click', e =>{
         const id = Number(button.dataset.productId);
+        console.log("bruhh")
         addToCart(id);
     });
 }

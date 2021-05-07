@@ -113,6 +113,10 @@ Array.from(inputAmountFields).forEach((item) => {
     setInputFilter(item, function(value) {
       return /^[0-9]+$/.test(value);
     });
+    item.addEventListener('input', (e) => {
+    const id = Number(item.dataset.productId);
+    updateCart(id, Number(e.target.value))
+})
 })
 
 
