@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+  <!-- Products on page -->
+  <main class="container mx-auto my-10">
+    {% include 'components/back_button.html' %}
+    {% include "category/category_filters.html" %}
+    <div class="flex flex-wrap -mx-8">
+      {% for product in products %}
+        <div class="p-4 w-1/5 flex justify-center items-start">
+          {% include 'components/product_card.html' with product=product %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- END Products on page -->
+
+    <div class="flex justify-center mt-8">
+      {% include 'components/pagination.html' with filters=filters is_paginated=is_paginated paginator=paginator page_obj=page_obj %}
+    </div>
+
+  </main>
+
+  <script src="{% static 'js/categories.js' %}"></script>
+  <!-- END Products on page -->
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main method="post" class="flex flex-col justify-center items-center mx-auto container mt-14">
+    <div href="#" class="rounded-full bg-customGray w-24 h-24 flex items-center justify-center mb-2 mt-3">
+      {% include "components/icons/login-profile-icon.html" %}
+    </div>
+    <h1 class="text-4xl">Sign in</h1>
+    <form class="w-64 m-4 mb-7" method="post">
+      {% csrf_token %}
+      <div class="text-red-500 text-sm italic">
+        {% if form.non_field_errors %}
+          <p>Incorrect username and/or password.</p>
+        {% endif %}
+      </div>
+      <div class="mb-4">
+        <label for="{{ form.username.id_for_label }}" class="block text-gray-700 text-base mb-2">Username</label>
+        {{ form.username }}
+      </div>
+      <div class="mb-6">
+        <label for="{{ form.password.id_for_label }}" class="block text-gray-700 text-base mb-2">Password</label>
+        {{ form.password }}
+      </div>
+      <div class="flex items-center justify-between">
+        <a class="inline-block align-baseline text-base text-customViolet" href="{% url 'register' %}">Register</a>
+        <button class="bg-customBlue rounded-full text-customViolet text-base py-1 px-4 focus:outline-none hover:shadow-md"
+                type="submit">Sign In
+        </button>
+      </div>
+    </form>
+    </div>
+  </main>
+{% endblock %}

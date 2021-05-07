@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+  <main class="container mx-auto my-16 text-customGray">
+    {% include 'components/back_button.html' %}
+    <div class="flex flex-col">
+      {% if user.profile.picture %}
+        <img class="w-40 h-40 rounded-full object-cover object-center" src="/media/{{ user.profile.picture }}">
+      {% else %}
+        <div class="flex justify-center items-center bg-customGray w-24 h-24 rounded-full ">
+          {% include 'components/icons/login-profile-icon.html' %}
+        </div>
+      {% endif %}
+
+    </div>
+    <h1 class="text-2xl font-medium mt-2">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
+    <div class="flex flex-row mt-3 mb-4">
+      <button type="button"
+              class="rounded border border-customViolet text-base py-1 px-4 mb-3 mr-3 focus:outline-none hover:shadow-md">
+        Orders
+      </button>
+      <button type="button"
+              class="rounded border border-customViolet text-base py-1 px-4 mb-3 focus:outline-none hover:shadow-md">
+        Search
+        history
+      </button>
+    </div>
+    </div>
+    <section class="flex flex-row">
+      <div class="w-72">
+        <h2 class="text-xl font-medium mb-2">General</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="mb-2">
+            <div class="text-red-500 text-sm italic">{{ form.first_name.errors }}</div>
+            <label for="{{ form.first_name.id_for_label }}" class="block text-gray-700 text-base mb-2">First
+              name</label>
+            {{ form.first_name }}
+          </div>
+          <div class="mb-2">
+            <div class="text-red-500 text-sm italic">{{ form.last_name.errors }}</div>
+            <label for="{{ form.last_name.id_for_label }}" class="block text-gray-700 text-base mb-2">Last
+              name</label>
+            {{ form.last_name }}
+          </div>
+          <div class="mb-2">
+            <div class="text-red-500 text-sm italic">{{ form.phone.errors }}</div>
+            <label for="{{ form.phone.id_for_label }}" class="block text-gray-700 text-base mb-2">Phone
+              number</label>
+            {{ form.phone }}
+          </div>
+          <div class="mb-2">
+            <div class="text-red-500 text-sm italic">{{ form.email.errors }}</div>
+            <label for="{{ form.email.id_for_label }}"
+                   class="block text-gray-700 text-base mb-2">Email</label>
+            {{ form.email }}
+          </div>
+          <div class="mb-6">
+            <div class="text-red-500 text-sm italic">{{ form.picture.errors }}</div>
+            <label for="{{ form.picture.id_for_label }}" class="block text-gray-700 text-base mb-2">Profile
+              picture</label>
+            <input type="file" name="picture" accept="image/*" id="id_picture"
+                   class="border border-customGray rounded px-4 py-1 shadow-inner w-full h-full placeholder-gray-300 focus:outline-none">
+          </div>
+          <div class="flex flex-col w-36">
+            <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base py-1 px-4 mb-3 focus:outline-none"
+                    type="submit">Save changes
+            </button>
+            <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+               href="{% url 'logout' %}">Sign out
+            </a>
+          </div>
+        </form>
+      </div>
+      <div class="ml-20 w-72">
+        <h2 class="text-xl font-medium mb-4">Addresses</h2>
+        <ul>
+          {% for address in request.user.address_set.all %}
+            {% include 'components/user_address.html' with num=forloop.counter address=address %}
+          {% endfor %}
+        </ul>
+        <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+           href="addresses/new">New address
+        </a>
+      </div>
+      <div class="ml-20 w-72">
+        <h2 class="text-xl font-medium mb-4">Cards</h2>
+        <ul>
+          {% for card in request.user.card_set.all %}
+            {% include 'components/user_card.html' with card_id=card.id month=card.month year=card.year last_numbers=card.number|slice:"-4:" %}
+          {% endfor %}
+        </ul>
+        <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+           href="cards/new">New card
+        </a>
+      </div>
+    </section>
+  </main>
+{% endblock %}

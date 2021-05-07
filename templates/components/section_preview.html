@@ -1,0 +1,35 @@
+<section>
+  <div class="flex flex-row justify-between mb-4 mt-10 text-customGray">
+    <a href="{% url 'product-category' category_name=category.name %}" class="text-3xl pr-3">{{ category }}</a>
+    <a href="{% url 'product-category' category_name=category.name %}" class="flex flex-row items-center">
+      <span class="text-lg px-3">View More</span>
+      <svg
+        width="27"
+        height="23"
+        viewBox="0 0 27 23"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M1.83331 11.5H25.1666"
+          stroke="#484848"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M14.9583 1.29169L25.1666 11.5L14.9583 21.7084"
+          stroke="#484848"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </a>
+  </div>
+  <div class="flex flex-row justify-between">
+    {% for product in products %}
+      {% include 'components/product_card.html' with product=product %}
+    {% endfor %}
+  </div>
+</section>
