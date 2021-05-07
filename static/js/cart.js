@@ -21,10 +21,8 @@ function decrement(e) {
     if (value > 1) {
         value--;
         target.value = value;
-        const id = e.target.dataset.productId;
+        const id = target.dataset.productId;
         console.log(`Gonna send in updateCart(${id}, ${Number(target.value)})})`);
-        console.log(id)
-        console.log(Number(target.value))
         updateCart(id, Number(target.value))
     } else {
         btn.disabled = true;
@@ -56,7 +54,7 @@ function increment(e) {
             "hover:bg-gray-200"
         );
     }
-    const id = e.target.dataset.productId;
+    const id = target.dataset.productId;
     console.log(`Gonna send in updateCart(${id}, ${Number(target.value)})})`);
     updateCart(id, Number(target.value))
 }
