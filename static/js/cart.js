@@ -11,6 +11,18 @@ for (let button of deleteButtons) {
     });
 }
 
+function getCartAmount(callback=undefined) {
+    axios.get(MAIN_URL + "amount")
+        .then((response) => {
+            print(response.data)
+            if (callback) {
+                callback();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 function decrement(e) {
     const btn = e.target.parentNode.parentElement.querySelector(

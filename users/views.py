@@ -1,3 +1,5 @@
+from fractions import Fraction
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
@@ -178,25 +180,55 @@ def delete_from_cart(request, id):
             return JsonResponse({"message": "Error: Item does not exist."})
 
 
+def cart_amount(request):
+    cart = request.session.get("cart")
+    products_amount_fraction = Fraction()
+    if cart:
+        for product_id, quantity in cart.items():
+            try:
+                product = Product.objects.get(pk=int(product_id))
+                products_amount_fraction += Fraction.from_float(product.price) * quantity
+            except ObjectDoesNotExist:
+                pass
+    else:
+        products = None
+    products_amount = float(products_amount_fraction)
+    shipping_amount = 0 if products_amount > 20 else 10
+    total_amount = float(products_amount_fraction + Fraction(shipping_amount))
+    return JsonResponse({
+        "products_amount": products_amount,
+        "shipping_amount": shipping_amount,
+        "total_amount": total_amount
+    })
+
+
 @ensure_csrf_cookie
 def cart(request):
     # TODO: Provide all necessary cart data for user
     cart = request.session.get("cart")
+    cart_total = 0
+    products = []
+    products_amount_fraction = Fraction()
     if cart:
-        products = []
-        cart_total = 0
         for product_id, quantity in cart.items():
             try:
                 product = Product.objects.get(pk=int(product_id))
                 products.append(OrderItem(quantity=quantity, product=product, price=product.price))
                 cart_total += quantity
+                products_amount_fraction += Fraction.from_float(product.price) * quantity
             except ObjectDoesNotExist:
                 pass
         request.session["cart_total"] = cart_total
     else:
         products = None
+    products_amount = float(products_amount_fraction)
+    shipping_amount = 0 if products_amount > 20 else 10
+    total_amount = float(products_amount_fraction + Fraction(shipping_amount))
     return render(request, "users/cart.html", {
-        "products": products
+        "products": products if len(products) > 0 else None,
+        "products_amount": products_amount,
+        "shipping_amount": shipping_amount,
+        "total_amount": total_amount
     })
 
 
