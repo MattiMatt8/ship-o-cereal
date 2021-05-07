@@ -44,7 +44,7 @@ function updateCart(id, quantity, callback=undefined) {
         });
 }
 
-function deleteFromCart(id, quantity, callback=undefined) {
+function deleteFromCart(id, callback=undefined) {
     axios.post(MAIN_URL + id + "/delete", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             console.log(response.data)
