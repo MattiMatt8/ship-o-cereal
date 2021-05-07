@@ -196,9 +196,11 @@ def cart_amount(request):
     shipping_amount = 0 if products_amount > 20 else 10
     total_amount = float(products_amount_fraction + Fraction(shipping_amount))
     return JsonResponse({
-        "products_amount": products_amount,
-        "shipping_amount": shipping_amount,
-        "total_amount": total_amount
+        "data": {
+            "products_amount": products_amount,
+            "shipping_amount": shipping_amount,
+            "total_amount": total_amount
+        }
     })
 
 
@@ -219,11 +221,9 @@ def cart(request):
             except ObjectDoesNotExist:
                 pass
         request.session["cart_total"] = cart_total
-    else:
-        products = None
-    products_amount = float(products_amount_fraction)
+    products_amount = round(float(products_amount_fraction),2)
     shipping_amount = 0 if products_amount > 20 else 10
-    total_amount = float(products_amount_fraction + Fraction(shipping_amount))
+    total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)),2)
     return render(request, "users/cart.html", {
         "products": products if len(products) > 0 else None,
         "products_amount": products_amount,

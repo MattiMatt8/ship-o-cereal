@@ -1,23 +1,25 @@
 
-const deleteButtons = document.getElementsByClassName('delete-btn');
+const deleteButtons = document.getElementsByClassName("delete-btn");
+const total_amount = document.getElementById("")
 
 for (let button of deleteButtons) {
     button.addEventListener('click', e =>{
         const id = Number(button.dataset.productId);
         const parent = document.getElementById(`product-id-${id}`);
-        const deleteItem = () => parent.remove();
+        const deleteItem = () => {
+            parent.remove();
+            updateCartAmount();
+        };
 
         deleteFromCart(id, callback=deleteItem)
     });
 }
 
-function getCartAmount(callback=undefined) {
+function updateCartAmount() {
     axios.get(MAIN_URL + "amount")
         .then((response) => {
-            print(response.data)
-            if (callback) {
-                callback();
-            }
+            console.log(response.data)
+
         })
         .catch((error) => {
             console.log(error);
