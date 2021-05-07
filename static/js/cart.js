@@ -1,4 +1,3 @@
-
 const deleteButtons = document.getElementsByClassName("delete-btn");
 const productAmount = document.getElementById("product_amount");
 const shippingAmount = document.getElementById("shipping_amount");
@@ -13,12 +12,12 @@ for (let button of deleteButtons) {
             updateCartAmount();
         };
 
-        deleteFromCart(id, callback=deleteItem)
+        deleteFromCart(id, callback=deleteItem);
     });
 }
 
 function updateCartAmount() {
-    axios.get(MAIN_URL + "amount")
+    axios.get(CART_URL + "amount")
         .then((response) => {
             let data = response.data.data;
             productAmount.innerText = `Products: \$${data.products_amount}`;

@@ -26,7 +26,7 @@ handler500 = 'ShipOCereal.views.server_error'
 urlpatterns = [
     path("", views.HomePageView.as_view(), name="index"),
     path("", include("users.urls"), name="users"),
-    path("orders/", include("orders.urls"), name="orders"),
+    path("", include("orders.urls"), name="orders"),
     path("products/", include("products.urls"), name="products"),
     path("admin/", admin.site.urls),
 ]

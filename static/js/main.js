@@ -1,4 +1,4 @@
-const MAIN_URL = "/cart/";
+const CART_URL = "/cart/";
 const cartTotalElement = document.getElementById("cart_total");
 
 // Function getCookie from: https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
@@ -20,7 +20,7 @@ function getCookie(name) {
 const CSRF_TOKEN = getCookie('csrftoken');
 
 function addToCart(id, quantity=1, callback=undefined) {
-    axios.post(MAIN_URL + id + "/new", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+    axios.post(CART_URL + id + "/new/", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             cartAddTotal(quantity);
             if (callback) {
@@ -33,7 +33,7 @@ function addToCart(id, quantity=1, callback=undefined) {
 }
 
 function updateCart(id, quantity, callback=undefined) {
-    axios.post(MAIN_URL + id, {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+    axios.post(CART_URL + id + "/", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             cartUpdateTotal(quantity, response.data.old_quantity);
             if (callback) {
@@ -46,7 +46,7 @@ function updateCart(id, quantity, callback=undefined) {
 }
 
 function deleteFromCart(id, callback=undefined) {
-    axios.post(MAIN_URL + id + "/delete", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+    axios.post(CART_URL + id + "/delete/", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             cartDeleteFromTotal(response.data.quantity);
             if (callback) {

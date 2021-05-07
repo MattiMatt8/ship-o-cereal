@@ -54,13 +54,14 @@ def profile(request):
 
 @login_required
 def add_address(request):
+    next_query = request.GET.get("next")
     if request.method == "POST":
         form = UserAddressForm(data=request.POST)
         if form.is_valid():
             address = form.save(commit=False)
             address.user_id = request.user.id
             address.save()
-            return redirect("profile")
+            return redirect("profile" if next_query is None else next_query)
     else:
         form = UserAddressForm()
     return render(request, "users/add_address.html", {
@@ -70,24 +71,27 @@ def add_address(request):
 
 @login_required
 def update_address(request, id):
+    next_query = request.GET.get("next")
     address = get_object_or_404(request.user.address_set, pk=id)
     if request.method == "POST":
         form = UserAddressForm(data=request.POST, instance=address)
         if form.is_valid():
             form.save()
-            return redirect("profile")
+            return redirect("profile" if next_query is None else next_query)
     else:
         form = UserAddressForm(instance=address)
     return render(request, "users/update_address.html", {
-        "form": form
+        "form": form,
+        "next_query": next_query
     })
 
 
 @login_required
 def delete_address(request, id):
+    next_query = request.GET.get("next")
     address = get_object_or_404(request.user.address_set, pk=id)
     address.delete()
-    return redirect("profile")
+    return redirect("profile" if next_query is None else next_query)
 
 
 @login_required
@@ -126,13 +130,6 @@ def delete_card(request, id):
     card = get_object_or_404(request.user.card_set, pk=id)
     card.delete()
     return redirect("profile")
-
-
-def update_cart_total(request, id, quantity, update=False):
-    cart_total = request.session.get("cart_total")
-    if update:
-        request.session["cart_total"] -= request.session["cart"][id]
-    request.session["cart_total"] += quantity
 
 
 def cart_help(request, id, update=False):
@@ -231,22 +228,3 @@ def cart(request):
         "shipping_amount": shipping_amount,
         "total_amount": total_amount
     })
-
-
-# TODO: Check if these should exist in another app, maybe a cart app? idk bro
-@login_required
-def checkout_address(request): # TODO: Make sure cart is not empty
-    return render(request, "orders/checkout_address.html")
-
-@login_required
-def checkout_card(request): # TODO: Make sure address has been selected
-    return render(request, "orders/checkout_card.html")
-
-
-@login_required
-def checkout_confirm(request): # TODO: Make sure address and card have been selected
-    return render(request, "orders/checkout_confirm.html")
-
-def checkout_finished(request):
-    return render(request, "orders/checkout_finished.html")
-

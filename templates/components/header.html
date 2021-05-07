@@ -1,7 +1,7 @@
 <header>
   <div class="flex items-center my-4">
     <!-- Logo -->
-    <div class="w-1/5">
+    <div>
       <a href="/"> {% include "components/icons/header-logo.html" %} </a>
     </div>
     <!-- END Logo -->
@@ -12,7 +12,7 @@
         <ul class="flex text-customViolet text-xl">
           {% for category in categories %}
             <li class="mx-4">
-              <a class="border-b-2 border-customBlue border-opacity-0 hover:border-opacity-75"
+              <a class="border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
                  href="{% url 'product-category' category_name=category.name %}">{{ category.name }}</a>
             </li>
           {% endfor %}
