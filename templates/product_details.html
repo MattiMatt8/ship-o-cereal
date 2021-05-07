@@ -52,10 +52,17 @@
             <div>
               <div class="relative inline">
                 <span class="mr-2">Amount</span>
-                <select class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-                  {% for amount in amount_list %}
-                    <option>{{ amount }}</option>
-                  {% endfor %}
+                <select id="amount" class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                  <option>6</option>
+                  <option>7</option>
+                  <option>8</option>
+                  <option>9</option>
+                  <option>10</option>
                 </select>
                 <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
               <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -64,7 +71,7 @@
               </svg>
             </span>
               </div>
-              <button class="ml-4 rounded p-2 bg-customGreen text-white">Add to cart</button>
+              <button id="buy-btn" data-product-id="{{ product.id }}" class="ml-4 rounded p-2 bg-customGreen text-white">Add to cart</button>
             </div>
           </div>
           <!-- END Add to cart button -->
@@ -108,4 +115,8 @@
     <!-- END Reviews -->
 
   </main>
+{% endblock %}
+
+{% block page_scripts %}
+  <script src="{% static 'js/product_details.js' %}"></script>
 {% endblock %}

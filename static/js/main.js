@@ -18,10 +18,13 @@ function getCookie(name) {
 }
 const CSRF_TOKEN = getCookie('csrftoken');
 
-function updateCart(id, quantity=1) {
+function updateCart(id, quantity=1, callback=undefined) {
     axios.post(MAIN_URL + id, {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             console.log(response.data)
+            if (callback) {
+                callback();
+            }
         })
         .catch((error) => {
             console.log(error);
