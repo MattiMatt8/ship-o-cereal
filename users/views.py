@@ -184,12 +184,15 @@ def cart(request):
     cart = request.session.get("cart")
     if cart:
         products = []
+        cart_total = 0
         for product_id, quantity in cart.items():
             try:
                 product = Product.objects.get(pk=int(product_id))
                 products.append(OrderItem(quantity=quantity, product=product, price=product.price))
+                cart_total += quantity
             except ObjectDoesNotExist:
                 pass
+        request.session["cart_total"] = cart_total
     else:
         products = None
     return render(request, "users/cart.html", {
