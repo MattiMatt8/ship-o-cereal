@@ -125,6 +125,13 @@ def delete_card(request, id):
     return redirect("profile")
 
 
+def update_cart_total(request, id, quantity, update=False):
+    cart_total = request.session.get("cart_total")
+    if update:
+        request.session["cart_total"] -= request.session["cart"][id]
+    request.session["cart_total"] += quantity
+
+
 def cart_help(request, id, update=False):
     if request.method == "POST":
         body = json.loads(request.body.decode('utf-8'))
@@ -134,12 +141,17 @@ def cart_help(request, id, update=False):
         if not cart or not isinstance(cart, dict):
             cart = dict()
             request.session["cart"] = cart
+            request.session["cart_total"] = 0
         if cart.get(str_id) and not update:
             cart[str_id] += quantity
             request.session.modified = True
+            request.session["cart_total"] += quantity
         else:
-            cart[str_id] = abs(quantity)
+            if cart.get(str_id):
+                request.session["cart_total"] -= request.session["cart"][str_id]
+            cart[str_id] = quantity
             request.session.modified = True
+            request.session["cart_total"] += quantity
         return JsonResponse({"message": "Cart updated."})
     return JsonResponse({"message": "Error: Method not supported."})
 
@@ -158,6 +170,7 @@ def delete_from_cart(request, id):
             quantity = request.session["cart"][str(id)]
             del request.session["cart"][str(id)]
             request.session.modified = True
+            request.session["cart_total"] -= quantity
             return JsonResponse({"message": "Item deleted from cart.", "quantity": quantity})
         except KeyError:
             return JsonResponse({"message": "Error: Item does not exist."})
@@ -167,13 +180,16 @@ def delete_from_cart(request, id):
 def cart(request):
     # TODO: Provide all necessary cart data for user
     cart = request.session.get("cart")
-    products = []
-    for product_id, quantity in cart.items():
-        try:
-            product = Product.objects.get(pk=int(product_id))
-            products.append(OrderItem(quantity=quantity, product=product, price=product.price))
-        except ObjectDoesNotExist:
-            pass
+    if cart:
+        products = []
+        for product_id, quantity in cart.items():
+            try:
+                product = Product.objects.get(pk=int(product_id))
+                products.append(OrderItem(quantity=quantity, product=product, price=product.price))
+            except ObjectDoesNotExist:
+                pass
+    else:
+        products = None
     return render(request, "users/cart.html", {
         "products": products
     })
