@@ -1,15 +1,22 @@
 {% load static %}
 
 <li class="shadow-lg hover:shadow-xl rounded flex flex-row items-center p-4 mb-4">
-  <img src="{% static 'images/Cereal/coco_puffs.jpg' %}" class="object-cover object-center w-16"/>
+  <img src="{% static static %}images/Cereal/{{ image }}" class="object-cover object-center w-16"/>
   <h3 class="text-xl ml-4 w-full">{{ product_name }}</h3>
-  <span class="ml-8">$4.99</span>
+  <span class="ml-8">${{ price }}</span>
   <!-- START Select Amount -->
   <div class="relative inline ml-4">
     <select class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-      <option>1</option>
-      <option>2</option>
-      <option>3</option>
+      <option value="1" {% if quantity == 1 %}selected{%  endif %}>1</option>
+      <option value="2" {% if quantity == 2 %}selected{%  endif %}>2</option>
+      <option value="3" {% if quantity == 3 %}selected{%  endif %}>3</option>
+      <option value="4" {% if quantity == 4 %}selected{%  endif %}>4</option>
+      <option value="5" {% if quantity == 5 %}selected{%  endif %}>5</option>
+      <option value="6" {% if quantity == 6 %}selected{%  endif %}>6</option>
+      <option value="7" {% if quantity == 7 %}selected{%  endif %}>7</option>
+      <option value="8" {% if quantity == 8 %}selected{%  endif %}>8</option>
+      <option value="9" {% if quantity == 9 %}selected{%  endif %}>9</option>
+      <option value="10" {% if quantity == 10 %}selected{%  endif %}>10</option>
     </select>
     <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
               <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

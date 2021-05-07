@@ -17,7 +17,7 @@ class UpdateUserCardForm(ModelForm):
             ),
             "month": widgets.Select(
                 attrs={
-                    "class": "border border-customGray rounded px-4 shadow-inner w-24 h-8 placeholder-gray-300 focus:outline-none",
+                    "class": "border border-customGray rounded px-4 shadow-inner w-26 h-8 placeholder-gray-300 focus:outline-none",
                     "placeholder": "2012",
                     "required": True
                 },
