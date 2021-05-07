@@ -32,7 +32,7 @@
             <div class="my-auto pl-3">
               <label class="inline-flex items-center" for="{{ checkbox.id_for_label }}">
                 <input
-                    value="{{ forloop.counter }}"
+                    value="{{ checkbox.data.value }}"
                     type="checkbox" class="form-checkbox h-5 w-5"
                     name="labels"
                     id="{{ checkbox.id_for_label }}">
