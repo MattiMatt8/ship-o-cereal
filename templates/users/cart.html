@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
   <main class="container mx-auto my-10 text-customGray">
     <h1 class="text-3xl mb-8">Cart</h1>
     <!-- START Cart Items & View Amount -->
     <div class="flex flex-row justify-between">
       <!-- START Cart Items -->
-      <div class="">
+      <div class="" id="cart">
         <ul>
           <!-- START Item -->
-            {% include 'components/cart_item.html' with product_name='hahah brooooo thats' %}
-            {% include 'components/cart_item.html' with product_name='hahah what' %}
-            {% include 'components/cart_item.html' with product_name='hahah broo' %}
-            {% include 'components/cart_item.html' with product_name='yepp' %}
+          {% for product in products %}
+            {% include 'components/cart_item.html' with product_id=product.product.id product_name=product.product.name price=product.price quantity=product.quantity image=product.product.image_set.first %}
+          {% endfor %}
           <!-- END Item -->
         </ul>
       </div>
@@ -42,4 +42,9 @@
     </div>
     <!-- END Cart Items & View Amount -->
   </main>
+
+{% endblock %}
+
+{% block page_scripts %}
+  <script src="{% static 'js/cart.js' %}"></script>
 {% endblock %}

@@ -14,10 +14,10 @@
     {% endif %}
     <div class="flex flex-row justify-between items-center">
       <span class="block text-3xl">${{ product.price }}</span>
-      <a
-        href="#"
-        class="block bg-customGray py-2 px-3 text-white rounded-md text-lg"
-        >Add to cart</a
+      <button
+        class="block bg-customGray py-2 px-3 text-white rounded-md text-lg buy-btn"
+        data-product-id="{{ product.id }}"
+        >Add to cart</button
       >
     </div>
   </div>

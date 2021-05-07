@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
   {% include "components/advertisement.html" %}
@@ -12,4 +13,15 @@
       {% include 'components/section_preview.html' with category=k products=v %}
     {% endfor %}
   </main>
+
+  <ul>
+  <li>Tester</li>
+  <li>{{ request.session }}</li>
+  <li>{{ request.session.cart }}</li>
+  </ul>
+
+{% endblock %}
+
+{% block page_scripts %}
+  <script src="{% static 'js/preview_pages.js' %}"></script>
 {% endblock %}

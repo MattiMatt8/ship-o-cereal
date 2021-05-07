@@ -1,5 +1,11 @@
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.csrf import ensure_csrf_cookie
+
+from orders.models import OrderItem
+from products.models import Product
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
 from users.forms.UpdateUserForm import UpdateUserForm
@@ -7,6 +13,7 @@ from users.forms.RegisterForm import RegisterForm
 from users.forms.AddUserCardForm import AddUserCardForm
 from users.forms.UpdateUserCardForm import UpdateUserCardForm
 from users.models import Profile
+import json
 
 
 def register(request):
@@ -118,22 +125,61 @@ def delete_card(request, id):
     return redirect("profile")
 
 
+def update_cart(request, id):
+    if request.method == "POST":
+        body = json.loads(request.body.decode('utf-8'))
+        quantity = body.get("quantity")
+        if quantity == 0:
+            try:
+                del request.session["cart"][str(id)]
+                request.session.modified = True
+                return JsonResponse({"message": "Item deleted from cart."})
+            except KeyError:
+                return JsonResponse({"message": "Item does not exist."})
+        else:
+            cart = request.session.get("cart")
+            str_id = str(id)
+            if not cart or not isinstance(cart, dict):
+                cart = dict()
+                request.session["cart"] = cart
+            if cart.get(str_id) and quantity > 0:
+                cart[str_id] += quantity
+                request.session.modified = True
+            else:
+                cart[str_id] = abs(quantity)
+                request.session.modified = True
+            return JsonResponse({"message": "Cart updated."})
+    return JsonResponse({"message": "Method not supported."})
+
+
+@ensure_csrf_cookie
 def cart(request):
     # TODO: Provide all necessary cart data for user
-
-    return render(request, "users/cart.html")
+    cart = request.session.get("cart")
+    products = []
+    for product_id, quantity in cart.items():
+        try:
+            product = Product.objects.get(pk=int(product_id))
+            products.append(OrderItem(quantity=quantity, product=product, price=product.price))
+        except ObjectDoesNotExist:
+            pass
+    return render(request, "users/cart.html", {
+        "products": products
+    })
 
 
 # TODO: Check if these should exist in another app, maybe a cart app? idk bro
-
-def checkout_address(request):
+@login_required
+def checkout_address(request): # TODO: Make sure cart is not empty
     return render(request, "orders/checkout_address.html")
 
-def checkout_card(request):
+@login_required
+def checkout_card(request): # TODO: Make sure address has been selected
     return render(request, "orders/checkout_card.html")
 
 
-def checkout_confirm(request):
+@login_required
+def checkout_confirm(request): # TODO: Make sure address and card have been selected
     return render(request, "orders/checkout_confirm.html")
 
 def checkout_finished(request):

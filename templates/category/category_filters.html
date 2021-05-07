@@ -4,14 +4,19 @@
   <div class="flex flex-row justify-between pt-3">
     <!-- Filter options -->
     <div class="flex">
+
       <!-- Dropdown menu for filtering brands -->
       <div class="relative">
-        <form action="" method="get">
+        <form method="get">
+          {% csrf_token %}
           <div>
             {{ filterset.form.brand }}
-            <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+            <span
+                class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center"
+            >
               <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                   class="w-4 h-4" viewBox="0 0 24 24">
+                   class="w-4 h-4" viewBox="0 0 24 24"
+              >
                 <path d="M6 9l6 6 6-6"></path>
               </svg>
             </span>
@@ -21,17 +26,25 @@
       <!-- END Dropdown menu for filtering brands -->
 
       <!-- Checkbox filters -->
-      <div class="flex">
-      {% for field in filterset.form.labels %}
-        {{ field }}
-      {% endfor %}
-{#          <div class="my-auto pl-3">#}
-{#            <label for="{{ label.name.id_for_label }}" class="inline-flex items-center">#}
-{#              <input type="checkbox" class="form-checkbox h-5 w-5">#}
-{#              <span class="ml-2">{{ label.name }}</span>#}
-{#            </label>#}
-{#          </div>#}
-      </div>
+
+
+      <form method="get" class="flex">
+        <div id="{{ filterset.form.labels.auto_id }}" class="flex">
+          {% for checkbox in filterset.form.labels %}
+            <div class="my-auto pl-3">
+              <label class="inline-flex items-center" for="{{ checkbox.id_for_label }}">
+                <input
+                    value="{{ forloop.counter }}"
+                    type="checkbox" class="form-checkbox h-5 w-5"
+                    name="labels"
+                    id="{{ checkbox.id_for_label }}">
+                  <span class="ml-2"> {{ checkbox.choice_label }} </span>
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </form>
+
       <!-- END Checkbox filters -->
     </div>
     <!-- END Filter options -->
@@ -39,14 +52,15 @@
     <!-- Dropdown menu for ordering products -->
     <div class="relative">
       <select
-              class="rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-32 h-9 pl-3 pr-10"
+          class="rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-32 h-9 pl-3 pr-10"
       >
         <option>Order by ..</option>
         {% for brand in brands %}
           <option>{{ brand }}</option>
         {% endfor %}
       </select>
-      <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+      <span
+          class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
              class="w-4 h-4" viewBox="0 0 24 24">
           <path d="M6 9l6 6 6-6"></path>
