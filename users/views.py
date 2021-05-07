@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 
+from ShipOCereal import settings
 from orders.models import OrderItem
 from products.models import Product
 from users.forms.ProfileForm import ProfileForm
@@ -192,9 +193,9 @@ def cart_amount(request):
                 pass
     else:
         products = None
-    products_amount = float(products_amount_fraction)
-    shipping_amount = 0 if products_amount > 20 else 10
-    total_amount = float(products_amount_fraction + Fraction(shipping_amount))
+    products_amount = round(float(products_amount_fraction), 2)
+    shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
+    total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)), 2)
     return JsonResponse({
         "data": {
             "products_amount": products_amount,
@@ -222,7 +223,7 @@ def cart(request):
                 pass
         request.session["cart_total"] = cart_total
     products_amount = round(float(products_amount_fraction),2)
-    shipping_amount = 0 if products_amount > 20 else 10
+    shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)),2)
     return render(request, "users/cart.html", {
         "products": products if len(products) > 0 else None,

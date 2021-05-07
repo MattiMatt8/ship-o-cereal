@@ -9,9 +9,8 @@
       <div class="" id="cart">
         <ul>
           <!-- START Item -->
-          {% if products is None %}
-            <h2 class="text-xl mb-72">Your cart is empty.</h2>
-          {% else %}
+          <h2 id="cart_empty" class="text-xl mb-72 {% if products is not None %}hidden{% endif %}">Your cart is empty.</h2>
+          {% if products is not None %}
             {% for product in products %}
               {% include 'components/cart_item.html' with product=product.product price=product.price quantity=product.quantity %}
             {% endfor %}
@@ -23,7 +22,7 @@
 
       <!-- START View Amount -->
       {% if products is not None %}
-      <div class="">
+      <div class="" id="amount_box">
         <div class="flex justify-center items-center shadow-lg rounded">
           <div class="my-5 mx-8 w-72">
             <h1 class="text-center text-3xl">Amount</h1>

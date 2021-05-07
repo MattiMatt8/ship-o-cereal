@@ -1,6 +1,8 @@
 
 const deleteButtons = document.getElementsByClassName("delete-btn");
-const total_amount = document.getElementById("")
+const productAmount = document.getElementById("product_amount");
+const shippingAmount = document.getElementById("shipping_amount");
+const totalAmount = document.getElementById("total_amount");
 
 for (let button of deleteButtons) {
     button.addEventListener('click', e =>{
@@ -18,8 +20,14 @@ for (let button of deleteButtons) {
 function updateCartAmount() {
     axios.get(MAIN_URL + "amount")
         .then((response) => {
-            console.log(response.data)
-
+            let data = response.data.data;
+            productAmount.innerText = `Products: \$${data.products_amount}`;
+            shippingAmount.innerText = `Shipping: \$${data.shipping_amount}`;
+            totalAmount.innerText = `\$${data.total_amount}`;
+            if (data.products_amount === 0) {
+                document.getElementById("amount_box").classList.add("hidden");
+                document.getElementById("cart_empty").classList.remove("hidden");
+            }
         })
         .catch((error) => {
             console.log(error);
