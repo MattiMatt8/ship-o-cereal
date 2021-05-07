@@ -13,13 +13,6 @@
       {% include 'components/section_preview.html' with category=k products=v %}
     {% endfor %}
   </main>
-
-  <ul>
-  <li>Tester</li>
-  <li>{{ request.session }}</li>
-  <li>{{ request.session.cart }}</li>
-  </ul>
-
 {% endblock %}
 
 {% block page_scripts %}

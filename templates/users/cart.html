@@ -9,9 +9,8 @@
       <div class="" id="cart">
         <ul>
           <!-- START Item -->
-          {% if products is None %}
-            <h2 class="text-xl mb-72">Your cart is empty.</h2>
-          {% else %}
+          <h2 id="cart_empty" class="text-xl mb-72 {% if products is not None %}hidden{% endif %}">Your cart is empty.</h2>
+          {% if products is not None %}
             {% for product in products %}
               {% include 'components/cart_item.html' with product=product.product price=product.price quantity=product.quantity %}
             {% endfor %}
@@ -23,18 +22,18 @@
 
       <!-- START View Amount -->
       {% if products is not None %}
-      <div class="">
+      <div class="" id="amount_box">
         <div class="flex justify-center items-center shadow-lg rounded">
           <div class="my-5 mx-8 w-72">
             <h1 class="text-center text-3xl">Amount</h1>
             <div class="my-4 text-lg">
-              <p>Products: $4.99</p>
-              <p>Shipping: $10</p>
+              <p id="product_amount">Products: ${{ products_amount }}</p>
+              <p id="shipping_amount">Shipping: ${{ shipping_amount }}</p>
             </div>
             <p class="text-sm font-light">Free shipping if your order is over $20, otherwise shipping costs $10.</p>
             <div class="w-full h-0.5 bg-customGray my-5"></div>
             <h3 class="text-center text-2xl font-light">Total amount</h3>
-            <h3 class="text-center text-3xl my-2">$14.99</h3>
+            <h3 id="total_amount" class="text-center text-3xl my-2">${{ total_amount }}</h3>
             <div class="flex justify-center">
               <button class="rounded p-2 bg-customGreen text-white">Go to checkout</button>
             </div>

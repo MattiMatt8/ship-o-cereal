@@ -50,13 +50,6 @@
         <div class="">
           <h3 class="text-3xl mb-4">${{ product.price }}</h3>
           <div class="flex">
-            {% if quantity is None %}
-              buy visible |  increment hidden
-            {% endif %}
-            {% if quantity is not None %}
-              buy hidden  |  increment visible
-
-            {% endif %}
               <button id="buy-btn" data-product-id="{{ product.id }}"
                       class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white">
                 Add to cart
@@ -65,15 +58,16 @@
                 <div class="custom-number-input w-32">
                   <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
                     <button
-                        disabled
-                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none"
+                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
                         data-action="decrement"
                         type="button">
                       <span class="m-auto text-2xl font-thin">−</span>
                     </button>
-                    <input type="number"
+                    <input
+                           id="amount-input"
+                           type="text"
                            class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
-                           name="custom-input-number" value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}" min="1"/>
+                           name="custom-input-number" value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"/>
                     <button data-action="increment"
                             class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer">
                       <span class="m-auto text-2xl font-thin">+</span>
