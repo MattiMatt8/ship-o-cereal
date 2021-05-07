@@ -10,3 +10,16 @@ for (let button of deleteButtons) {
         deleteFromCart(id, callback=deleteItem)
     });
 }
+
+function getCartAmount(callback=undefined) {
+    axios.get(MAIN_URL + "amount")
+        .then((response) => {
+            print(response.data)
+            if (callback) {
+                callback();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
