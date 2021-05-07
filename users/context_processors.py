@@ -1,8 +1,4 @@
 
 def cart_count(request):
-    cart = request.session.get("cart")
-    total = 0
-    if cart:
-        for value in cart.values():
-            total += value
-    return {"total_in_cart": total}
+    cart_total = request.session.get("cart_total")
+    return {"total_in_cart": cart_total if cart_total else 0}
