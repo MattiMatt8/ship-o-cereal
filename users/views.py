@@ -155,9 +155,10 @@ def update_cart(request, id):
 def delete_from_cart(request, id):
     if request.method == "POST":
         try:
+            quantity = request.session["cart"][str(id)]
             del request.session["cart"][str(id)]
             request.session.modified = True
-            return JsonResponse({"message": "Item deleted from cart."})
+            return JsonResponse({"message": "Item deleted from cart.", "quantity": quantity})
         except KeyError:
             return JsonResponse({"message": "Error: Item does not exist."})
 

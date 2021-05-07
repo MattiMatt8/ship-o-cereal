@@ -10,7 +10,7 @@
         <ul>
           <!-- START Item -->
           {% for product in products %}
-            {% include 'components/cart_item.html' with product_id=product.product.id product_name=product.product.name price=product.price quantity=product.quantity image=product.product.image_set.first %}
+            {% include 'components/cart_item.html' with product=product.product price=product.price quantity=product.quantity %}
           {% endfor %}
           <!-- END Item -->
         </ul>
