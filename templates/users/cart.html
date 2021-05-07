@@ -9,7 +9,7 @@
       <div class="" id="cart">
         <ul>
           <!-- START Item -->
-          {% if cart is None %}
+          {% if products is None %}
             <h2 class="text-xl mb-72">Your cart is empty.</h2>
           {% else %}
             {% for product in products %}
@@ -22,7 +22,7 @@
       <!-- END Cart Items -->
 
       <!-- START View Amount -->
-      {% if cart is not None %}
+      {% if products is not None %}
       <div class="">
         <div class="flex justify-center items-center shadow-lg rounded">
           <div class="my-5 mx-8 w-72">
