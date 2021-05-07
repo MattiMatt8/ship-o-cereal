@@ -22,7 +22,7 @@ const CSRF_TOKEN = getCookie('csrftoken');
 function addToCart(id, quantity=1, callback=undefined) {
     axios.post(MAIN_URL + id + "/new", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
-            console.log(response.data)
+            cartUpdateTotal(quantity);
             if (callback) {
                 callback();
             }
@@ -35,7 +35,7 @@ function addToCart(id, quantity=1, callback=undefined) {
 function updateCart(id, quantity, callback=undefined) {
     axios.post(MAIN_URL + id, {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
-            console.log(response.data)
+            cartUpdateTotal(quantity);
             if (callback) {
                 callback();
             }
@@ -48,9 +48,9 @@ function updateCart(id, quantity, callback=undefined) {
 function deleteFromCart(id, callback=undefined) {
     axios.post(MAIN_URL + id + "/delete", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
-            console.log(response.data)
             if (callback) {
-                callback();
+                cartDeleteFromTotal(response.data.quantity);
+                callback(response.data.quantity);
             }
         })
         .catch((error) => {
@@ -58,22 +58,10 @@ function deleteFromCart(id, callback=undefined) {
         });
 }
 
-function cartTotal(callback) {
-    axios.get(MAIN_URL + "count")
-        .then((response) => {
-            callback(response.data.total);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+function cartUpdateTotal(quantity=1) {
+    cartTotalElement.innerText = Number(cartTotalElement.innerText) + quantity;
 }
 
-function cartTotalUpdateElement(total) {
-    cartTotalElement.innerText = total;
+function cartDeleteFromTotal(quantity=1) {
+    cartTotalElement.innerText = Number(cartTotalElement.innerText) - quantity;
 }
-
-function updateCartIcon() {
-    cartTotal(cartTotalUpdateElement);
-}
-
-updateCartIcon();
