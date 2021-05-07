@@ -1,19 +1,16 @@
 const CHECKOUT_URL = "/checkout/";
-const addresses = document.getElementsByClassName("address-option");
+const addressesInputs = document.getElementsByClassName("address-input");
 
-for (let address of addresses) {
-    console.log("huhfff")
-    address.addEventListener('click', e =>{
-        const id = Number(address.dataset.addressId);
+for (let addressInput of addressesInputs) {
+    addressInput.addEventListener('click', e =>{
+        const id = Number(addressInput.value);
         selectCard(id);
     });
 }
 
 function selectCard(id) {
     axios.post(CHECKOUT_URL + "address/" + id + "/", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
-        .then((response) => {
-            console.log("success");
-        })
+        .then((response) => {})
         .catch((error) => {
             console.log(error);
         });

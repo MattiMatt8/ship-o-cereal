@@ -12,14 +12,16 @@
 
             <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
               <label>
-                <div data-address-id="{{ address.id }}" class="px-4 py-6 address-option">
-                  <input type="radio" name="address" class="mx-2">
+                <div class="px-4 py-6">
+                  <input value="{{ address.id }}" type="radio" name="address" class="mx-2 address-input"
+                         {% if checkout_address_id == address.id %}checked{% endif %}>
                   <span class="text-md font-medium mr-2">Address {{ forloop.counter }}</span>
                   <span
-                      class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}, {{ address.additional_comments }}</span>
+                          class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}, {{ address.additional_comments }}</span>
 
                   <span class="ml-2">
-                    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75" href="/profile/addresses/{{ address.id }}/?next=/checkout/address/">Change</a>
+                    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
+                       href="/profile/addresses/{{ address.id }}/?next=/checkout/address/">Change</a>
                   </span>
                 </div>
               </label>
@@ -32,20 +34,25 @@
         </a>
       </div>
       <div class="flex flex-col">
-          <div>
+        <div>
           <h4 class="text-center mb-4 font-light text-sm">Step 1</h4>
           <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
           <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
           <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
-            </div>
+        </div>
       </div>
     </div>
     <div class="w-full mt-10 flex flex-row justify-end">
-    <a class="text-2xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md"
-           href="checkout/card/">Next step
+      <div class="flex flex-col justify-end">
+        <a class="w-full text-2xl rounded p-2 border-4 border-red-400 text-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+           href="#">Next step
         </a>
+        <h4>*Address required to continue</h4>
       </div>
-
+    </div>
+      <a class="text-2xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md"
+         href="checkout/card/">Next step
+      </a>
   </main>
 {% endblock %}
 
