@@ -35,7 +35,9 @@
                     value="{{ checkbox.data.value }}"
                     type="checkbox" class="form-checkbox h-5 w-5"
                     name="labels"
-                    id="{{ checkbox.id_for_label }}">
+                    id="{{ checkbox.id_for_label }}"
+                  {% if checkbox.data.selected %}checked{% endif %}
+                >
                   <span class="ml-2"> {{ checkbox.choice_label }} </span>
               </label>
             </div>
