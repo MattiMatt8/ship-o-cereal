@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import QuerySet
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 
 from products.models import Product
 from users.cart import Cart
@@ -125,21 +126,6 @@ def delete_card(request, id):
     return redirect("profile")
 
 
-def carting(request, id):
-    if request.method == "POST":
-        print("CARTING")
-        print("CARTING", request)
-        print("CARTING",id)
-        if "cart" in request.session:
-            request.session["cart"].append("123")
-        else:
-            request.session["cart"] = ["HUH"]
-        request.session["cart"] = "DSFJ:SDLKDFJLKLJKSDJLKDFLJKSLDF"
-        print("cart",request.session["cart"])
-        return JsonResponse({"data": "Item added to cart."})
-    return JsonResponse({"error": "Method not supported."})
-
-
 def cart(request):
     # TODO: Provide all necessary cart data for user
 
@@ -162,14 +148,14 @@ def checkout_finished(request):
     return render(request, "orders/checkout_finished.html")
 
 # APIS for AJAX
-
+@require_POST
 def cart_add(request, id):
     if request.method == "POST":
         cart = Cart(request)
         product = get_object_or_404(Product, pk=id)
         body_unicode = request.body.decode('utf-8')
         body = json.loads(body_unicode)
-        content = body.get('content', False)
+        content = body['content']
 
         # TODO: Needs validation on content, it should have "quantity" and "override_quantity",
         # TODO: quantity == int >> true, override_quantity == bool >> true
@@ -177,8 +163,12 @@ def cart_add(request, id):
 
         return JsonResponse({"data": "Item added to cart."}, status=200)
 
+@require_POST
+def cart_remove(request, id):
+    if request.method == "POST":
+        cart = Cart(request)
+        product = get_object_or_404(Product, pk=id)
+        cart.remove(product)
 
 
-
-def cart_remove(request, product_id):
-    pass
+        return JsonResponse({"data": "Item added to cart."}, status=200)

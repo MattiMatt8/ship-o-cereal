@@ -8,6 +8,10 @@
       <div class="">
         <ul>
           <!-- START Item -->
+            {% for item in cart %}
+
+              {{ item.name }}
+            {% endfor %}
             {% include 'components/cart_item.html' with product_name='hahah brooooo thats' %}
             {% include 'components/cart_item.html' with product_name='hahah what' %}
             {% include 'components/cart_item.html' with product_name='hahah broo' %}

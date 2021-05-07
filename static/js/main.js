@@ -1,4 +1,4 @@
-const MAIN_URL = "/cart2";
+const MAIN_URL = "/cart";
 
 // Function getCookie from: https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
 function getCookie(name) {
