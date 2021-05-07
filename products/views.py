@@ -1,6 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
+
+from orders.models import OrderItem
 from .models import Category, Product
 from .filters import ProductFilter
 
@@ -49,9 +52,14 @@ class ProductsInCategoryListView(FilteredListView):
 
 
 @ensure_csrf_cookie
-def product_details(response, id):
+def product_details(request, id):
+    cart = request.session.get("cart")
+    quantity = None
+    product = get_object_or_404(Product, pk=id)
+    if cart:
+        quantity = cart.get(str(id))
     return render(
-        response,
+        request,
         "product_details.html",
-        {"product": get_object_or_404(Product, pk=id), "amount_list": range(1, 11)},
+        {"product": product, "quantity": quantity},
     )
