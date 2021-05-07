@@ -9,15 +9,20 @@
       <div class="" id="cart">
         <ul>
           <!-- START Item -->
-          {% for product in products %}
-            {% include 'components/cart_item.html' with product_id=product.product.id product_name=product.product.name price=product.price quantity=product.quantity image=product.product.image_set.first %}
-          {% endfor %}
+          {% if products is None %}
+            <h2 class="text-xl mb-72">Your cart is empty.</h2>
+          {% else %}
+            {% for product in products %}
+              {% include 'components/cart_item.html' with product=product.product price=product.price quantity=product.quantity %}
+            {% endfor %}
+          {% endif %}
           <!-- END Item -->
         </ul>
       </div>
       <!-- END Cart Items -->
 
       <!-- START View Amount -->
+      {% if products is not None %}
       <div class="">
         <div class="flex justify-center items-center shadow-lg rounded">
           <div class="my-5 mx-8 w-72">
@@ -36,6 +41,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
       <!-- END View Amount -->
 
 

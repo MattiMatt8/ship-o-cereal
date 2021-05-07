@@ -7,8 +7,8 @@
 
       <!-- Dropdown menu for filtering brands -->
       <div class="relative">
+        {% csrf_token %}
         <form method="get">
-          {% csrf_token %}
           <div>
             {{ filterset.form.brand }}
             <span
@@ -21,23 +21,23 @@
               </svg>
             </span>
           </div>
-        </form>
       </div>
       <!-- END Dropdown menu for filtering brands -->
 
       <!-- Checkbox filters -->
 
 
-      <form method="get" class="flex">
         <div id="{{ filterset.form.labels.auto_id }}" class="flex">
           {% for checkbox in filterset.form.labels %}
             <div class="my-auto pl-3">
               <label class="inline-flex items-center" for="{{ checkbox.id_for_label }}">
                 <input
-                    value="{{ forloop.counter }}"
+                    value="{{ checkbox.data.value }}"
                     type="checkbox" class="form-checkbox h-5 w-5"
                     name="labels"
-                    id="{{ checkbox.id_for_label }}">
+                    id="{{ checkbox.id_for_label }}"
+                  {% if checkbox.data.selected %}checked{% endif %}
+                >
                   <span class="ml-2"> {{ checkbox.choice_label }} </span>
               </label>
             </div>

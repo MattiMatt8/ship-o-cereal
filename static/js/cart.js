@@ -7,6 +7,6 @@ for (let button of deleteButtons) {
         const parent = document.getElementById(`product-id-${id}`);
         const deleteItem = () => parent.remove();
 
-        updateCart(id, 0, callback=deleteItem)
+        deleteFromCart(id, callback=deleteItem)
     });
 }
