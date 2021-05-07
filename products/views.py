@@ -13,6 +13,7 @@ class FilteredListView(FilterView):
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
+
         return self.filterset.qs.distinct()
 
     def get_context_data(self, **kwargs):
@@ -20,10 +21,11 @@ class FilteredListView(FilterView):
         context['filterset'] = self.filterset
         filters = ""
 
-        for k,v in context['filterset'].data.items():
+        for k, v in context['filterset'].data.items():
             if k != "page":
                 filters += f"&{k}={v}"
         context["filters"] = filters
+
         return context
 
 
@@ -33,8 +35,11 @@ class ProductsInCategoryListView(FilteredListView):
     context_object_name = "products"
     template_name = "category/category.html"
 
-    def get_queryset(self):
+    def get_queryset(self, **kwargs):
+
+        print(self.request.get_full_path())
         category = get_object_or_404(Category, name=self.kwargs["category_name"])
+
         return category.product_set.all()
 
 
