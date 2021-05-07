@@ -22,7 +22,7 @@ const CSRF_TOKEN = getCookie('csrftoken');
 function addToCart(id, quantity=1, callback=undefined) {
     axios.post(MAIN_URL + id + "/new", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
-            cartUpdateTotal(quantity);
+            cartAddTotal(quantity);
             if (callback) {
                 callback();
             }
@@ -35,7 +35,7 @@ function addToCart(id, quantity=1, callback=undefined) {
 function updateCart(id, quantity, callback=undefined) {
     axios.post(MAIN_URL + id, {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
-            cartUpdateTotal(quantity);
+            cartUpdateTotal(quantity, response.data.old_quantity);
             if (callback) {
                 callback();
             }
@@ -48,9 +48,9 @@ function updateCart(id, quantity, callback=undefined) {
 function deleteFromCart(id, callback=undefined) {
     axios.post(MAIN_URL + id + "/delete", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
+            cartDeleteFromTotal(response.data.quantity);
             if (callback) {
-                cartDeleteFromTotal(response.data.quantity);
-                callback(response.data.quantity);
+                callback();
             }
         })
         .catch((error) => {
@@ -58,8 +58,13 @@ function deleteFromCart(id, callback=undefined) {
         });
 }
 
-function cartUpdateTotal(quantity=1) {
+function cartAddTotal(quantity=1) {
     cartTotalElement.innerText = Number(cartTotalElement.innerText) + quantity;
+}
+
+function cartUpdateTotal(quantity, oldQuantity) {
+    let newQuantity = quantity - Number(oldQuantity);
+    cartTotalElement.innerText = Number(cartTotalElement.innerText) + newQuantity;
 }
 
 function cartDeleteFromTotal(quantity=1) {
