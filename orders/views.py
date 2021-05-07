@@ -7,12 +7,14 @@ from users.models import Address
 
 @login_required
 def checkout_address(request): # TODO: Make sure cart is not empty
-    return render(request, "orders/checkout_address.html") # TODO: If user has no address, not continue, etc.
+    checkout_address_id = request.session.get("checkout_address_id")
+    return render(request, "orders/checkout_address.html", {
+        "checkout_address_id": checkout_address_id
+    }) # TODO: If user has no address, not continue, etc.
 
 
 def choose_address(request, id):
     request.session["checkout_address_id"] = id
-    print(request.session["checkout_address_id"])
     return JsonResponse({"message":"success"})
 
 
