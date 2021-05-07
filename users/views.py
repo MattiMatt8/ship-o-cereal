@@ -125,31 +125,41 @@ def delete_card(request, id):
     return redirect("profile")
 
 
-def update_cart(request, id):
+def cart_help(request, id, update=False):
     if request.method == "POST":
         body = json.loads(request.body.decode('utf-8'))
         quantity = body.get("quantity")
-        if quantity == 0:
-            try:
-                del request.session["cart"][str(id)]
-                request.session.modified = True
-                return JsonResponse({"message": "Item deleted from cart."})
-            except KeyError:
-                return JsonResponse({"message": "Item does not exist."})
+        cart = request.session.get("cart")
+        str_id = str(id)
+        if not cart or not isinstance(cart, dict):
+            cart = dict()
+            request.session["cart"] = cart
+        if cart.get(str_id) and not update:
+            cart[str_id] += quantity
+            request.session.modified = True
         else:
-            cart = request.session.get("cart")
-            str_id = str(id)
-            if not cart or not isinstance(cart, dict):
-                cart = dict()
-                request.session["cart"] = cart
-            if cart.get(str_id) and quantity > 0:
-                cart[str_id] += quantity
-                request.session.modified = True
-            else:
-                cart[str_id] = abs(quantity)
-                request.session.modified = True
-            return JsonResponse({"message": "Cart updated."})
-    return JsonResponse({"message": "Method not supported."})
+            cart[str_id] = abs(quantity)
+            request.session.modified = True
+        return JsonResponse({"message": "Cart updated."})
+    return JsonResponse({"message": "Error: Method not supported."})
+
+
+def add_to_cart(request, id):
+    return cart_help(request, id)
+
+
+def update_cart(request, id):
+    return cart_help(request, id, True)
+
+
+def delete_from_cart(request, id):
+    if request.method == "POST":
+        try:
+            del request.session["cart"][str(id)]
+            request.session.modified = True
+            return JsonResponse({"message": "Item deleted from cart."})
+        except KeyError:
+            return JsonResponse({"message": "Error: Item does not exist."})
 
 
 @ensure_csrf_cookie
