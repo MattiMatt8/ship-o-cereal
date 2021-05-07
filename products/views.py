@@ -9,6 +9,7 @@ from .filters import ProductFilter
 
 
 class FilteredListView(FilterView):
+    # Calls filters in filters.py
     def get_queryset(self):
         queryset = super().get_queryset()
         self.filterset = self.filterset_class(self.request.GET, queryset=queryset)
@@ -31,6 +32,7 @@ class FilteredListView(FilterView):
 
 
 class ProductsInCategoryListView(FilteredListView):
+    # Calls filtered list view
     paginate_by = 10
     filterset_class = ProductFilter
     queryset = Product.objects.all()
@@ -45,9 +47,6 @@ class ProductsInCategoryListView(FilteredListView):
 
         return self.queryset \
             .filter(category=category) \
-
-
-
 
 
 
