@@ -1,30 +1,38 @@
 from django.utils.translation import gettext_lazy as _
 
 from .models import Brand
-from django_filters import FilterSet, ModelMultipleChoiceFilter, ModelChoiceFilter, NumberFilter, OrderingFilter
+from django_filters import (FilterSet, ModelMultipleChoiceFilter, ModelChoiceFilter, NumberFilter, OrderingFilter,
+                            CharFilter, UUIDFilter)
 from .models import Product, Label
 
+# Order by fields
+PRODUCT_ORDER_BY_FIELDS = (
+            ('price', 'Price: Low to High'),
+            ('-price', 'Price: High to Low'),
+            ('name', 'Name: A to Z'),
+            ('-name', 'Price: Z to A'),
+            ('-id', 'Newest arrivals'))
 
-PRODUCT_ORDER_BY_FIELDS = {"price" : "Price"}
 
 class ProductFilter(FilterSet):
 
+    # Filters
     price = NumberFilter(field_name="price")
-
-    ordering = OrderingFilter(
-        label="Sort by price",
-        fields=PRODUCT_ORDER_BY_FIELDS.keys(),
-        field_labels=PRODUCT_ORDER_BY_FIELDS,
-        empty_label=_("Order by.."),
-    )
-
+    name = CharFilter(field_name="name")
+    id = NumberFilter(field_name="newest")
     labels = ModelMultipleChoiceFilter(queryset=Label.objects.all())
-    brand = ModelChoiceFilter(queryset=Brand.objects.all().order_by("name"), empty_label=_("Select brand .."))
+    brand = ModelChoiceFilter(queryset=Brand.objects.all(), field_name="brand", empty_label=_("Select brand .."))
+
+    # Order by filter
+    ordering = OrderingFilter(
+        label="Sort by",
+        choices=PRODUCT_ORDER_BY_FIELDS,
+        empty_label=_("Order by..")
+    )
 
     class Meta:
         model = Product
-        # fields =["brand"]
-        fields = {'price': ['lt', 'gt']}
+        fields = ['price', 'name']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
