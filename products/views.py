@@ -49,19 +49,12 @@ class ProductsInCategoryListView(FilteredListView):
 @ensure_csrf_cookie
 def product_details(request, id):
     cart = request.session.get("cart")
-    product_in_cart = None
-    for product_id, quantity in cart.items():
-        try:
-            print("bruh")
-            print(cart.items())
-            print("yeet")
-            product = Product.objects.get(pk=int(product_id))
-            if product.id == int(product_id):
-                product_in_cart = OrderItem(quantity=quantity, product=product, price=product.price)
-        except ObjectDoesNotExist:
-            pass
+    quantity = None
+    product = get_object_or_404(Product, pk=id)
+    if cart:
+        quantity = cart.get(str(id))
     return render(
         request,
         "product_details.html",
-        {"product": get_object_or_404(Product, pk=id), "product_in_cart": product_in_cart},
+        {"product": product, "quantity": quantity},
     )
