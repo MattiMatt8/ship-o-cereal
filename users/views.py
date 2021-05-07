@@ -138,6 +138,7 @@ def cart_help(request, id, update=False):
         quantity = body.get("quantity")
         cart = request.session.get("cart")
         str_id = str(id)
+        old_quantity = 0
         if not cart or not isinstance(cart, dict):
             cart = dict()
             request.session["cart"] = cart
@@ -148,11 +149,12 @@ def cart_help(request, id, update=False):
             request.session["cart_total"] += quantity
         else:
             if cart.get(str_id):
-                request.session["cart_total"] -= request.session["cart"][str_id]
+                old_quantity = request.session["cart"][str_id]
+                request.session["cart_total"] -= old_quantity
             cart[str_id] = quantity
             request.session.modified = True
             request.session["cart_total"] += quantity
-        return JsonResponse({"message": "Cart updated."})
+        return JsonResponse({"message": "Cart updated.", "old_quantity": old_quantity})
     return JsonResponse({"message": "Error: Method not supported."})
 
 
