@@ -18,8 +18,34 @@ function getCookie(name) {
 }
 const CSRF_TOKEN = getCookie('csrftoken');
 
-function updateCart(id, quantity=1, callback=undefined) {
+function addToCart(id, quantity=1, callback=undefined) {
+    axios.post(MAIN_URL + id + "/new", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+        .then((response) => {
+            console.log(response.data)
+            if (callback) {
+                callback();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+function updateCart(id, quantity, callback=undefined) {
     axios.post(MAIN_URL + id, {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+        .then((response) => {
+            console.log(response.data)
+            if (callback) {
+                callback();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+function deleteFromCart(id, quantity, callback=undefined) {
+    axios.post(MAIN_URL + id + "/delete", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             console.log(response.data)
             if (callback) {
