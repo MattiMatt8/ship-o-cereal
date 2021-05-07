@@ -8,6 +8,7 @@
       <!-- Dropdown menu for filtering brands -->
       <div class="relative">
         <form method="get">
+          {% csrf_token %}
           <div>
             {{ filterset.form.brand }}
             <span

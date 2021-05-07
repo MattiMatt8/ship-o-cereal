@@ -8,10 +8,9 @@
       <div class="">
         <ul>
           <!-- START Item -->
-            {% include 'components/cart_item.html' with product_name='hahah brooooo thats' %}
-            {% include 'components/cart_item.html' with product_name='hahah what' %}
-            {% include 'components/cart_item.html' with product_name='hahah broo' %}
-            {% include 'components/cart_item.html' with product_name='yepp' %}
+          {% for product in products %}
+            {% include 'components/cart_item.html' with product_name=product.product.name price=product.price quantity=product.quantity image=product.product.image_set.first %}
+          {% endfor %}
           <!-- END Item -->
         </ul>
       </div>
