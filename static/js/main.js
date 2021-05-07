@@ -1,4 +1,5 @@
 const MAIN_URL = "/cart/";
+let cartTotalElement = document.getElementById("cart_total");
 
 // Function getCookie from: https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
 function getCookie(name) {
@@ -56,3 +57,23 @@ function deleteFromCart(id, callback=undefined) {
             console.log(error);
         });
 }
+
+function cartTotal(callback) {
+    axios.get(MAIN_URL + "count")
+        .then((response) => {
+            callback(response.data.total);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+function cartTotalUpdateElement(total) {
+    cartTotalElement.innerText = total;
+}
+
+function updateCartIcon() {
+    cartTotal(cartTotalUpdateElement);
+}
+
+updateCartIcon();

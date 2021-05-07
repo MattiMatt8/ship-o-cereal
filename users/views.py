@@ -162,6 +162,15 @@ def delete_from_cart(request, id):
             return JsonResponse({"message": "Error: Item does not exist."})
 
 
+def cart_count(request):
+    cart = request.session.get("cart")
+    total = 0
+    if cart:
+        for value in cart.values():
+            total += value
+    return JsonResponse({"total": total})
+
+
 @ensure_csrf_cookie
 def cart(request):
     # TODO: Provide all necessary cart data for user
