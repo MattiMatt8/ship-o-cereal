@@ -15,7 +15,7 @@ class HomePageView(View):
     def get(self, request, *args, **kwargs):
         # Context containing each category mapped to the
         # corresponding top 5 products
-        context = {"categories": {}}
+        context = {"categories": {}, "cart": request.session.get("cart")}
         categories = Category.objects.all()
 
         # Fetching top 5 products for each category

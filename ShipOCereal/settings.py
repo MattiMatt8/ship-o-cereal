@@ -74,6 +74,10 @@ TEMPLATES = [
                 'products.context_processors.product_labels',
                 'users.context_processors.cart_count'
             ],
+            'libraries':{
+            'product_card_extras': 'ShipOCereal.templatetags.product_card_extras',
+
+            }
         },
     },
 ]

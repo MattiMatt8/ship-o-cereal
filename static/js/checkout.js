@@ -1,8 +1,9 @@
 const CHECKOUT_URL = "/checkout/";
 const addresses = document.getElementsByClassName("address-option");
-
+console.log(addresses)
 for (let address of addresses) {
     console.log("huhfff")
+
     address.addEventListener('click', e =>{
         const id = Number(address.dataset.addressId);
         selectCard(id);
