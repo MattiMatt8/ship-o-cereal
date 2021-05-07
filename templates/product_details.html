@@ -50,30 +50,39 @@
         <div class="">
           <h3 class="text-3xl mb-4">${{ product.price }}</h3>
           <div class="flex">
-            <button id="buy-btn" data-product-id="{{ product.id }}"
-                    class="{% if product_in_cart %} hidden {% endif %} rounded p-2 bg-customGreen text-white">
-              Add to cart
-            </button>
-            <div id="amount-btns" class="{% if not product_in_cart %} hidden {% endif %} text-customGray">
-              <div class="custom-number-input w-32">
-                <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
-                  <button
-                      disabled
-                      class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none"
-                      data-action="decrement"
-                      type="button">
-                    <span class="m-auto text-2xl font-thin">−</span>
-                  </button>
-                  <input type="number"
-                         class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
-                         name="custom-input-number" value="{{ product_ids. }}" min="1"/>
-                  <button data-action="increment"
-                          class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer">
-                    <span class="m-auto text-2xl font-thin">+</span>
-                  </button>
+            {% if product_in_cart == None %}
+              buy visible |  increment hidden
+            {% endif %}
+            {% if product_in_cart != None %}
+              buy hidden  |  increment visible
+
+            {% endif %}
+
+              <button id="buy-btn" data-product-id="{{ product.id }}"
+                      class="{% if product_in_cart != None %} hidden {% endif %} rounded p-2 bg-customGreen text-white">
+                Add to cart
+              </button>
+              <div id="amount-btns" class="{% if product_in_cart == None %} hidden {% endif %} text-customGray">
+                <div class="custom-number-input w-32">
+                  <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
+                    <button
+                        disabled
+                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none"
+                        data-action="decrement"
+                        type="button">
+                      <span class="m-auto text-2xl font-thin">−</span>
+                    </button>
+                    <input type="number"
+                           class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
+                           name="custom-input-number" value="{{ product_ids. }}" min="1"/>
+                    <button data-action="increment"
+                            class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer">
+                      <span class="m-auto text-2xl font-thin">+</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+
 
           </div>
         </div>
