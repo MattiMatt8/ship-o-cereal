@@ -80,12 +80,15 @@ const searchDropdown = document.getElementById('search-dropdown');
 let isHoveringDropdown = false;
 
 searchInput.addEventListener('focusin', e =>{
-    searchDropdown.classList.remove('hidden');
+    searchDropdown.classList.remove('max-h-0', 'overflow-hidden');
+    searchDropdown.classList.add('max-h-64');
+
 })
 
 searchInput.addEventListener('focusout', e =>{
     if (!isHoveringDropdown) {
-        searchDropdown.classList.add('hidden');
+        searchDropdown.classList.add('max-h-0');
+        searchDropdown.classList.remove('max-h-64');
 
     }
 })
@@ -98,7 +101,8 @@ searchDropdown.addEventListener('mouseleave', e =>{
     isHoveringDropdown = false;
     console.log("mouseleave!")
     if (!(document.activeElement === searchInput)) {
-        searchDropdown.classList.add('hidden');
+        searchDropdown.classList.add('max-h-0');
+        searchDropdown.classList.remove('max-h-64');
     }
 })
 

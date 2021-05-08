@@ -9,15 +9,6 @@
 
 const buttons = document.getElementsByClassName('buy-btn');
 
-
-for (let button of buttons) {
-    button.addEventListener('click', e => {
-        const id = Number(button.dataset.productId);
-        addToCart(id);
-
-    });
-}
-
 Array.from(document.getElementsByClassName('buy-btn')).forEach(buyButton => {
     buyButton.addEventListener("click", (e) => {
         const id = Number(buyButton.dataset.productId);
@@ -27,7 +18,7 @@ Array.from(document.getElementsByClassName('buy-btn')).forEach(buyButton => {
             buyButton.classList.add("hidden");
             amountSelect.classList.remove("hidden");
         };
-
+        console.log("update cart")
         updateCart(id, 1, (callback = func));
     });
 
