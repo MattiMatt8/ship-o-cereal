@@ -3,7 +3,6 @@ from django.template.defaulttags import register
 
 @register.filter
 def get_item(dictionary, key):
-    print("yeet")
-    print(dictionary)
-    print("yote")
+    if dictionary is None:
+        return None
     return dictionary.get(str(key))
