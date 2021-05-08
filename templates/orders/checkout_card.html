@@ -13,11 +13,13 @@
             <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
               <label>
                 <div class="px-4 py-6">
-                  <input value="{{ card.id }}" type="radio" name="address" class="mx-2 card-input">
+                  <input value="{{ card.id }}" type="radio" name="address" class="mx-2 card-input"
+                         {% if checkout_card_id == card.id %}checked{% endif %}>
                   <span class="text-md font-medium mr-2">Card {{ forloop.counter }}</span>
                   <span
                           class="text-md font-light">XXXX-XXXX-XXXX-{{ card.number|slice:"-4:" }}</span>
-                  <input id="card-id-{{ card.id }}" type="text" class="border rounded w-12 text-center ml-3 hidden" maxlength="3" placeholder="CVC"
+                  <input id="card-id-{{ card.id }}" type="text" class="border rounded w-12 text-center ml-3 hidden"
+                         maxlength="3" placeholder="CVC"
                          pattern="\d*">
                   <span class="ml-3 mr-2">
                     <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"

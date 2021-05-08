@@ -209,6 +209,7 @@ def cart(request):
     cart = request.session.get("cart")
     cart_total = 0
     products = []
+    updated_cart = {}
     products_amount_fraction = Fraction()
     if cart:
         for product_id, quantity in cart.items():
@@ -217,9 +218,11 @@ def cart(request):
                 products.append(OrderItem(quantity=quantity, product=product, price=product.price))
                 cart_total += quantity
                 products_amount_fraction += Fraction.from_float(product.price) * quantity
+                updated_cart[product_id] = quantity
             except ObjectDoesNotExist:
                 pass
         request.session["cart_total"] = cart_total
+    request.session["cart"] = updated_cart
     products_amount = round(float(products_amount_fraction),2)
     shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)),2)
