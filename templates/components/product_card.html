@@ -23,6 +23,7 @@
       >Add to cart
       </button>
       <!-- This shows only when the user has added this to their cart -->
+      {% if cart %}
       <div class="text-customGray amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% endif %}">
         <div class="custom-number-input w-30">
           <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
@@ -46,6 +47,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
 
 
     </div>
