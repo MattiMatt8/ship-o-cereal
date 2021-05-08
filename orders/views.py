@@ -24,7 +24,9 @@ def checkout_card(request): # TODO: Make sure address has been selected & cart n
 
 
 def choose_card(request, id):
-    pass
+    request.session["checkout_card_id"] = id
+    print("card id:",id)
+    return JsonResponse({"message":"success"})
 
 
 @login_required

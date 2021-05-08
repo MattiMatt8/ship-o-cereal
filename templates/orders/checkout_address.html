@@ -8,17 +8,17 @@
     <!-- START Card Container-->
     <div class="flex flex-row justify-between">
       <div>
-        <ul class="flex flex-col mt-6 mb-6">
+        <ul class="flex flex-col mt-6 mb-4">
           {% for address in user.address_set.all %}
 
             <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
-              <label>
+              <label class="cursor-pointer">
                 <div class="px-4 py-6">
                   <input value="{{ address.id }}" type="radio" name="address" class="mx-2 address-input"
                          {% if checkout_address_id == address.id %}checked{% endif %}>
                   <span class="text-md font-medium mr-2">Address {{ forloop.counter }}</span>
                   <span
-                          class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}, {{ address.additional_comments }}</span>
+                          class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}{% if address.additional_comments is not None %}, {{ address.additional_comments }}{% endif %}</span>
 
                   <span class="ml-2">
                     <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
@@ -44,18 +44,19 @@
       </div>
     </div>
     <div class="w-full mt-10 flex flex-row justify-end">
-      <button type="button" class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
+      <button id="next-disabled" type="button" class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
          href="#">Next step
       </button>
-      <a class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md"
+      <a id="next-enabled" class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden"
          href="/checkout/card/">Next step
       </a>
     </div>
-    <h4 class="text-right">*Address required to continue</h4>
+    <h4 id="text-disabled" class="text-right mt-1">*Address required to continue</h4>
   </main>
 
 {% endblock %}
 
 {% block page_scripts %}
   <script src="{% static 'js/checkout.js' %}"></script>
+  <script src="{% static 'js/checkout_address.js' %}"></script>
 {% endblock %}

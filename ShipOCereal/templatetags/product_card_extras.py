@@ -1,4 +1,3 @@
-from django.template import Library
 from django.template.defaulttags import register
 
 @register.filter

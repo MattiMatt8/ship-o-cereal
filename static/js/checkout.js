@@ -1,20 +1,17 @@
 const CHECKOUT_URL = "/checkout/";
-const addressesInputs = document.getElementsByClassName("address-input");
+const nextEnabled = document.getElementById("next-enabled");
+const nextDisabled = document.getElementById("next-disabled");
+const textDisabled = document.getElementById("text-disabled");
 
-for (let addressInput of addressesInputs) {
-  addressInput.addEventListener("click", (e) => {
-    const id = Number(addressInput.value);
-    selectCard(id);
-  });
+
+function enableButton() {
+  nextEnabled.classList.remove("hidden");
+  nextDisabled.classList.add("hidden");
+  textDisabled.classList.add("hidden");
 }
 
-function selectCard(id) {
-  axios
-    .post(CHECKOUT_URL + "address/" + id + "/", null, {
-      headers: { "X-CSRFToken": CSRF_TOKEN },
-    })
-    .then((response) => {})
-    .catch((error) => {
-      console.log(error);
-    });
+function disableButton() {
+  nextEnabled.classList.add("hidden");
+  nextDisabled.classList.remove("hidden");
+  textDisabled.classList.remove("hidden");
 }
