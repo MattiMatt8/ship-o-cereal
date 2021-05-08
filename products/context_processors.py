@@ -24,3 +24,8 @@ def product_labels(request):
 
     return {"labels": Label.objects.all()}
 
+def get_cart(request):
+    """
+    Get cart context for every view
+    """
+    return {"cart": request.session.get("cart")}

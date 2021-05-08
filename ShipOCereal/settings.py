@@ -72,7 +72,9 @@ TEMPLATES = [
                 'products.context_processors.menu_categories',
                 'products.context_processors.product_brands',
                 'products.context_processors.product_labels',
-                'users.context_processors.cart_count'
+                'products.context_processors.get_cart',
+                'users.context_processors.cart_count',
+
             ],
             'libraries':{
             'product_card_extras': 'ShipOCereal.templatetags.product_card_extras',
