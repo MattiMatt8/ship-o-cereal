@@ -95,14 +95,15 @@ def delete_address(request, id):
 
 
 @login_required
-def add_card(request): # TODO: Possibly fix that card number can't be letters
+def add_card(request):
+    next_query = request.GET.get("next")
     if request.method == "POST":
         form = AddUserCardForm(data=request.POST)
         if form.is_valid():
             card = form.save(commit=False)
             card.user_id = request.user.id
             card.save()
-            return redirect("profile")
+            return redirect("profile" if next_query is None else next_query)
     else:
         form = AddUserCardForm()
     return render(request, "users/add_card.html", {
@@ -112,24 +113,27 @@ def add_card(request): # TODO: Possibly fix that card number can't be letters
 
 @login_required
 def update_card(request, id):
+    next_query = request.GET.get("next")
     card = get_object_or_404(request.user.card_set, pk=id)
     if request.method == "POST":
         form = UpdateUserCardForm(data=request.POST, instance=card)
         if form.is_valid():
             form.save()
-            return redirect("profile")
+            return redirect("profile" if next_query is None else next_query)
     else:
         form = UpdateUserCardForm(instance=card)
     return render(request, "users/update_card.html", {
-        "form": form
+        "form": form,
+        "next_query": next_query
     })
 
 
 @login_required
 def delete_card(request, id):
+    next_query = request.GET.get("next")
     card = get_object_or_404(request.user.card_set, pk=id)
     card.delete()
-    return redirect("profile")
+    return redirect("profile" if next_query is None else next_query)
 
 
 def cart_help(request, id, update=False):
@@ -188,8 +192,6 @@ def cart_amount(request):
                 products_amount_fraction += Fraction.from_float(product.price) * quantity
             except ObjectDoesNotExist:
                 pass
-    else:
-        products = None
     products_amount = round(float(products_amount_fraction), 2)
     shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)), 2)
@@ -204,10 +206,10 @@ def cart_amount(request):
 
 @ensure_csrf_cookie
 def cart(request):
-    # TODO: Provide all necessary cart data for user
     cart = request.session.get("cart")
     cart_total = 0
     products = []
+    updated_cart = {}
     products_amount_fraction = Fraction()
     if cart:
         for product_id, quantity in cart.items():
@@ -216,9 +218,11 @@ def cart(request):
                 products.append(OrderItem(quantity=quantity, product=product, price=product.price))
                 cart_total += quantity
                 products_amount_fraction += Fraction.from_float(product.price) * quantity
+                updated_cart[product_id] = quantity
             except ObjectDoesNotExist:
                 pass
         request.session["cart_total"] = cart_total
+    request.session["cart"] = updated_cart
     products_amount = round(float(products_amount_fraction),2)
     shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)),2)

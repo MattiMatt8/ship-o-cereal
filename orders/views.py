@@ -20,11 +20,15 @@ def choose_address(request, id):
 
 @login_required
 def checkout_card(request): # TODO: Make sure address has been selected & cart not empty
-    return render(request, "orders/checkout_card.html") # If user has no address, not continue, etc.
+    checkout_card_id = request.session.get("checkout_card_id")
+    return render(request, "orders/checkout_card.html", {
+        "checkout_card_id": checkout_card_id
+    }) # If user has no address, not continue, etc.
 
 
 def choose_card(request, id):
-    pass
+    request.session["checkout_card_id"] = id
+    return JsonResponse({"message":"success"})
 
 
 @login_required

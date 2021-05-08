@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
   <main class="container mx-auto my-16 text-customGray">
     <h1 class="text-3xl mb-2">Checkout</h1>
@@ -6,17 +7,24 @@
     <!-- START Card Container-->
     <div class="flex flex-row justify-between">
       <div>
-        <ul class="flex flex-col mt-6 mb-6">
+        <ul class="flex flex-col mt-6 mb-4">
           {% for card in user.card_set.all %}
-
+            <div id="card-info-{{ card.id }}" class="hidden text-gray-500 text-sm italic">Please enter the cards 3 digit CVC number.</div>
             <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
               <label>
                 <div class="px-4 py-6">
-                  <input type="radio" name="address" class="mx-2">
+                  <input value="{{ card.id }}" type="radio" name="card" class="mx-2 card-input"
+                         {% if checkout_card_id == card.id %}checked{% endif %}>
                   <span class="text-md font-medium mr-2">Card {{ forloop.counter }}</span>
                   <span
-                      class="text-md font-light">XXXX-XXXX-XXXX-{{ card.number|slice:"-4:" }}</span>
-                  <input type="text" class="border rounded w-12 text-center ml-4" maxlength="3" placeholder="CVC" pattern="\d*">
+                          class="text-md font-light">XXXX-XXXX-XXXX-{{ card.number|slice:"-4:" }}</span>
+                  <input id="card-id-{{ card.id }}" type="text" class="border rounded w-12 text-center ml-3 hidden"
+                         maxlength="3" placeholder="CVC"
+                         pattern="\d*">
+                  <span class="ml-3 mr-2">
+                    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
+                       href="/profile/cards/{{ card.id }}/?next=/checkout/card/">Change</a>
+                  </span>
                 </div>
               </label>
             </li>
@@ -24,33 +32,37 @@
           {% endfor %}
         </ul>
         <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="addresses/new">New card
+           href="/profile/cards/new/?next=/checkout/card/">New card
         </a>
       </div>
       <div class="flex flex-col">
-          <div>
+        <div>
           <h4 class="text-center mb-4 font-light text-sm">Step 2</h4>
           <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
           <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
           <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
-            </div>
+        </div>
       </div>
     </div>
     <div class="w-full mt-10 flex flex-row justify-between">
-    <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="addresses/new">Previous step
-        </a>
       <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="addresses/new">New step
-        </a>
-      </div>
+         href="/checkout/address/">Previous step
+      </a>
+      <button id="next-disabled" type="button"
+              class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
+              href="#">Next step
+      </button>
+      <a id="next-enabled"
+         class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden"
+         href="/checkout/confirm/">Next step
+      </a>
+    </div>
+    <h4 id="text-disabled" class="text-right mt-1">*Card required to continue</h4>
 
   </main>
 {% endblock %}
 
-<!--Address
-City
-Zip code
-Country
-Additional comments -->
-
+{% block page_scripts %}
+  <script src="{% static 'js/checkout.js' %}"></script>
+  <script src="{% static 'js/checkout_card.js' %}"></script>
+{% endblock %}

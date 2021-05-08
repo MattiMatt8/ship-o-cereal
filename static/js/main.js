@@ -1,5 +1,6 @@
 const CART_URL = "/cart/";
 const cartTotalElement = document.getElementById("cart_total");
+let cartTotal = Number(cartTotalElement.innerText);
 
 // Function getCookie from: https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
 function getCookie(name) {
@@ -59,16 +60,18 @@ function deleteFromCart(id, callback=undefined) {
 }
 
 function cartAddTotal(quantity=1) {
-    cartTotalElement.innerText = Number(cartTotalElement.innerText) + quantity;
+    cartTotal += quantity;
+    cartTotalElement.innerText = cartTotal;
 }
 
 function cartUpdateTotal(quantity, oldQuantity) {
-    let newQuantity = quantity - Number(oldQuantity);
-    cartTotalElement.innerText = Number(cartTotalElement.innerText) + newQuantity;
+    cartTotal += quantity - Number(oldQuantity);
+    cartTotalElement.innerText = cartTotal;
 }
 
 function cartDeleteFromTotal(quantity=1) {
-    cartTotalElement.innerText = Number(cartTotalElement.innerText) - quantity;
+    cartTotal -= quantity;
+    cartTotalElement.innerText = cartTotal;
 }
 
 
