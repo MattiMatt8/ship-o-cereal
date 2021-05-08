@@ -43,7 +43,8 @@ function decrement(e) {
         value--;
         target.value = value;
         const id = target.dataset.productId;
-        updateCart(id, Number(target.value))
+        updateCart(id, Number(target.value), updateCartAmount)
+
     }
     if (value === 1) {
         btn.disabled = true;
@@ -78,7 +79,7 @@ function increment(e) {
         leftBtn.classList.remove("cursor-not-allowed")
     }
     const id = target.dataset.productId;
-    updateCart(id, Number(target.value))
+    updateCart(id, Number(target.value), updateCartAmount)
 }
 
 const decrementButtons = document.querySelectorAll(
@@ -145,7 +146,7 @@ Array.from(inputAmountFields).forEach((item) => {
             );
             decrementBtn.classList.remove("cursor-not-allowed")
         }
-        updateCart(id, Number(e.target.value))
+        updateCart(id, Number(e.target.value), updateCartAmount)
 
     })
 })

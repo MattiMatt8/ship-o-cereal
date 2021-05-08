@@ -10,6 +10,9 @@ module.exports = {
         customViolet: "#3F2E56",
         customGreen: "#06B184",
       },
+      transitionProperty: {
+        'height': 'height'
+      }
     },
   },
   variants: {
