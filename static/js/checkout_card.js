@@ -1,39 +1,67 @@
 const cardInputs = document.getElementsByClassName("card-input");
 let currentlySelectedCVC = null;
+let currentlySelectedCVCmessage = null;
+let buttonEnabled = false;
 
 for (let cardInput of cardInputs) {
-  if (cardInput.checked == true) {
     let cvc = document.getElementById(`card-id-${cardInput.value}`);
-    cvc.classList.remove("hidden");
-    currentlySelectedCVC = cvc;
-  }
-  cardInput.addEventListener("click", (e) => {
-    if (currentlySelectedCVC) {
-      currentlySelectedCVC.classList.add("hidden");
+    let cvcMessage = document.getElementById(`card-info-${cardInput.value}`);
+    if (cardInput.checked == true) {
+        cvc.value = "";
+        cvc.classList.remove("hidden");
+        cvcMessage.classList.remove("hidden");
+        currentlySelectedCVC = cvc;
+        currentlySelectedCVCmessage = cvcMessage;
     }
-    const id = Number(cardInput.value);
-    const cvcField = document.getElementById(`card-id-${id}`);
-    cvcField.classList.remove("hidden");
-    currentlySelectedCVC = cvcField;
-    selectCard(id);
-  });
+    cvc.addEventListener("keyup", (e) => {
+        const cvcInfo = cvcMessage;
+        if (cvc.value.length === 3) {
+            let cvcNumber = Number(cvc.value);
+            if (!isNaN(cvcNumber)) {
+                enableButton();
+                buttonEnabled = true;
+                cvcInfo.classList.add("hidden");
+            }
+        } else {
+            if (buttonEnabled) disableButton();
+            if (currentlySelectedCVCmessage.classList.contains("hidden")) currentlySelectedCVCmessage.classList.remove("hidden");
+        }
+    });
+    cardInput.addEventListener("click", (e) => {
+        const id = Number(cardInput.value);
+        const cvcField = cvc;
+        const cvcInfo = cvcMessage;
+        selectCard(id, cvcField, cvcInfo);
+    });
 }
-// TODO: Cart selected in view when entering card site
-// TODO: CVC when switching between cards
-// TODO: Check if CVC has been filled to continue
+// TODO: Select card automatically after it has been added
+// TODO: Select address automatically after it has been added
+
+// TODO: Store CVC code between pages?
 
 // TODO: Travelling between views can't skip steps and confirmation stuff some for finished step
 
-// TODO: Allow to press minus on amount to remove item completely
-function selectCard(id) {
-  axios
-    .post(CHECKOUT_URL + "card/" + id + "/", null, {
-      headers: { "X-CSRFToken": CSRF_TOKEN },
-    })
-    .then((response) => {
-      enableButton();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+function selectCard(id, cvcField, cvcInfo) {
+    axios
+        .post(CHECKOUT_URL + "card/" + id + "/", null, {
+            headers: {"X-CSRFToken": CSRF_TOKEN},
+        })
+        .then((response) => {
+            if (currentlySelectedCVC) {
+                currentlySelectedCVC.classList.add("hidden");
+                currentlySelectedCVC = cvcField;
+                currentlySelectedCVCmessage.classList.add("hidden");
+                currentlySelectedCVCmessage = cvcInfo;
+            }
+            cvcField.value = "";
+            cvcField.classList.remove("hidden");
+            cvcInfo.classList.remove("hidden");
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
+
+// enableButton();
+// Ting.length
+// isNaN(Number(Ting))

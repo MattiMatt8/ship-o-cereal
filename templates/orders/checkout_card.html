@@ -9,11 +9,11 @@
       <div>
         <ul class="flex flex-col mt-6 mb-4">
           {% for card in user.card_set.all %}
-
+            <div id="card-info-{{ card.id }}" class="hidden text-gray-500 text-sm italic">Please enter the cards 3 digit CVC number.</div>
             <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
               <label>
                 <div class="px-4 py-6">
-                  <input value="{{ card.id }}" type="radio" name="address" class="mx-2 card-input"
+                  <input value="{{ card.id }}" type="radio" name="card" class="mx-2 card-input"
                          {% if checkout_card_id == card.id %}checked{% endif %}>
                   <span class="text-md font-medium mr-2">Card {{ forloop.counter }}</span>
                   <span
@@ -54,10 +54,10 @@
       </button>
       <a id="next-enabled"
          class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden"
-         href="/checkout/card/">Next step
+         href="/checkout/confirm/">Next step
       </a>
     </div>
-    <h4 id="text-disabled" class="text-right mt-1">*Address required to continue</h4>
+    <h4 id="text-disabled" class="text-right mt-1">*Card required to continue</h4>
 
   </main>
 {% endblock %}
