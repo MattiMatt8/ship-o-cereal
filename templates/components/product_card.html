@@ -27,9 +27,7 @@
         <div class="custom-number-input w-30">
           <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
             <button
-                {% if product.id|stringformat:"i" not in cart %} disabled {% elif cart|get_item:product_id < 2 %} disabled {% endif %}
-
-                class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none {% if cart is None %} cursor-not-allowed {% elif product.id|stringformat:"i" not in cart %} cursor-not-allowed {% elif cart|get_item:product_id < 2 %} cursor-not-allowed {% else %} cursor-pointer hover:text-gray-700 hover:bg-gray-200 {% endif %}"
+                class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
                 data-action="decrement"
                 type="button">
               <span class="m-auto text-2xl font-thin">−</span>
