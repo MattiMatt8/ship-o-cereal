@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <main class="container mx-auto my-16 text-customGray">
+  <main class="container mx-auto mb-16 mt-10 text-customGray">
+    {% include 'components/back_button.html' %}
     <h1 class="text-3xl mb-2">Checkout</h1>
     <h3 class="text-xl">Select a shipping address</h3>
     <!-- START Card Container-->
@@ -43,17 +44,16 @@
       </div>
     </div>
     <div class="w-full mt-10 flex flex-row justify-end">
-      <div class="flex flex-col justify-end">
-        <a class="w-full text-2xl rounded p-2 border-4 border-red-400 text-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="#">Next step
-        </a>
-        <h4>*Address required to continue</h4>
-      </div>
-    </div>
-      <a class="text-2xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md"
-         href="checkout/card/">Next step
+      <button type="button" class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
+         href="#">Next step
+      </button>
+      <a class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md"
+         href="/checkout/card/">Next step
       </a>
+    </div>
+    <h4 class="text-right">*Address required to continue</h4>
   </main>
+
 {% endblock %}
 
 {% block page_scripts %}
