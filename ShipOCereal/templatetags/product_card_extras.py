@@ -6,4 +6,4 @@ def get_item(dictionary, key):
     print("yeet")
     print(dictionary)
     print("yote")
-    return dictionary.get(key)
+    return dictionary.get(str(key))
