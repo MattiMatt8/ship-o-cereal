@@ -23,13 +23,15 @@ function decrement(e) {
         target.value = value;
         const id = Number(buyButton.dataset.productId);
         updateCart(id, Number(target.value))
-    } else {
+    }
+    if (value == 1) {
         btn.disabled = true;
         btn.classList.remove(
             "cursor-pointer",
             "hover:text-gray-700",
             "hover:bg-gray-200"
         );
+        btn.classList.add("cursor-not-allowed")
     }
 }
 
@@ -42,7 +44,7 @@ function increment(e) {
     value++;
     target.value = value;
 
-    if (value === 2) {
+    if (value > 1) {
         const leftBtn = e.target.parentNode.parentElement.querySelector(
             'button[data-action="decrement"]'
         );
@@ -52,6 +54,7 @@ function increment(e) {
             "hover:text-gray-700",
             "hover:bg-gray-200"
         );
+        leftBtn.classList.remove("cursor-not-allowed")
     }
     const id = Number(buyButton.dataset.productId);
     updateCart(id, Number(target.value))
@@ -77,28 +80,52 @@ incrementButtons.forEach((btn) => {
 
 // Restricts input for the given textbox to the given inputFilter function.
 function setInputFilter(textbox, inputFilter) {
-  ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function(event) {
-    textbox.addEventListener(event, function() {
-      if (inputFilter(this.value)) {
-        this.oldValue = this.value;
-        this.oldSelectionStart = this.selectionStart;
-        this.oldSelectionEnd = this.selectionEnd;
-      } else if (this.hasOwnProperty("oldValue")) {
-        this.value = this.oldValue;
-        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-      } else {
-        this.value = "";
-      }
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+        textbox.addEventListener(event, function () {
+            if (inputFilter(this.value)) {
+                this.oldValue = this.value;
+                this.oldSelectionStart = this.selectionStart;
+                this.oldSelectionEnd = this.selectionEnd;
+            } else if (this.hasOwnProperty("oldValue")) {
+                this.value = this.oldValue;
+                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            } else {
+                this.value = "";
+            }
+        });
     });
-  });
 }
 
-setInputFilter(inputAmountField, function(value) {
-  return /^[0-9]+$/.test(value); // Allow digits and '.' only, using a RegExp
+setInputFilter(inputAmountField, function (value) {
+    return /^[0-9]+$/.test(value); // Allow digits and '.' only, using a RegExp
 });
 
 inputAmountField.addEventListener('input', (e) => {
     const id = Number(buyButton.dataset.productId);
-    updateCart(id, Number(e.target.value))
+    const decrementBtn = e.target.previousElementSibling;
+
+    if (e.target.value == 0) {
+        e.target.value = 1;
+    }
+    if (e.target.value == 1) {
+        decrementBtn.disabled = true;
+        decrementBtn.classList.remove(
+            "cursor-pointer",
+            "hover:text-gray-700",
+            "hover:bg-gray-200"
+        );
+        decrementBtn.classList.add("cursor-not-allowed");
+    }
+    if (e.target.value > 1) {
+        decrementBtn.disabled = false;
+        decrementBtn.classList.add(
+            "cursor-pointer",
+            "hover:text-gray-700",
+            "hover:bg-gray-200"
+        );
+        decrementBtn.classList.remove("cursor-not-allowed")
+    }
+    updateCart(id, Number(e.target.value));
+
 })
 //addToCart(id, quantity);

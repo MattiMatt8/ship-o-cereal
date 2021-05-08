@@ -44,15 +44,16 @@ function decrement(e) {
         value--;
         target.value = value;
         const id = target.dataset.productId;
-        console.log(`Gonna send in updateCart(${id}, ${Number(target.value)})})`);
         updateCart(id, Number(target.value))
-    } else {
+    }
+    if (value === 1) {
         btn.disabled = true;
         btn.classList.remove(
             "cursor-pointer",
             "hover:text-gray-700",
             "hover:bg-gray-200"
         );
+        btn.classList.add("cursor-not-allowed")
     }
 }
 
@@ -65,7 +66,7 @@ function increment(e) {
     value++;
     target.value = value;
 
-    if (value === 2) {
+    if (value > 1) {
         const leftBtn = e.target.parentNode.parentElement.querySelector(
             'button[data-action="decrement"]'
         );
@@ -75,9 +76,9 @@ function increment(e) {
             "hover:text-gray-700",
             "hover:bg-gray-200"
         );
+        leftBtn.classList.remove("cursor-not-allowed")
     }
     const id = target.dataset.productId;
-    console.log(`Gonna send in updateCart(${id}, ${Number(target.value)})})`);
     updateCart(id, Number(target.value))
 }
 
@@ -91,12 +92,10 @@ const incrementButtons = document.querySelectorAll(
 
 
 decrementButtons.forEach((btn) => {
-    console.log("decrement!")
     btn.addEventListener("click", decrement);
 });
 
 incrementButtons.forEach((btn) => {
-    console.log("increment!")
     btn.addEventListener("click", increment);
 });
 
@@ -126,6 +125,31 @@ Array.from(inputAmountFields).forEach((item) => {
     });
     item.addEventListener('input', (e) => {
         const id = Number(item.dataset.productId);
+        //const target = e.target.nextElementSibling;
+        const decrementBtn = e.target.previousElementSibling;
+        if (e.target.value == 0) {
+            e.target.value = 1;
+        }
+        if (e.target.value == 1) {
+            decrementBtn.disabled = true;
+            decrementBtn.classList.remove(
+                "cursor-pointer",
+                "hover:text-gray-700",
+                "hover:bg-gray-200"
+            );
+            decrementBtn.classList.add("cursor-not-allowed");
+        }
+        if (e.target.value > 1) {
+            decrementBtn.disabled = false;
+            decrementBtn.classList.add(
+                "cursor-pointer",
+                "hover:text-gray-700",
+                "hover:bg-gray-200"
+            );
+            decrementBtn.classList.remove("cursor-not-allowed")
+        }
         updateCart(id, Number(e.target.value))
+
+
     })
 })
