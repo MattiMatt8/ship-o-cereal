@@ -23,11 +23,13 @@
       >Add to cart
       </button>
       <!-- This shows only when the user has added this to their cart -->
-      <div class="text-customGray amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% endif %}">
+      <div class="text-customGray amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% elif cart is None %} hidden {% endif %}">
         <div class="custom-number-input w-30">
           <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
             <button
-                class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
+                {% if product.id|stringformat:"i" not in cart %} disabled {% elif cart|get_item:product_id < 2 %} disabled {% endif %}
+
+                class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none {% if cart is None %} cursor-not-allowed {% elif product.id|stringformat:"i" not in cart %} cursor-not-allowed {% elif cart|get_item:product_id < 2 %} cursor-not-allowed {% else %} cursor-pointer hover:text-gray-700 hover:bg-gray-200 {% endif %}"
                 data-action="decrement"
                 type="button">
               <span class="m-auto text-2xl font-thin">−</span>
@@ -36,8 +38,7 @@
                 type="text"
                 data-product-id="{{ product_id }}"
                 class="outline-none focus:outline-none text-center w-10 bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
-
-                name="custom-input-number" value="{{ cart|get_item:product_id}}"/>
+                name="custom-input-number" value="{% if cart %}{{ cart|get_item:product_id }}{% else %}0{% endif %}"/>
 
             <button data-action="increment"
                     class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-9 rounded-r cursor-pointer">

@@ -9,49 +9,147 @@
 
 const buttons = document.getElementsByClassName('buy-btn');
 
-const createIncrementor = (id, element) => {
-    console.log(element);
-    const parent = element.parentNode;
-    element.remove();
-
-    console.log(parent);
-
-    parent.innerHTML += `
-        <div class="text-customGray amountParent">
-          <div class="custom-number-input w-30">
-            <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
-              <button
-                  class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
-                  data-action="decrement"
-                  type="button">
-                <span class="m-auto text-2xl font-thin">−</span>
-              </button>
-              <input
-                  type="text"
-                  data-product-id="1"
-                  class="outline-none focus:outline-none text-center w-10 bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
-                  name="custom-input-number" value="1"/>
-              <button data-action="increment"
-                      class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-9 rounded-r cursor-pointer">
-                <span class="m-auto text-2xl font-thin">+</span>
-              </button>
-            </div>
-          </div>
-        </div>
-    
-    `
-}
-
-
-
-
 
 for (let button of buttons) {
-    button.addEventListener('click', e =>{
+    button.addEventListener('click', e => {
         const id = Number(button.dataset.productId);
         addToCart(id);
-        buildBoi(id, button);
 
     });
 }
 
+Array.from(document.getElementsByClassName('buy-btn')).forEach(buyButton => {
+    buyButton.addEventListener("click", (e) => {
+        const id = Number(buyButton.dataset.productId);
+        const amountSelect = buyButton.nextElementSibling;
+        amountSelect.getElementsByTagName('input')[0].value = 1;
+        const func = () => {
+            buyButton.classList.add("hidden");
+            amountSelect.classList.remove("hidden");
+        };
+
+        updateCart(id, 1, (callback = func));
+    });
+
+})
+
+
+function decrement(e) {
+    const btn = e.target.parentNode.parentElement.querySelector(
+        'button[data-action="decrement"]'
+    );
+    const target = btn.nextElementSibling;
+    let value = Number(target.value);
+    if (value > 1) {
+        value--;
+        target.value = value;
+        const id = target.dataset.productId;
+        updateCart(id, Number(target.value))
+    }
+    if (value === 1) {
+        btn.disabled = true;
+        btn.classList.remove(
+            "cursor-pointer",
+            "hover:text-gray-700",
+            "hover:bg-gray-200"
+        );
+        btn.classList.add("cursor-not-allowed")
+    }
+}
+
+function increment(e) {
+    const btn = e.target.parentNode.parentElement.querySelector(
+        'button[data-action="decrement"]'
+    );
+    const target = btn.nextElementSibling;
+    let value = Number(target.value);
+    value++;
+    target.value = value;
+
+    if (value > 1) {
+        const leftBtn = e.target.parentNode.parentElement.querySelector(
+            'button[data-action="decrement"]'
+        );
+        leftBtn.disabled = false;
+        leftBtn.classList.add(
+            "cursor-pointer",
+            "hover:text-gray-700",
+            "hover:bg-gray-200"
+        );
+        leftBtn.classList.remove("cursor-not-allowed")
+    }
+    const id = target.dataset.productId;
+    updateCart(id, Number(target.value))
+}
+
+const decrementButtons = document.querySelectorAll(
+    `button[data-action="decrement"]`
+);
+
+const incrementButtons = document.querySelectorAll(
+    `button[data-action="increment"]`
+);
+
+
+decrementButtons.forEach((btn) => {
+    btn.addEventListener("click", decrement);
+});
+
+incrementButtons.forEach((btn) => {
+    btn.addEventListener("click", increment);
+});
+
+// Restricts input for the given textbox to the given inputFilter function.
+function setInputFilter(textbox, inputFilter) {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+        textbox.addEventListener(event, function () {
+            if (inputFilter(this.value)) {
+                this.oldValue = this.value;
+                this.oldSelectionStart = this.selectionStart;
+                this.oldSelectionEnd = this.selectionEnd;
+            } else if (this.hasOwnProperty("oldValue")) {
+                this.value = this.oldValue;
+                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            } else {
+                this.value = "";
+            }
+        });
+    });
+}
+
+const inputAmountFields = document.getElementsByClassName('input-amount');
+
+Array.from(inputAmountFields).forEach((item) => {
+    setInputFilter(item, function (value) {
+        return /^[0-9]+$/.test(value);
+    });
+    item.addEventListener('input', (e) => {
+        const id = Number(item.dataset.productId);
+        //const target = e.target.nextElementSibling;
+        const decrementBtn = e.target.previousElementSibling;
+        if (e.target.value == 0) {
+            e.target.value = 1;
+        }
+        if (e.target.value == 1) {
+            decrementBtn.disabled = true;
+            decrementBtn.classList.remove(
+                "cursor-pointer",
+                "hover:text-gray-700",
+                "hover:bg-gray-200"
+            );
+            decrementBtn.classList.add("cursor-not-allowed");
+        }
+        if (e.target.value > 1) {
+            decrementBtn.disabled = false;
+            decrementBtn.classList.add(
+                "cursor-pointer",
+                "hover:text-gray-700",
+                "hover:bg-gray-200"
+            );
+            decrementBtn.classList.remove("cursor-not-allowed")
+        }
+        updateCart(id, Number(e.target.value))
+
+
+    })
+})

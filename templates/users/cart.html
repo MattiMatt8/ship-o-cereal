@@ -13,7 +13,7 @@
           <h2 id="cart_empty" class="text-xl mb-72 {% if products is not None %}hidden{% endif %}">Your cart is empty.</h2>
           {% if products is not None %}
             {% for product in products %}
-              {% include 'components/cart_item.html' with product=product.product price=product.price quantity=product.quantity %}
+              {% include 'components/cart_item.html' with product=product.product price=product.price quantity=product.quantity product_id=product.id|stringformat:"i" %}
             {% endfor %}
           {% endif %}
           <!-- END Item -->
