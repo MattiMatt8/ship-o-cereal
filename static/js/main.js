@@ -70,3 +70,35 @@ function cartUpdateTotal(quantity, oldQuantity) {
 function cartDeleteFromTotal(quantity=1) {
     cartTotalElement.innerText = Number(cartTotalElement.innerText) - quantity;
 }
+
+
+
+// Searchbar
+
+const searchInput = document.getElementById('search-input');
+const searchDropdown = document.getElementById('search-dropdown');
+let isHoveringDropdown = false;
+
+searchInput.addEventListener('focusin', e =>{
+    searchDropdown.classList.remove('hidden');
+})
+
+searchInput.addEventListener('focusout', e =>{
+    if (!isHoveringDropdown) {
+        searchDropdown.classList.add('hidden');
+
+    }
+})
+
+searchDropdown.addEventListener('mouseover', e =>{
+    isHoveringDropdown = true;
+})
+
+searchDropdown.addEventListener('mouseleave', e =>{
+    isHoveringDropdown = false;
+    console.log("mouseleave!")
+    if (!(document.activeElement === searchInput)) {
+        searchDropdown.classList.add('hidden');
+    }
+})
+
