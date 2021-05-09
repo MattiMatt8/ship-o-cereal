@@ -158,10 +158,6 @@ def update_cart(request, id):
             request.session["cart_total"] = 0
             cart_total = 0
         old_quantity = cart.get(str_id)
-        print("old quantity:", old_quantity) # TODO: REMOVE
-        print("quantity:", quantity)
-        print("old_total:", cart_total)
-        print("NEW TOTALLLL:", cart_total + quantity - (old_quantity if old_quantity else 0))
         if (cart_total + quantity - (old_quantity if old_quantity else 0)) > settings.MAX_ITEMS_IN_CART:
             print("DAS ERROR")
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
@@ -253,8 +249,8 @@ def cart(request):
                 pass
         request.session["cart_total"] = cart_total
     request.session["cart"] = updated_cart
-    order.products_amount = round(float(products_amount_fraction),2)
-    order.shipping_cost = 0 if order.products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
+    order.products_total = round(float(products_amount_fraction),2)
+    order.shipping_cost = 0 if order.products_total > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     order.total = round(float(products_amount_fraction + Fraction(order.shipping_cost)),2)
     if len(order_items) > 0:
         request.session["order"] = serializers.serialize("json", [order])

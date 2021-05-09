@@ -47,6 +47,8 @@ for (let cardInput of cardInputs) {
 
 // TODO: CHECK on user what stuff is required when registering for account
 
+// TODO: In checkout check the date of the order and make sure it is not older than a day or something
+
 function selectCard(id, cvcField, cvcInfo) {
     axios
         .post(CHECKOUT_URL + "card/" + id + "/", null, {
