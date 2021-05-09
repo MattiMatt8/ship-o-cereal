@@ -23,7 +23,6 @@ const CSRF_TOKEN = getCookie('csrftoken');
 function updateCart(id, quantity, callback=undefined, in_cart=false) {
     axios.post(CART_URL + id + "/", {"quantity": quantity, "in_cart": in_cart}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
-            console.log(response.status)
             cartUpdateTotal(quantity, response.data.old_quantity);
             if (callback) {
                 callback();

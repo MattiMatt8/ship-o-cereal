@@ -44,6 +44,8 @@ for (let cardInput of cardInputs) {
 // TODO: Cart keep until order confirm
 // TODO: Or recreate the cart?
 
+// TODO: CHECK on user what stuff is required when registering for account
+
 function selectCard(id, cvcField, cvcInfo) {
     axios
         .post(CHECKOUT_URL + "card/" + id + "/", null, {

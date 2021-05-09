@@ -143,10 +143,11 @@ def delete_card(request, id):
     return redirect("profile" if next_query is None else next_query)
 
 
-def cart_help(request, id):
+def update_cart(request, id):
     if request.method == "POST":
         cart_total = request.session.get("cart_total")
         body = json.loads(request.body.decode('utf-8'))
+        in_cart = body.get("in_cart")
         quantity = body.get("quantity")
         cart = request.session.get("cart")
         str_id = str(id)
@@ -156,19 +157,28 @@ def cart_help(request, id):
             request.session["cart_total"] = 0
             cart_total = 0
         old_quantity = cart.get(str_id)
+        print("old quantity:", old_quantity) # TODO: REMOVE
+        print("quantity:", quantity)
+        print("old_total:", cart_total)
+        print("NEW TOTALLLL:", cart_total + quantity - (old_quantity if old_quantity else 0))
         if (cart_total + quantity - (old_quantity if old_quantity else 0)) > 100:
+            print("DAS ERROR")
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
         if old_quantity:
             request.session["cart_total"] -= old_quantity
         cart[str_id] = quantity
+        if in_cart:
+            order_items = []
+            for obj in serializers.deserialize("json", request.session.get("order_items")):
+                order_item = obj.object
+                if order_item.product.id == id:
+                    order_item.quantity = quantity
+                order_items.append(order_item)
+            request.session["order_items"] = serializers.serialize("json", order_items)
         request.session.modified = True
         request.session["cart_total"] += quantity
         return JsonResponse({"message": "Cart updated.", "old_quantity": old_quantity}, status=201)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
-
-
-def update_cart(request, id):
-    return cart_help(request, id)
 
 
 def delete_from_cart(request, id):
@@ -180,17 +190,13 @@ def delete_from_cart(request, id):
             del request.session["cart"][str(id)]
             request.session.modified = True
             request.session["cart_total"] -= quantity
-
             if in_cart:
                 order_items = []
-                print(request.session.get("order_items"))
                 for obj in serializers.deserialize("json", request.session.get("order_items")):
                     order_item = obj.object
                     if order_item.product.id != id:
                         order_items.append(order_item)
                 request.session["order_items"] = serializers.serialize("json", order_items)
-
-                print(request.session.get("order_items"))
             return JsonResponse({"message": "Item deleted from cart.", "quantity": quantity}, status=200)
         except KeyError:
             return JsonResponse({"message": "Error: Item does not exist."}, status=405)
