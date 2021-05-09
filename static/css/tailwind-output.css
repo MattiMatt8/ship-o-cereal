@@ -32092,6 +32092,18 @@ video {
   transition-duration: 150ms;
 }
 
+.transition-top {
+  transition-property: top;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-right {
+  transition-property: right;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .ease-linear {
   transition-timing-function: linear;
 }
@@ -32238,6 +32250,88 @@ video {
   }
 }
 
+@-webkit-keyframes searchDropdownKeyFramesOpen {
+  0% {
+    top: 0.75rem;
+    max-height: 0;
+  }
+
+  50% {
+    top: 2.75rem;
+  }
+
+  100% {
+    max-height: 16rem;
+    top: 2.75rem;
+  }
+}
+
+@keyframes searchDropdownKeyFramesOpen {
+  0% {
+    top: 0.75rem;
+    max-height: 0;
+  }
+
+  50% {
+    top: 2.75rem;
+  }
+
+  100% {
+    max-height: 16rem;
+    top: 2.75rem;
+  }
+}
+
+@-webkit-keyframes searchDropdownKeyFramesClose {
+  0% {
+    max-height: 16rem;
+    top: 2.75rem;
+  }
+
+  60% {
+    max-height: 0.75rem;
+    top: 2rem;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0;
+  }
+
+  100% {
+    max-height: 0;
+    top: 0.75rem;
+  }
+}
+
+@keyframes searchDropdownKeyFramesClose {
+  0% {
+    max-height: 16rem;
+    top: 2.75rem;
+  }
+
+  60% {
+    max-height: 0.75rem;
+    top: 2rem;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  70% {
+    opacity: 0;
+  }
+
+  100% {
+    max-height: 0;
+    top: 0.75rem;
+  }
+}
+
 .animate-none {
   -webkit-animation: none;
           animation: none;
@@ -32261,6 +32355,16 @@ video {
 .animate-bounce {
   -webkit-animation: bounce 1s infinite;
           animation: bounce 1s infinite;
+}
+
+.animate-searchDropdownOpen {
+  -webkit-animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+          animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+}
+
+.animate-searchDropdownClose {
+  -webkit-animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
+          animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
 }
 
 .mix-blend-normal {
@@ -64428,6 +64532,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .sm\:transition-top {
+    transition-property: top;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .sm\:transition-right {
+    transition-property: right;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .sm\:ease-linear {
     transition-timing-function: linear;
   }
@@ -64531,6 +64647,16 @@ video {
   .sm\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
             animation: bounce 1s infinite;
+  }
+
+  .sm\:animate-searchDropdownOpen {
+    -webkit-animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+  }
+
+  .sm\:animate-searchDropdownClose {
+    -webkit-animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
   }
 
   .sm\:mix-blend-normal {
@@ -96607,6 +96733,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .md\:transition-top {
+    transition-property: top;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .md\:transition-right {
+    transition-property: right;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .md\:ease-linear {
     transition-timing-function: linear;
   }
@@ -96710,6 +96848,16 @@ video {
   .md\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
             animation: bounce 1s infinite;
+  }
+
+  .md\:animate-searchDropdownOpen {
+    -webkit-animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+  }
+
+  .md\:animate-searchDropdownClose {
+    -webkit-animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
   }
 
   .md\:mix-blend-normal {
@@ -128786,6 +128934,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .lg\:transition-top {
+    transition-property: top;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .lg\:transition-right {
+    transition-property: right;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .lg\:ease-linear {
     transition-timing-function: linear;
   }
@@ -128889,6 +129049,16 @@ video {
   .lg\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
             animation: bounce 1s infinite;
+  }
+
+  .lg\:animate-searchDropdownOpen {
+    -webkit-animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+  }
+
+  .lg\:animate-searchDropdownClose {
+    -webkit-animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
   }
 
   .lg\:mix-blend-normal {
@@ -160965,6 +161135,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .xl\:transition-top {
+    transition-property: top;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .xl\:transition-right {
+    transition-property: right;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .xl\:ease-linear {
     transition-timing-function: linear;
   }
@@ -161068,6 +161250,16 @@ video {
   .xl\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
             animation: bounce 1s infinite;
+  }
+
+  .xl\:animate-searchDropdownOpen {
+    -webkit-animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+  }
+
+  .xl\:animate-searchDropdownClose {
+    -webkit-animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
   }
 
   .xl\:mix-blend-normal {
@@ -193144,6 +193336,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .\32xl\:transition-top {
+    transition-property: top;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .\32xl\:transition-right {
+    transition-property: right;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .\32xl\:ease-linear {
     transition-timing-function: linear;
   }
@@ -193247,6 +193451,16 @@ video {
   .\32xl\:animate-bounce {
     -webkit-animation: bounce 1s infinite;
             animation: bounce 1s infinite;
+  }
+
+  .\32xl\:animate-searchDropdownOpen {
+    -webkit-animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesOpen 300ms ease-out 0s 1 normal forwards;
+  }
+
+  .\32xl\:animate-searchDropdownClose {
+    -webkit-animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
+            animation: searchDropdownKeyFramesClose 300ms ease-out 0s 1 normal forwards;
   }
 
   .\32xl\:mix-blend-normal {

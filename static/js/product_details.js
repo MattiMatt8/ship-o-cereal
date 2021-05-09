@@ -7,6 +7,8 @@ buyButton.addEventListener("click", (e) => {
     const callback = (error) => {
         if (error) {
             // TODO: Display error message to user
+            renderNotification(error, "error");
+
         } else {
             buyButton.classList.add("hidden");
             amountSelect.classList.remove("hidden");
@@ -27,6 +29,8 @@ function decrement(e) {
         const callback = (error) => {
             if (error) {
                 // TODO: Display error message to user
+                renderNotification(error, "error");
+
             } else {
                 value--;
                 target.value = value;
@@ -34,11 +38,10 @@ function decrement(e) {
         }
         updateCart(id, Number(target.value) - 1, callback);
     } else {
-        // TODO: Show buy now button and updateCart(id, 0)
-
         const callback = (error) => {
             if (error) {
                 // TODO: Display error message to user
+                renderNotification(error, "error");
             } else {
                 buyButton.classList.remove("hidden");
                 amountSelect.classList.add("hidden");
@@ -59,6 +62,7 @@ function increment(e) {
     const callback = (error) => {
         if (error) {
             // TODO: Display error message to user
+            renderNotification(error, "error");
         } else {
             value++;
             target.value = value;

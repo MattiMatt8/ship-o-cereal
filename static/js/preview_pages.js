@@ -16,7 +16,8 @@ Array.from(buttons).forEach(buyButton => {
         amountSelect.getElementsByTagName('input')[0].value = 1;
         const callback = (error) => {
             if (error) {
-                    // TODO: Display error message to user
+                // TODO: Display error message to user
+                renderNotification(error, "error");
             } else {
                 buyButton.classList.add("hidden");
                 amountSelect.classList.remove("hidden");
@@ -38,9 +39,11 @@ function decrement(e) {
         const callback = (error) => {
             if (error) {
                 // TODO: Display error message to user
+                renderNotification(error, "error");
             } else {
                 value--;
                 target.value = value;
+                target.oldValue = target.value;
             }
         }
 
@@ -52,6 +55,7 @@ function decrement(e) {
         const callback = (error) => {
             if (error) {
                 // TODO: Display error message to user
+                renderNotification(error, "error");
 
             } else {
                 buyBtn.classList.remove('hidden');
@@ -73,10 +77,11 @@ function increment(e) {
     const callback = (error) => {
         if (error) {
             // TODO: Display an error notification with a message
-            renderNotification("Your cart is full, please finish your purchase before adding more. shiii this is a long ass message", "error");
+            renderNotification(error, "error");
         } else {
             value++;
             target.value = value;
+            target.oldValue = value
 
             if (value > 1) {
                 const leftBtn = e.target.parentNode.parentElement.querySelector(
@@ -115,12 +120,33 @@ incrementButtons.forEach((btn) => {
 // Restricts input for the given textbox to the given inputFilter function.
 function setInputFilter(textbox, inputFilter) {
     ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
-        textbox.addEventListener(event, function () {
-            if (inputFilter(this.value)) {
-                this.oldValue = this.value;
-                this.oldSelectionStart = this.selectionStart;
-                this.oldSelectionEnd = this.selectionEnd;
-            } else if (this.hasOwnProperty("oldValue")) {
+        textbox.addEventListener(event, function (e) {
+            this.selectionStart = this.selectionEnd = this.value.length;
+            if (inputFilter(this.value) && this.value != 0) {
+                // TODO: DO CODE
+                const callback = (error) => {
+                    if (!error) {
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                        return
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                        this.value = "";
+                    }
+                    // TODO: Display error notification
+                    console.log("Bruh here should be an error")
+                    renderNotification(error, "error")
+                }
+
+                const id = e.target.dataset.productId;
+                updateCart(id, Number(e.target.value), callback);
+                return
+            }
+
+            if (this.hasOwnProperty("oldValue")) {
                 this.value = this.oldValue;
                 this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
             } else {
@@ -128,19 +154,15 @@ function setInputFilter(textbox, inputFilter) {
             }
         });
     });
+
 }
+
 
 const inputAmountFields = document.getElementsByClassName('input-amount');
 
 Array.from(inputAmountFields).forEach((item) => {
+    item.oldValue = item.value;
     setInputFilter(item, function (value) {
         return /^[0-9]+$/.test(value);
     });
-    item.addEventListener('input', (e) => {
-        const id = Number(item.dataset.productId);
-        if (e.target.value == 0) {
-            e.target.value = 1;
-        }
-        updateCart(id, Number(e.target.value))
-    })
 })

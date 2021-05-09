@@ -71,16 +71,14 @@ const searchDropdown = document.getElementById('search-dropdown');
 let isHoveringDropdown = false;
 
 searchInput.addEventListener('focusin', e => {
-    searchDropdown.classList.remove('max-h-0', 'overflow-hidden');
-    searchDropdown.classList.add('max-h-64');
-
+    searchDropdown.classList.add('animate-searchDropdownOpen');
+    searchDropdown.classList.remove('animate-searchDropdownClose');
 })
 
 searchInput.addEventListener('focusout', e => {
     if (!isHoveringDropdown) {
-        searchDropdown.classList.add('max-h-0');
-        searchDropdown.classList.remove('max-h-64');
-
+        searchDropdown.classList.remove('animate-searchDropdownOpen');
+        searchDropdown.classList.add('animate-searchDropdownClose');
     }
 })
 
@@ -90,28 +88,30 @@ searchDropdown.addEventListener('mouseover', e => {
 
 searchDropdown.addEventListener('mouseleave', e => {
     isHoveringDropdown = false;
-    console.log("mouseleave!")
     if (!(document.activeElement === searchInput)) {
-        searchDropdown.classList.add('max-h-0');
-        searchDropdown.classList.remove('max-h-64');
+        searchDropdown.classList.remove('animate-searchDropdownOpen');
+        searchDropdown.classList.add('animate-searchDropdownClose');
     }
 })
 
 
 const renderNotification = (message, type) => {
 
-    console.log(body)
     console.log(message)
     if (type === "error") {
 
-
         const errorNotification = document.getElementById('error-notification');
         const messageSpan = document.getElementById('error-notification-message');
-        errorNotification.classList.add('w-64')
+
+        messageSpan.textContent = message;
+
+        errorNotification.classList.add('right-6');
+        errorNotification.classList.remove('-right-96');
 
         setTimeout(() => {
-            const notification = document.getElementById('error-notification');
-            notification.remove()
+            errorNotification.classList.remove('right-6');
+            errorNotification.classList.add('-right-96');
+
         }, 5000)
     }
 }

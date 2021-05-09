@@ -40,23 +40,29 @@ function decrement(e) {
     const target = btn.nextElementSibling;
     let value = Number(target.value);
     if (value > 1) {
-        const callback = () => {
-            value--;
-            target.value = value;
-            updateCartAmount();
+        const callback = (error) => {
+            if (error) {
+                renderNotification(error, "error");
+            } else {
+                value--;
+                target.value = value;
+                if (value === 1) {
+                    btn.disabled = true;
+                    btn.classList.remove(
+                        "cursor-pointer",
+                        "hover:text-gray-700",
+                        "hover:bg-gray-200"
+                    );
+                    btn.classList.add("cursor-not-allowed");
+                }
+                updateCartAmount();
+            }
+
         };
         const id = target.dataset.productId;
         updateCart(id, Number(target.value) - 1, callback, true);
     }
-    if (value === 1) {
-        btn.disabled = true;
-        btn.classList.remove(
-            "cursor-pointer",
-            "hover:text-gray-700",
-            "hover:bg-gray-200"
-        );
-        btn.classList.add("cursor-not-allowed");
-    }
+
 }
 
 function increment(e) {
@@ -68,6 +74,7 @@ function increment(e) {
     const callback = (error) => {
         if (error) {
             // TODO: Display an error notification with a message
+            renderNotification(error, "error");
         } else {
             value++;
             target.value = value;
@@ -143,6 +150,10 @@ Array.from(inputAmountFields).forEach((item) => {
     item.addEventListener("input", (e) => {
         const id = Number(item.dataset.productId);
         const decrementBtn = e.target.previousElementSibling;
+        this.oldValue = this.value;
+        console.log("Here is old value!")
+        console.log(this.oldValue)
+
         if (e.target.value == 0) {
             e.target.value = 1;
         }

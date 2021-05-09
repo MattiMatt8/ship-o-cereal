@@ -28,12 +28,12 @@
         <label class="hidden" for="search-form">Search</label>
         <input
             id="search-input"
-            class=" border border-customGray rounded-l-xl rounded-r-xl py-3 px-6 shadow-inner w-full h-8"
+            class="relative z-30 border border-customGray rounded-l-xl rounded-r-xl py-3 px-6 shadow-inner w-full h-8"
             placeholder="Search"
             type="text"
         />
         <button
-            class="absolute right-0 h-full w-10 rounded-r-xl bg-customGray">
+            class="z-30 absolute right-0 h-full w-10 rounded-r-xl bg-customGray">
           <div class="flex justify-center items-center">
             <svg class="w-6 h-6 justify-center" fill="none" stroke="#fff" viewBox="0 0 24 24"
                  xmlns="http://www.w3.org/2000/svg">
@@ -43,13 +43,14 @@
           </div>
         </button>
         <!-- DROPDOWN -->
-        <div id="search-dropdown" class="z-40 overflow-y-auto absolute overflow-hidden mt-2 w-full transition-max-height ease-out max-h-0 duration-300 border-2 border-customGray rounded-xl">
+        <div id="search-dropdown"
+             class="z-20 overflow-y-auto absolute overflow-hidden w-full max-h-0 border-customGray rounded-xl border top-3 bg-white">
           <ul
-              class="w-full p-4 bg-white shadow-lg hover:shadow-xl text-customGray ">
+              class="w-full shadow-lg hover:shadow-xl text-customGray">
 
 
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
+            <li class="flex items-center justify-between border-b p-3 border-gray-300">
+              <a href="#">Cocoa Puffs og þetta er eh geggjað langur title </a>
               <button>
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                      xmlns="http://www.w3.org/2000/svg">
@@ -59,93 +60,7 @@
             </li>
 
 
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
-              <a href="#">Cocoa Puffs</a>
-              <button>
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                     xmlns="http://www.w3.org/2000/svg">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-              </button>
-            </li>
-
-
-            <li class="flex items-center justify-between border-b py-1 border-gray-300">
+            <li class="flex items-center justify-between border-b p-3 border-gray-300">
               <a href="#">Cocoa Puffs</a>
               <button>
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
