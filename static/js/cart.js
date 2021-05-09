@@ -40,10 +40,13 @@ function decrement(e) {
     const target = btn.nextElementSibling;
     let value = Number(target.value);
     if (value > 1) {
-        value--;
-        target.value = value;
+        const func = () => {
+            value--;
+            target.value = value;
+            updateCartAmount();
+        }
         const id = target.dataset.productId;
-        updateCart(id, Number(target.value), updateCartAmount)
+        updateCart(id, Number(target.value), func)
 
     }
     if (value === 1) {
@@ -63,23 +66,26 @@ function increment(e) {
     );
     const target = btn.nextElementSibling;
     let value = Number(target.value);
-    value++;
-    target.value = value;
+    const func = () => {
+        value++;
+        target.value = value;
 
-    if (value > 1) {
-        const leftBtn = e.target.parentNode.parentElement.querySelector(
-            'button[data-action="decrement"]'
-        );
-        leftBtn.disabled = false;
-        leftBtn.classList.add(
-            "cursor-pointer",
-            "hover:text-gray-700",
-            "hover:bg-gray-200"
-        );
-        leftBtn.classList.remove("cursor-not-allowed")
+        if (value > 1) {
+            const leftBtn = e.target.parentNode.parentElement.querySelector(
+                'button[data-action="decrement"]'
+            );
+            leftBtn.disabled = false;
+            leftBtn.classList.add(
+                "cursor-pointer",
+                "hover:text-gray-700",
+                "hover:bg-gray-200"
+            );
+            leftBtn.classList.remove("cursor-not-allowed")
+        }
+        updateCartAmount()
     }
     const id = target.dataset.productId;
-    updateCart(id, Number(target.value), updateCartAmount)
+    updateCart(id, Number(target.value), func)
 }
 
 const decrementButtons = document.querySelectorAll(
