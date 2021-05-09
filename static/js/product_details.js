@@ -18,21 +18,21 @@ function decrement(e) {
     );
     const target = btn.nextElementSibling;
     let value = Number(target.value);
+    const id = Number(buyButton.dataset.productId);
     if (value > 1) {
         value--;
         target.value = value;
-        const id = Number(buyButton.dataset.productId);
         updateCart(id, Number(target.value))
+    } else {
+        // TODO: Show buy now button and updateCart(id, 0)
+        const func = () => {
+            buyButton.classList.remove("hidden");
+            amountSelect.classList.add("hidden");
+        };
+
+        deleteFromCart(id, callback = func);
     }
-    if (value == 1) {
-        btn.disabled = true;
-        btn.classList.remove(
-            "cursor-pointer",
-            "hover:text-gray-700",
-            "hover:bg-gray-200"
-        );
-        btn.classList.add("cursor-not-allowed")
-    }
+
 }
 
 function increment(e) {
@@ -44,18 +44,6 @@ function increment(e) {
     value++;
     target.value = value;
 
-    if (value > 1) {
-        const leftBtn = e.target.parentNode.parentElement.querySelector(
-            'button[data-action="decrement"]'
-        );
-        leftBtn.disabled = false;
-        leftBtn.classList.add(
-            "cursor-pointer",
-            "hover:text-gray-700",
-            "hover:bg-gray-200"
-        );
-        leftBtn.classList.remove("cursor-not-allowed")
-    }
     const id = Number(buyButton.dataset.productId);
     updateCart(id, Number(target.value))
 }
@@ -102,29 +90,11 @@ setInputFilter(inputAmountField, function (value) {
 
 inputAmountField.addEventListener('input', (e) => {
     const id = Number(buyButton.dataset.productId);
-    const decrementBtn = e.target.previousElementSibling;
 
     if (e.target.value == 0) {
         e.target.value = 1;
     }
-    if (e.target.value == 1) {
-        decrementBtn.disabled = true;
-        decrementBtn.classList.remove(
-            "cursor-pointer",
-            "hover:text-gray-700",
-            "hover:bg-gray-200"
-        );
-        decrementBtn.classList.add("cursor-not-allowed");
-    }
-    if (e.target.value > 1) {
-        decrementBtn.disabled = false;
-        decrementBtn.classList.add(
-            "cursor-pointer",
-            "hover:text-gray-700",
-            "hover:bg-gray-200"
-        );
-        decrementBtn.classList.remove("cursor-not-allowed")
-    }
+
     updateCart(id, Number(e.target.value));
 
 })

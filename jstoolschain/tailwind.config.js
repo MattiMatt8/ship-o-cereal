@@ -11,7 +11,8 @@ module.exports = {
         customGreen: "#06B184",
       },
       transitionProperty: {
-        'height': 'height'
+        'height': 'height',
+        'max-height': 'max-height'
       }
     },
   },

@@ -52,15 +52,14 @@
           <h3 class="text-3xl mb-4">${{ product.price }}</h3>
           <div class="flex">
               <button id="buy-btn" data-product-id="{{ product.id }}"
-                      class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white">
+                      class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32">
                 Add to cart
               </button>
               <div id="amount-btns" class="{% if quantity is None %} hidden {% endif %} text-customGray">
                 <div class="custom-number-input w-32">
                   <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
                     <button
-                        {% if cart is None or product.id|stringformat:"i" not in cart %} disabled {% elif cart|get_item:product.id < 2 %} disabled {% endif %}
-                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none {% if cart is None or cart|get_item:product.id < 2 %} cursor-not-allowed {% else %} hover:text-gray-700 hover:bg-gray-200 {% endif %}"
+                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none hover:text-gray-700 hover:bg-gray-200"
                         data-action="decrement"
                         type="button">
                       <span class="m-auto text-2xl font-thin">−</span>

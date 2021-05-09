@@ -31904,6 +31904,18 @@ video {
   transition-duration: 150ms;
 }
 
+.transition-height {
+  transition-property: height;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-max-height {
+  transition-property: max-height;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
 .ease-linear {
   transition-timing-function: linear;
 }
@@ -64052,6 +64064,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .sm\:transition-height {
+    transition-property: height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .sm\:transition-max-height {
+    transition-property: max-height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .sm\:ease-linear {
     transition-timing-function: linear;
   }
@@ -96039,6 +96063,18 @@ video {
 
   .md\:transition-transform {
     transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .md\:transition-height {
+    transition-property: height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .md\:transition-max-height {
+    transition-property: max-height;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
@@ -128034,6 +128070,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .lg\:transition-height {
+    transition-property: height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .lg\:transition-max-height {
+    transition-property: max-height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .lg\:ease-linear {
     transition-timing-function: linear;
   }
@@ -160025,6 +160073,18 @@ video {
     transition-duration: 150ms;
   }
 
+  .xl\:transition-height {
+    transition-property: height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .xl\:transition-max-height {
+    transition-property: max-height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
   .xl\:ease-linear {
     transition-timing-function: linear;
   }
@@ -192012,6 +192072,18 @@ video {
 
   .\32xl\:transition-transform {
     transition-property: transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .\32xl\:transition-height {
+    transition-property: height;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  .\32xl\:transition-max-height {
+    transition-property: max-height;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 150ms;
   }
