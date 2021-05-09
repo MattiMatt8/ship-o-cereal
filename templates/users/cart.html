@@ -10,10 +10,10 @@
       <div class="" id="cart">
         <ul>
           <!-- START Item -->
-          <h2 id="cart_empty" class="text-xl mb-72 {% if products is not None %}hidden{% endif %}">Your cart is empty.</h2>
-          {% if products is not None %}
-            {% for product in products %}
-              {% include 'components/cart_item.html' with product=product.product price=product.price quantity=product.quantity product_id=product.id|stringformat:"i" %}
+          <h2 id="cart_empty" class="text-xl mb-72 {% if order_items is not None %}hidden{% endif %}">Your cart is empty.</h2>
+          {% if order_items is not None %}
+            {% for order_item in order_items %}
+              {% include 'components/cart_item.html' with product=order_item.product price=order_item.price quantity=order_item.quantity product_id=order_item.product.id|stringformat:"i" %}
             {% endfor %}
           {% endif %}
           <!-- END Item -->
@@ -22,19 +22,19 @@
       <!-- END Cart Items -->
 
       <!-- START View Amount -->
-      {% if products is not None %}
+      {% if order_items is not None %}
       <div class="" id="amount_box">
         <div class="flex justify-center items-center shadow-lg rounded">
           <div class="my-5 mx-8 w-72">
             <h1 class="text-center text-3xl">Amount</h1>
             <div class="my-4 text-lg">
-              <p id="product_amount">Products: ${{ products_amount }}</p>
-              <p id="shipping_amount">Shipping: ${{ shipping_amount }}</p>
+              <p id="product_amount">Products: ${{ order.products_amount }}</p>
+              <p id="shipping_amount">Shipping: ${{ order.shipping_cost }}</p>
             </div>
             <p class="text-sm font-light">Free shipping if your order is over $20, otherwise shipping costs $10.</p>
             <div class="w-full h-0.5 bg-customGray my-5"></div>
             <h3 class="text-center text-2xl font-light">Total amount</h3>
-            <h3 id="total_amount" class="text-center text-3xl my-2">${{ total_amount }}</h3>
+            <h3 id="total_amount" class="text-center text-3xl my-2">${{ order.total }}</h3>
             <div class="flex justify-center">
               <a class="rounded p-2 bg-customGreen text-white" href="/checkout/address/">Go to checkout</a>
             </div>

@@ -41,6 +41,9 @@ for (let cardInput of cardInputs) {
 
 // TODO: Travelling between views can't skip steps and confirmation stuff some for finished step
 
+// TODO: Cart keep until order confirm
+// TODO: Or recreate the cart?
+
 function selectCard(id, cvcField, cvcInfo) {
     axios
         .post(CHECKOUT_URL + "card/" + id + "/", null, {
