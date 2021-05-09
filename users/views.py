@@ -1,13 +1,14 @@
 from fractions import Fraction
 
 from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from ShipOCereal import settings
-from orders.models import OrderItem
+from orders.models import OrderItem, Order
 from products.models import Product
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
@@ -61,7 +62,10 @@ def add_address(request):
             address = form.save(commit=False)
             address.user_id = request.user.id
             address.save()
-            return redirect("profile" if next_query is None else next_query)
+            if (next_query):
+                request.session["checkout_address_id"] = address.id
+                return redirect(next_query)
+            return redirect("profile")
     else:
         form = UserAddressForm()
     return render(request, "users/add_address.html", {
@@ -103,7 +107,10 @@ def add_card(request):
             card = form.save(commit=False)
             card.user_id = request.user.id
             card.save()
-            return redirect("profile" if next_query is None else next_query)
+            if (next_query):
+                request.session["checkout_card_id"] = card.id
+                return redirect(next_query)
+            return redirect("profile")
     else:
         form = AddUserCardForm()
     return render(request, "users/add_card.html", {
@@ -173,10 +180,23 @@ def update_cart(request, id):
 def delete_from_cart(request, id):
     if request.method == "POST":
         try:
+            body = json.loads(request.body.decode('utf-8'))
+            in_cart = body.get("in_cart")
             quantity = request.session["cart"][str(id)]
             del request.session["cart"][str(id)]
             request.session.modified = True
             request.session["cart_total"] -= quantity
+
+            if in_cart:
+                order_items = []
+                print(request.session.get("order_items"))
+                for obj in serializers.deserialize("json", request.session.get("order_items")):
+                    order_item = obj.object
+                    if order_item.product.id != id:
+                        order_items.append(order_item)
+                request.session["order_items"] = serializers.serialize("json", order_items)
+
+                print(request.session.get("order_items"))
             return JsonResponse({"message": "Item deleted from cart.", "quantity": quantity})
         except KeyError:
             return JsonResponse({"message": "Error: Item does not exist."})
@@ -195,6 +215,13 @@ def cart_amount(request):
     products_amount = round(float(products_amount_fraction), 2)
     shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)), 2)
+    if products_amount != 0:
+        for obj in serializers.deserialize("json", request.session.get("order")):
+            order = obj.object
+        order.total = total_amount
+        order.shipping_cost = shipping_amount
+        order.products_total = products_amount
+        request.session["order"] = serializers.serialize("json", [order])
     return JsonResponse({
         "data": {
             "products_amount": products_amount,
@@ -203,19 +230,21 @@ def cart_amount(request):
         }
     })
 
-
+# TODO: While in cart make it so that if amount is changed or item delete it changes the OrderItem which
+# TODO: will be stored a session
 @ensure_csrf_cookie
 def cart(request):
     cart = request.session.get("cart")
     cart_total = 0
-    products = []
     updated_cart = {}
+    order_items = []
     products_amount_fraction = Fraction()
+    order = Order(user=request.user)
     if cart:
         for product_id, quantity in cart.items():
             try:
                 product = Product.objects.get(pk=int(product_id))
-                products.append(OrderItem(quantity=quantity, product=product, price=product.price))
+                order_items.append(OrderItem(quantity=quantity, product=product, price=product.price))
                 cart_total += quantity
                 products_amount_fraction += Fraction.from_float(product.price) * quantity
                 updated_cart[product_id] = quantity
@@ -223,12 +252,18 @@ def cart(request):
                 pass
         request.session["cart_total"] = cart_total
     request.session["cart"] = updated_cart
-    products_amount = round(float(products_amount_fraction),2)
-    shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
-    total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)),2)
+    order.products_amount = round(float(products_amount_fraction),2)
+    order.shipping_cost = 0 if order.products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
+    order.total = round(float(products_amount_fraction + Fraction(order.shipping_cost)),2)
+    if len(order_items) > 0:
+        request.session["order"] = serializers.serialize("json", [order])
+        request.session["order_items"] = serializers.serialize("json", order_items)
+        print(request.session["order_items"]) # TODO: REMOVE
+        # for order_item in serializers.deserialize("json", request.session.get("order_items")):
+        #     order_item.save()
+    else:
+        order_items = None
     return render(request, "users/cart.html", {
-        "products": products if len(products) > 0 else None,
-        "products_amount": products_amount,
-        "shipping_amount": shipping_amount,
-        "total_amount": total_amount
+        "order": order,
+        "order_items": order_items
     })

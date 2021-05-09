@@ -11,8 +11,7 @@ for (let button of deleteButtons) {
             parent.remove();
             updateCartAmount();
         };
-
-        deleteFromCart(id, callback = deleteItem);
+        deleteFromCart(id, callback = deleteItem, true);
     });
 }
 
@@ -43,7 +42,7 @@ function decrement(e) {
         value--;
         target.value = value;
         const id = target.dataset.productId;
-        updateCart(id, Number(target.value), updateCartAmount)
+        updateCart(id, Number(target.value), updateCartAmount, true)
 
     }
     if (value === 1) {
@@ -79,7 +78,7 @@ function increment(e) {
         leftBtn.classList.remove("cursor-not-allowed")
     }
     const id = target.dataset.productId;
-    updateCart(id, Number(target.value), updateCartAmount)
+    updateCart(id, Number(target.value), updateCartAmount, true)
 }
 
 const decrementButtons = document.querySelectorAll(
@@ -146,7 +145,7 @@ Array.from(inputAmountFields).forEach((item) => {
             );
             decrementBtn.classList.remove("cursor-not-allowed")
         }
-        updateCart(id, Number(e.target.value), updateCartAmount)
+        updateCart(id, Number(e.target.value), updateCartAmount, true)
 
     })
 })

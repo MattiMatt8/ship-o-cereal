@@ -33,8 +33,8 @@ function addToCart(id, quantity=1, callback=undefined) {
         });
 }
 
-function updateCart(id, quantity, callback=undefined) {
-    axios.post(CART_URL + id + "/", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+function updateCart(id, quantity, callback=undefined, in_cart=false) {
+    axios.post(CART_URL + id + "/", {"quantity": quantity, "in_cart": in_cart}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             cartUpdateTotal(quantity, response.data.old_quantity);
             if (callback) {
@@ -46,8 +46,8 @@ function updateCart(id, quantity, callback=undefined) {
         });
 }
 
-function deleteFromCart(id, callback=undefined) {
-    axios.post(CART_URL + id + "/delete/", null, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+function deleteFromCart(id, callback=undefined, in_cart=false) {
+    axios.post(CART_URL + id + "/delete/", {"in_cart": in_cart}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
             cartDeleteFromTotal(response.data.quantity);
             if (callback) {
