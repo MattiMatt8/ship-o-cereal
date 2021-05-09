@@ -143,38 +143,32 @@ def delete_card(request, id):
     return redirect("profile" if next_query is None else next_query)
 
 
-def cart_help(request, id, update=False):
+def cart_help(request, id):
     if request.method == "POST":
+        cart_total = request.session.get("cart_total")
         body = json.loads(request.body.decode('utf-8'))
         quantity = body.get("quantity")
         cart = request.session.get("cart")
         str_id = str(id)
-        old_quantity = 0
         if not cart or not isinstance(cart, dict):
             cart = dict()
             request.session["cart"] = cart
             request.session["cart_total"] = 0
-        if cart.get(str_id) and not update:
-            cart[str_id] += quantity
-            request.session.modified = True
-            request.session["cart_total"] += quantity
-        else:
-            if cart.get(str_id):
-                old_quantity = request.session["cart"][str_id]
-                request.session["cart_total"] -= old_quantity
-            cart[str_id] = quantity
-            request.session.modified = True
-            request.session["cart_total"] += quantity
-        return JsonResponse({"message": "Cart updated.", "old_quantity": old_quantity})
-    return JsonResponse({"message": "Error: Method not supported."})
-
-
-def add_to_cart(request, id):
-    return cart_help(request, id)
+            cart_total = 0
+        old_quantity = cart.get(str_id)
+        if (cart_total + quantity - (old_quantity if old_quantity else 0)) > 100:
+            return JsonResponse({"message": "Error: Cart item amount exceeded."}, status=400)
+        if old_quantity:
+            request.session["cart_total"] -= old_quantity
+        cart[str_id] = quantity
+        request.session.modified = True
+        request.session["cart_total"] += quantity
+        return JsonResponse({"message": "Cart updated.", "old_quantity": old_quantity}, status=201)
+    return JsonResponse({"message": "Error: Method not supported."}, status=405)
 
 
 def update_cart(request, id):
-    return cart_help(request, id, True)
+    return cart_help(request, id)
 
 
 def delete_from_cart(request, id):
@@ -197,9 +191,9 @@ def delete_from_cart(request, id):
                 request.session["order_items"] = serializers.serialize("json", order_items)
 
                 print(request.session.get("order_items"))
-            return JsonResponse({"message": "Item deleted from cart.", "quantity": quantity})
+            return JsonResponse({"message": "Item deleted from cart.", "quantity": quantity}, status=200)
         except KeyError:
-            return JsonResponse({"message": "Error: Item does not exist."})
+            return JsonResponse({"message": "Error: Item does not exist."}, status=405)
 
 
 def cart_amount(request):
@@ -228,7 +222,7 @@ def cart_amount(request):
             "shipping_amount": shipping_amount,
             "total_amount": total_amount
         }
-    })
+    }, status=200)
 
 # TODO: While in cart make it so that if amount is changed or item delete it changes the OrderItem which
 # TODO: will be stored a session
@@ -239,7 +233,7 @@ def cart(request):
     updated_cart = {}
     order_items = []
     products_amount_fraction = Fraction()
-    order = Order(user=request.user)
+    order = Order()
     if cart:
         for product_id, quantity in cart.items():
             try:

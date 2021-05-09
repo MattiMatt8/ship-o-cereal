@@ -20,22 +20,10 @@ function getCookie(name) {
 }
 const CSRF_TOKEN = getCookie('csrftoken');
 
-function addToCart(id, quantity=1, callback=undefined) {
-    axios.post(CART_URL + id + "/new/", {"quantity": quantity}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
-        .then((response) => {
-            cartAddTotal(quantity);
-            if (callback) {
-                callback();
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
 function updateCart(id, quantity, callback=undefined, in_cart=false) {
     axios.post(CART_URL + id + "/", {"quantity": quantity, "in_cart": in_cart}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
         .then((response) => {
+            console.log(response.status)
             cartUpdateTotal(quantity, response.data.old_quantity);
             if (callback) {
                 callback();
@@ -43,6 +31,9 @@ function updateCart(id, quantity, callback=undefined, in_cart=false) {
         })
         .catch((error) => {
             console.log(error);
+            if (callback) {
+                callback(false);
+            }
         });
 }
 
@@ -57,11 +48,6 @@ function deleteFromCart(id, callback=undefined, in_cart=false) {
         .catch((error) => {
             console.log(error);
         });
-}
-
-function cartAddTotal(quantity=1) {
-    cartTotal += quantity;
-    cartTotalElement.innerText = cartTotal;
 }
 
 function cartUpdateTotal(quantity, oldQuantity) {
