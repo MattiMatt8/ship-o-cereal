@@ -115,31 +115,7 @@ incrementButtons.forEach((btn) => {
 });
 
 // Restricts input for the given textbox to the given inputFilter function.
-function setInputFilter(textbox, inputFilter) {
-    [
-        "input",
-        "keydown",
-        "keyup",
-        "mousedown",
-        "mouseup",
-        "select",
-        "contextmenu",
-        "drop",
-    ].forEach(function (event) {
-        textbox.addEventListener(event, function () {
-            if (inputFilter(this.value)) {
-                this.oldValue = this.value;
-                this.oldSelectionStart = this.selectionStart;
-                this.oldSelectionEnd = this.selectionEnd;
-            } else if (this.hasOwnProperty("oldValue")) {
-                this.value = this.oldValue;
-                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-            } else {
-                this.value = "";
-            }
-        });
-    });
-}
+
 
 const inputAmountFields = document.getElementsByClassName("input-amount");
 
@@ -151,8 +127,6 @@ Array.from(inputAmountFields).forEach((item) => {
         const id = Number(item.dataset.productId);
         const decrementBtn = e.target.previousElementSibling;
         this.oldValue = this.value;
-        console.log("Here is old value!")
-        console.log(this.oldValue)
 
         if (e.target.value == 0) {
             e.target.value = 1;

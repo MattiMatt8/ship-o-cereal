@@ -1,39 +1,42 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Ship O' Cereal</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static "css/tailwind-output.css" %}"/>
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicons/apple-touch-icon.png' %}"/>
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicons/favicon-32x32.png' %}"/>
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicons/favicon-16x16.png' %}"/>
-    <link rel="manifest" href="{% static 'images/favicons/site.webmanifest' %}" />
+<head>
+  <meta charset="UTF-8"/>
+  <title>Ship O' Cereal</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static "css/tailwind-output.css" %}"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicons/apple-touch-icon.png' %}"/>
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicons/favicon-32x32.png' %}"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicons/favicon-16x16.png' %}"/>
+  <link rel="manifest" href="{% static 'images/favicons/site.webmanifest' %}"/>
 
 
-    {% block page_styles %}
-    {% endblock %}
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Roboto&display=swap" rel="stylesheet"/>
-  </head>
-  <body class="min-height-screen">
-  <!-- Notifications -->
-  {% include 'components/error_notification.html' %}
+  {% block page_styles %}
+  {% endblock %}
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Courgette&family=Roboto&display=swap" rel="stylesheet"/>
+</head>
+<body class="h-screen">
+<!-- Notifications -->
+{% include 'components/error_notification.html' %}
 
-  <!-- Header -->
-  <div class="container mx-auto">
-    {% include 'components/header.html' %}
-  </div>
+<!-- Header -->
+<div class="container mx-auto">
+  {% include 'components/header.html' %}
+</div>
+
+<div style="min-height: calc(100vh - 113px - 288px)">
   {% block content %}
   {% endblock %}
+</div>
 
-  <!-- Footer -->
-  {% include 'components/footer.html' %}
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="{% static 'js/main.js' %}"></script>
-  {% block page_scripts %}
-  {% endblock %}
-  </body>
+<!-- Footer -->
+{% include 'components/footer.html' %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{% static 'js/main.js' %}"></script>
+{% block page_scripts %}
+{% endblock %}
+</body>
 </html>

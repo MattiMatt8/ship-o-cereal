@@ -96,8 +96,6 @@ searchDropdown.addEventListener('mouseleave', e => {
 
 
 const renderNotification = (message, type) => {
-
-    console.log(message)
     if (type === "error") {
 
         const errorNotification = document.getElementById('error-notification');
@@ -114,4 +112,48 @@ const renderNotification = (message, type) => {
 
         }, 5000)
     }
+}
+
+
+
+// Input filter used for validation
+
+// Restricts input for the given textbox to the given inputFilter function.
+const setInputFilter = (textbox, inputFilter) => {
+    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+        textbox.addEventListener(event, function (e) {
+            this.selectionStart = this.selectionEnd = this.value.length;
+            if (inputFilter(this.value) && this.value != 0) {
+                // If a number was an input, it's safe to make the request to the server
+                const callback = (error) => {
+                    if (!error) {
+                        // If success then mark the new number as an old number we can revert to if something fails.
+                        this.oldValue = this.value;
+                        this.oldSelectionStart = this.selectionStart;
+                        this.oldSelectionEnd = this.selectionEnd;
+                        return
+                    } else if (this.hasOwnProperty("oldValue")) {
+                        this.value = this.oldValue;
+                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                    } else {
+                        this.value = "";
+                    }
+                    // TODO: Display error notification
+                    renderNotification(error, "error")
+                }
+
+                const id = e.target.dataset.productId;
+                updateCart(id, Number(e.target.value), callback);
+                return
+            }
+
+            if (this.hasOwnProperty("oldValue")) {
+                this.value = this.oldValue;
+                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+            } else {
+                this.value = "";
+            }
+        });
+    });
+
 }

@@ -30,10 +30,10 @@ function decrement(e) {
             if (error) {
                 // TODO: Display error message to user
                 renderNotification(error, "error");
-
             } else {
                 value--;
                 target.value = value;
+                target.oldValue = value;
             }
         }
         updateCart(id, Number(target.value) - 1, callback);
@@ -66,7 +66,7 @@ function increment(e) {
         } else {
             value++;
             target.value = value;
-
+            target.oldValue = value;
         }
     }
 
@@ -93,36 +93,10 @@ incrementButtons.forEach((btn) => {
 });
 
 // Restricts input for the given textbox to the given inputFilter function.
-function setInputFilter(textbox, inputFilter) {
-    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
-        textbox.addEventListener(event, function () {
-            if (inputFilter(this.value)) {
-                this.oldValue = this.value;
-                this.oldSelectionStart = this.selectionStart;
-                this.oldSelectionEnd = this.selectionEnd;
-            } else if (this.hasOwnProperty("oldValue")) {
-                this.value = this.oldValue;
-                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-            } else {
-                this.value = "";
-            }
-        });
-    });
-}
+inputAmountField.oldValue = inputAmountField.value;
 
 setInputFilter(inputAmountField, function (value) {
     return /^[0-9]+$/.test(value); // Allow digits and '.' only, using a RegExp
 });
 
-inputAmountField.addEventListener('input', (e) => {
-    const id = Number(buyButton.dataset.productId);
 
-    if (e.target.value == 0) {
-        e.target.value = 1;
-    }
-
-    updateCart(id, Number(e.target.value));
-
-})
-
-//addToCart(id, quantity);

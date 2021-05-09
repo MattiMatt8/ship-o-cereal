@@ -67,6 +67,7 @@
                     <input
                            id="amount-input"
                            type="text"
+                           data-product-id="{{ product.id }}"
                            class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
                            name="custom-input-number" value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"/>
                     <button data-action="increment"
