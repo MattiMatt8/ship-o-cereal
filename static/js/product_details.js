@@ -4,12 +4,16 @@ const buyButton = document.getElementById("buy-btn");
 buyButton.addEventListener("click", (e) => {
     const id = Number(buyButton.dataset.productId);
 
-    const func = () => {
-        buyButton.classList.add("hidden");
-        amountSelect.classList.remove("hidden");
+    const callback = (error) => {
+        if (error) {
+            // TODO: Display error message to user
+        } else {
+            buyButton.classList.add("hidden");
+            amountSelect.classList.remove("hidden");
+        }
     };
 
-    updateCart(id, 1, (callback = func));
+    updateCart(id, 1, callback);
 });
 
 function decrement(e) {
@@ -20,17 +24,28 @@ function decrement(e) {
     let value = Number(target.value);
     const id = Number(buyButton.dataset.productId);
     if (value > 1) {
-        value--;
-        target.value = value;
-        updateCart(id, Number(target.value))
+        const callback = (error) => {
+            if (error) {
+                // TODO: Display error message to user
+            } else {
+                value--;
+                target.value = value;
+            }
+        }
+        updateCart(id, Number(target.value) - 1, callback);
     } else {
         // TODO: Show buy now button and updateCart(id, 0)
-        const func = () => {
-            buyButton.classList.remove("hidden");
-            amountSelect.classList.add("hidden");
-        };
 
-        deleteFromCart(id, callback = func);
+        const callback = (error) => {
+            if (error) {
+                // TODO: Display error message to user
+            } else {
+                buyButton.classList.remove("hidden");
+                amountSelect.classList.add("hidden");
+            }
+        }
+
+        deleteFromCart(id, callback);
     }
 
 }
@@ -41,11 +56,18 @@ function increment(e) {
     );
     const target = btn.nextElementSibling;
     let value = Number(target.value);
-    value++;
-    target.value = value;
+    const callback = (error) => {
+        if (error) {
+            // TODO: Display error message to user
+        } else {
+            value++;
+            target.value = value;
+
+        }
+    }
 
     const id = Number(buyButton.dataset.productId);
-    updateCart(id, Number(target.value))
+    updateCart(id, Number(target.value) + 1, callback)
 }
 
 const inputAmountField = document.getElementById('amount-input');
@@ -98,4 +120,5 @@ inputAmountField.addEventListener('input', (e) => {
     updateCart(id, Number(e.target.value));
 
 })
+
 //addToCart(id, quantity);
