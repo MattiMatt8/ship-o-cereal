@@ -32,7 +32,7 @@ function updateCart(id, quantity, callback=undefined, in_cart=false) {
         .catch((error) => {
             console.log(error);
             if (callback) {
-                callback(false);
+                callback(error);
             }
         });
 }
@@ -47,6 +47,9 @@ function deleteFromCart(id, callback=undefined, in_cart=false) {
         })
         .catch((error) => {
             console.log(error);
+            if (callback) {
+                callback(error);
+            }
         });
 }
 
