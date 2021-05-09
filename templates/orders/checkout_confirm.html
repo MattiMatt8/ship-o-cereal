@@ -1,126 +1,35 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-  <main class="container mx-auto my-16 text-customGray">
+  <main class="container mx-auto mb-16 mt-10 text-customGray">
+    {% include 'components/back_button.html' %}
     <h1 class="text-3xl mb-2">Checkout</h1>
     <h3 class="text-xl">Review your order</h3>
     <!-- START Card Container-->
     <div class="flex flex-row justify-between mt-6">
       <div class="w-2/5">
-        <h3 class="text-xl">Items</h3>
+        <h3 class="text-2xl mb-2">Items</h3>
         <ul class="flex flex-col mb-6 w-full">
+          {% for order_item in order_items %}
           <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
+            <div class="px-6 py-6 flex flex-row items-center justify-between">
               <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
+                <img src="{% static static %}images/{{ order_item.product.category }}/{{ order_item.product.image_set.first }}"
                      class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs</span>
+                <span class="block text-xl">{{ order_item.product.name }}</span>
               </div>
               <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
+                <span class="text-xl font-medium mr-6">${{ order_item.price }}</span>
+                <span class="text-base font-light">QTY: {{ order_item.quantity }}</span>
               </div>
             </div>
           </li>
-          <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
-              <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
-                     class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs Sko þetta er alveg frekar langt</span>
-              </div>
-              <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
-              </div>
-            </div>
-          </li>
-
-
-          <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
-              <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
-                     class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs Sko þetta er alveg frekar langt</span>
-              </div>
-              <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
-              </div>
-            </div>
-          </li>
-          <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
-              <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
-                     class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs Sko þetta er alveg frekar langt</span>
-              </div>
-              <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
-              </div>
-            </div>
-          </li>
-          <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
-              <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
-                     class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs Sko þetta er alveg frekar langt</span>
-              </div>
-              <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
-              </div>
-            </div>
-          </li>
-          <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
-              <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
-                     class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs Sko þetta er alveg frekar langt</span>
-              </div>
-              <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
-              </div>
-            </div>
-          </li>
-          <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
-              <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
-                     class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs Sko þetta er alveg frekar langt</span>
-              </div>
-              <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
-              </div>
-            </div>
-          </li>
-          <li class="inline shadow-lg self-start rounded mb-4 w-full">
-            <div class="px-4 py-6 flex flex-row items-center justify-between">
-              <div class="flex flex-row items-center">
-                <img src="{% static 'images/Cereal/coco_puffs.jpg' %}"
-                     class="block h-16 w-16 object-cover object-center mr-6"/>
-                <span class="block text-xl font-medium">Cocoa Puffs Sko þetta er alveg frekar langt</span>
-              </div>
-              <div class="flex flex-row items-center ml-6">
-                <span class="text-md font-medium mr-6">$4.99</span>
-                <span class="text-md font-light">QTY:1</span>
-              </div>
-            </div>
-          </li>
-
+          {% endfor %}
         </ul>
       </div>
       <div>
-        <h3 class="text-xl">Summary</h3>
-        <div class="px-4 py-6 flex flex-col shadow-lg rounded mb-4 w-4/5">
+        <h3 class="text-2xl mb-2">Summary</h3>
+        <div class="px-6 py-6 flex flex-col shadow-lg rounded mb-4 w-4/5">
           <div class="flex flex-col">
             <span class="text-lg font-medium mr-2">Billing address</span>
             <span
@@ -131,19 +40,19 @@
             <span class="text-lg font-light">XXXX-XXXX-XXXX-4543</span>
           </div>
           <div class="flex flex-col">
+            <span class="text-lg font-medium mr-2 mt-2">Products</span>
+            <span class="text-lg font-light">${{ order.products_total }}</span>
+          </div>
+          <div class="flex flex-col mb-4">
             <span class="text-lg font-medium mr-2 mt-2">Shipping</span>
             <span class="text-lg font-light">$10</span>
           </div>
-          <div class="flex flex-col">
-            <span class="text-lg font-medium mr-2 mt-2">Items</span>
-            <span class="text-lg font-light">$19.96</span>
-          </div>
           <hr>
-          <div class="flex flex-col mt-6 text-center">
-            <span class="text-xl font-bold mr-2 mt-2">Total amount</span>
-            <span class="text-lg font-medium">$29.96</span>
+          <div class="flex flex-col mt-4 text-center">
+            <span class="text-2xl font-bold">Total amount</span>
+            <span class="text-3xl">${{ order.total }}</span>
           </div>
-          <div class="text-center mt-4">
+          <div class="flex justify-center mt-4">
             <a class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen"
                href="addresses/new">Complete order
             </a>

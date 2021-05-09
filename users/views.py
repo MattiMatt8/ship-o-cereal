@@ -9,6 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from ShipOCereal import settings
 from orders.models import OrderItem, Order
+from orders.views import set_address_in_order, set_card_in_order
 from products.models import Product
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
@@ -63,7 +64,7 @@ def add_address(request):
             address.user_id = request.user.id
             address.save()
             if (next_query):
-                request.session["checkout_address_id"] = address.id
+                set_address_in_order(request, address.id)
                 return redirect(next_query)
             return redirect("profile")
     else:
@@ -108,7 +109,7 @@ def add_card(request):
             card.user_id = request.user.id
             card.save()
             if (next_query):
-                request.session["checkout_card_id"] = card.id
+                set_card_in_order(request, card.id)
                 return redirect(next_query)
             return redirect("profile")
     else:
@@ -161,7 +162,7 @@ def update_cart(request, id):
         print("quantity:", quantity)
         print("old_total:", cart_total)
         print("NEW TOTALLLL:", cart_total + quantity - (old_quantity if old_quantity else 0))
-        if (cart_total + quantity - (old_quantity if old_quantity else 0)) > 100:
+        if (cart_total + quantity - (old_quantity if old_quantity else 0)) > settings.MAX_ITEMS_IN_CART:
             print("DAS ERROR")
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
         if old_quantity:
@@ -258,9 +259,7 @@ def cart(request):
     if len(order_items) > 0:
         request.session["order"] = serializers.serialize("json", [order])
         request.session["order_items"] = serializers.serialize("json", order_items)
-        print(request.session["order_items"]) # TODO: REMOVE
-        # for order_item in serializers.deserialize("json", request.session.get("order_items")):
-        #     order_item.save()
+
     else:
         order_items = None
     return render(request, "users/cart.html", {
