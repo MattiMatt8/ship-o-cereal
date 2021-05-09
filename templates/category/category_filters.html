@@ -1,74 +1,59 @@
 <div class="flex flex-col my-3">
   <h1 class="text-3xl text-customGray">Filter</h1>
   <!-- Filter & Order by menu -->
-  <div class="flex flex-row justify-between pt-3">
-    <!-- Filter options -->
+  {% csrf_token %}
+  <form method="get" class="flex flex-row justify-between pt-3">
     <div class="flex">
-
       <!-- Dropdown menu for filtering brands -->
       <div class="relative">
-        {% csrf_token %}
-        <form method="get">
-          <div>
-            {{ filterset.form.brand }}
-            <span
-                class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center"
+        <div>
+          {{ filterset.form.brand }}
+          <span
+              class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center"
+          >
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                 class="w-4 h-4" viewBox="0 0 24 24"
             >
-              <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                   class="w-4 h-4" viewBox="0 0 24 24"
-              >
-                <path d="M6 9l6 6 6-6"></path>
-              </svg>
-            </span>
-          </div>
+              <path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </span>
+        </div>
       </div>
       <!-- END Dropdown menu for filtering brands -->
 
       <!-- Checkbox filters -->
       <div id="{{ filterset.form.labels.auto_id }}" class="flex">
-        {% for checkbox in filterset.form.labels %}
-          <div class="my-auto pl-3">
-            <label class="inline-flex items-center" for="{{ checkbox.id_for_label }}">
-              <input
-                  value="{{ checkbox.data.value }}"
-                  type="checkbox" class="form-checkbox h-5 w-5"
-                  name="labels"
-                  id="{{ checkbox.id_for_label }}"
-                {% if checkbox.data.selected %}checked{% endif %}
-              >
-                <span class="ml-2"> {{ checkbox.choice_label }} </span>
-            </label>
-          </div>
-        {% endfor %}
-      </div>
+      {% for checkbox in filterset.form.labels %}
+        <div class="my-auto pl-3">
+          <label class="inline-flex items-center" for="{{ checkbox.id_for_label }}">
+            <input
+                value="{{ checkbox.data.value }}"
+                type="checkbox" class="form-checkbox h-5 w-5"
+                name="labels"
+                id="{{ checkbox.id_for_label }}"
+              {% if checkbox.data.selected %}checked{% endif %}
+            >
+              <span class="ml-2"> {{ checkbox.choice_label }} </span>
+          </label>
+        </div>
+      {% endfor %}
+    </div>
       <!-- END Checkbox filters -->
     </div>
-    <!-- END Filter options -->
-
     <!-- Dropdown menu for ordering products -->
     <div class="relative">
-      {{filterset.form.ordering}}
+    {{ filterset.form.ordering }}
       <span
-          class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+          class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center"
+      >
         <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-             class="w-4 h-4" viewBox="0 0 24 24">
+             class="w-4 h-4" viewBox="0 0 24 24"
+        >
           <path d="M6 9l6 6 6-6"></path>
         </svg>
       </span>
     </div>
+  <!-- END Dropdown menu for ordering products -->
   </form>
 </div>
-
-
-{#      <span#}
-{#          class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">#}
-{#        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"#}
-{#             class="w-4 h-4" viewBox="0 0 24 24">#}
-{#          <path d="M6 9l6 6 6-6"></path>#}
-{#        </svg>#}
-{#      </span>#}
-    <!-- END Dropdown menu for ordering products -->
-
-
-
-  <!-- END Filter & Order by menu -->
+<!-- END Filter & Order by menu -->

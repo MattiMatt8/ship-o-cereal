@@ -1,15 +1,22 @@
-// function submitBrandFilter(e) {
-//     e.target.form.submit();
-// }
-//
-// function submitLabelFilter(e) {
-//
-// }
+/* */
+const getQueryString = () => {return window.location.search};
+const categoryUrlPath = () => {return window.location.pathname};
 
-function submitFilter(e) {
-    e.target.form.submit();
+
+function getProductsListener() {
+
+    // Event delegation for fetching products
+    function handleForm(event) {
+        // event.preventDefault();
+        event.target.form.submit();
+
+    }
+    document.getElementsByTagName("form")[1]
+        .addEventListener("change", handleForm);
 }
 
-document.getElementById("id_brand").addEventListener("change", submitFilter);
-document.getElementById("id_labels").addEventListener("change", submitFilter);
-document.getElementById("id_ordering").addEventListener("change", submitFilter);
+
+// Wait for the DOM to load completely
+document.addEventListener("DOMContentLoaded", function () {
+    getProductsListener();
+});
