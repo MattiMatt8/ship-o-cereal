@@ -20,24 +20,24 @@
               </div>
               <div class="flex flex-row items-center ml-6">
                 <span class="text-xl font-medium mr-6">${{ order_item.price }}</span>
-                <span class="text-base font-light">QTY: {{ order_item.quantity }}</span>
+                <span class="text-base font-light">QTY:&nbsp;{{ order_item.quantity }}</span>
               </div>
             </div>
           </li>
           {% endfor %}
         </ul>
       </div>
-      <div>
+      <div class="w-2/6">
         <h3 class="text-2xl mb-2">Summary</h3>
-        <div class="px-6 py-6 flex flex-col shadow-lg rounded mb-4 w-4/5">
+        <div class="px-6 py-6 flex flex-col shadow-lg rounded mb-4">
           <div class="flex flex-col">
             <span class="text-lg font-medium mr-2">Billing address</span>
             <span
-                class="text-lg font-light">123 Main Street, Unit 21, 56, New York, 10001, United States, Right door</span>
+                class="text-lg font-light">{{ order.address.street_name }} {{ order.address.house_number }}, {{ order.address.city }} {{ order.address.zip }}, {{ order.address.country }}{% if order.address.additional_comments is not None %}, {{ order.address.additional_comments }}{% endif %}</span>
           </div>
           <div class="flex flex-col">
             <span class="text-lg font-medium mr-2 mt-2">Card</span>
-            <span class="text-lg font-light">XXXX-XXXX-XXXX-4543</span>
+            <span class="text-lg font-light">XXXX-XXXX-XXXX-{{ order.card.number|slice:"-4:" }}</span>
           </div>
           <div class="flex flex-col">
             <span class="text-lg font-medium mr-2 mt-2">Products</span>
@@ -45,7 +45,7 @@
           </div>
           <div class="flex flex-col mb-4">
             <span class="text-lg font-medium mr-2 mt-2">Shipping</span>
-            <span class="text-lg font-light">$10</span>
+            <span class="text-lg font-light">${% if order.shipping_cost == 0.0 %}0{% else %}{{ order.shipping_cost }}{% endif %}</span>
           </div>
           <hr>
           <div class="flex flex-col mt-4 text-center">
