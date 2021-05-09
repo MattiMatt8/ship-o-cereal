@@ -9,6 +9,7 @@ for (let cardInput of cardInputs) {
     if (cardInput.checked == true) {
         cvc.value = "";
         cvc.classList.remove("hidden");
+        cvc.disabled = false;
         cvcMessage.classList.remove("hidden");
         currentlySelectedCVC = cvc;
         currentlySelectedCVCmessage = cvcMessage;
@@ -44,6 +45,8 @@ for (let cardInput of cardInputs) {
 // TODO: Cart keep until order confirm
 // TODO: Or recreate the cart?
 
+// TODO: CHECK on user what stuff is required when registering for account
+
 function selectCard(id, cvcField, cvcInfo) {
     axios
         .post(CHECKOUT_URL + "card/" + id + "/", null, {
@@ -52,13 +55,16 @@ function selectCard(id, cvcField, cvcInfo) {
         .then((response) => {
             if (currentlySelectedCVC) {
                 currentlySelectedCVC.classList.add("hidden");
-                currentlySelectedCVC = cvcField;
+                currentlySelectedCVC.disabled = true;
                 currentlySelectedCVCmessage.classList.add("hidden");
-                currentlySelectedCVCmessage = cvcInfo;
             }
             cvcField.value = "";
             cvcField.classList.remove("hidden");
+            cvcField.disabled = false;
             cvcInfo.classList.remove("hidden");
+            currentlySelectedCVC = cvcField;
+            currentlySelectedCVCmessage = cvcInfo;
+
         })
         .catch((error) => {
             console.log(error);
