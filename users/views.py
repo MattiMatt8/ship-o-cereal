@@ -157,7 +157,7 @@ def cart_help(request, id):
             cart_total = 0
         old_quantity = cart.get(str_id)
         if (cart_total + quantity - (old_quantity if old_quantity else 0)) > 100:
-            return JsonResponse({"message": "Error: Cart item amount exceeded."}, status=400)
+            return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
         if old_quantity:
             request.session["cart_total"] -= old_quantity
         cart[str_id] = quantity
