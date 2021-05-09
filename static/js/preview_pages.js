@@ -73,6 +73,7 @@ function increment(e) {
     const callback = (error) => {
         if (error) {
             // TODO: Display an error notification with a message
+            renderNotification("Your cart is full, please finish your purchase before adding more. shiii this is a long ass message", "error");
         } else {
             value++;
             target.value = value;

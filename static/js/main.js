@@ -18,10 +18,11 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
 const CSRF_TOKEN = getCookie('csrftoken');
 
-function updateCart(id, quantity, callback=undefined, in_cart=false) {
-    axios.post(CART_URL + id + "/", {"quantity": quantity, "in_cart": in_cart}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+function updateCart(id, quantity, callback = undefined, in_cart = false) {
+    axios.post(CART_URL + id + "/", {"quantity": quantity, "in_cart": in_cart}, {headers: {"X-CSRFToken": CSRF_TOKEN}})
         .then((response) => {
             console.log(response.status)
             cartUpdateTotal(quantity, response.data.old_quantity);
@@ -37,8 +38,8 @@ function updateCart(id, quantity, callback=undefined, in_cart=false) {
         });
 }
 
-function deleteFromCart(id, callback=undefined, in_cart=false) {
-    axios.post(CART_URL + id + "/delete/", {"in_cart": in_cart}, { headers: {"X-CSRFToken": CSRF_TOKEN }})
+function deleteFromCart(id, callback = undefined, in_cart = false) {
+    axios.post(CART_URL + id + "/delete/", {"in_cart": in_cart}, {headers: {"X-CSRFToken": CSRF_TOKEN}})
         .then((response) => {
             cartDeleteFromTotal(response.data.quantity);
             if (callback) {
@@ -58,11 +59,10 @@ function cartUpdateTotal(quantity, oldQuantity) {
     cartTotalElement.innerText = cartTotal;
 }
 
-function cartDeleteFromTotal(quantity=1) {
+function cartDeleteFromTotal(quantity = 1) {
     cartTotal -= quantity;
     cartTotalElement.innerText = cartTotal;
 }
-
 
 
 // Searchbar
@@ -71,13 +71,13 @@ const searchInput = document.getElementById('search-input');
 const searchDropdown = document.getElementById('search-dropdown');
 let isHoveringDropdown = false;
 
-searchInput.addEventListener('focusin', e =>{
+searchInput.addEventListener('focusin', e => {
     searchDropdown.classList.remove('max-h-0', 'overflow-hidden');
     searchDropdown.classList.add('max-h-64');
 
 })
 
-searchInput.addEventListener('focusout', e =>{
+searchInput.addEventListener('focusout', e => {
     if (!isHoveringDropdown) {
         searchDropdown.classList.add('max-h-0');
         searchDropdown.classList.remove('max-h-64');
@@ -85,11 +85,11 @@ searchInput.addEventListener('focusout', e =>{
     }
 })
 
-searchDropdown.addEventListener('mouseover', e =>{
+searchDropdown.addEventListener('mouseover', e => {
     isHoveringDropdown = true;
 })
 
-searchDropdown.addEventListener('mouseleave', e =>{
+searchDropdown.addEventListener('mouseleave', e => {
     isHoveringDropdown = false;
     console.log("mouseleave!")
     if (!(document.activeElement === searchInput)) {
@@ -98,3 +98,21 @@ searchDropdown.addEventListener('mouseleave', e =>{
     }
 })
 
+
+const renderNotification = (message, type) => {
+
+    console.log(body)
+    console.log(message)
+    if (type === "error") {
+
+
+        const errorNotification = document.getElementById('error-notification');
+        const messageSpan = document.getElementById('error-notification-message');
+        errorNotification.classList.add('w-64')
+
+        setTimeout(() => {
+            const notification = document.getElementById('error-notification');
+            notification.remove()
+        }, 5000)
+    }
+}

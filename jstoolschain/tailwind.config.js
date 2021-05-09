@@ -9,6 +9,7 @@ module.exports = {
         customGray: "#484848",
         customViolet: "#3F2E56",
         customGreen: "#06B184",
+        customRed: "#FF6666"
       },
       transitionProperty: {
         'height': 'height',
