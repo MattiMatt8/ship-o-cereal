@@ -1,4 +1,4 @@
-from products.models import (Category, Brand, Label)
+from products.models import Category, Brand, Label
 
 
 def menu_categories(request):
@@ -19,10 +19,11 @@ def product_brands(request):
 
 def product_labels(request):
     """
-        Context processor that provides access to product labels as a context variable.
-        """
+    Context processor that provides access to product labels as a context variable.
+    """
 
     return {"labels": Label.objects.all()}
+
 
 def get_cart(request):
     """

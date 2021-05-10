@@ -7,21 +7,29 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0013_auto_20210506_1329'),
-        ('orders', '0003_order_products_total'),
+        ("users", "0013_auto_20210506_1329"),
+        ("orders", "0003_order_products_total"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='address',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.DO_NOTHING, to='users.address'),
+            model_name="order",
+            name="address",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="users.address",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='card',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.DO_NOTHING, to='users.card'),
+            model_name="order",
+            name="card",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="users.card",
+            ),
             preserve_default=False,
         ),
     ]
