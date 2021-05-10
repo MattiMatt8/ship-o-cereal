@@ -16,8 +16,7 @@
               <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
                 <label class="cursor-pointer">
                   <div class="px-4 py-6">
-                    <input value="{{ card.id }}" type="radio" name="card" class="mx-2 card-input"
-                           {% if checkout_card_id == card.id %}checked{% endif %}>
+                    <input value="{{ card.id }}" type="radio" name="card" class="mx-2 card-input">
                     <span class="text-md font-medium mr-2">Card {{ forloop.counter }}</span>
                     <span
                             class="text-md font-light">XXXX-XXXX-XXXX-{{ card.number|slice:"-4:" }}</span>
@@ -31,7 +30,6 @@
                   </div>
                 </label>
               </li>
-
             {% endfor %}
           </ul>
           <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
@@ -58,8 +56,8 @@
            class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden">Next step
         </button>
       </div>
-      {% if cvc_error %}
-      <div class="text-red-500 mt-2 text-lg italic text-right">{{ cvc_error }}</div>
+      {% if error_message %}
+      <div class="text-red-500 mt-2 text-lg italic text-right">{{ error_message }}</div>
       {% endif %}
       <h4 id="text-disabled" class="text-right mt-1">*Card required to continue</h4>
     </form>

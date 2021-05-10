@@ -1,48 +1,61 @@
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils.timezone import now
 
 
 @login_required
 def checkout_address(request):  # TODO: Make sure cart is not empty
-    if (
-        request.method == "POST"
-    ):  # TODO: Go back to address page address is selected but can't continue
-        order = get_order(request)
-        cvc = request.POST.get("CVCfield")
+    # TODO: Go back to address page address is selected but can't continue
+    # TODO: address not on the user error
+    order = get_order(request)
+    error_message = None
+    if (request.method == "POST"):
+        try:
+            address = request.user.address_set.get(pk=request.POST.get("address"))
+            order.address_street_name = address.street_name
+            order.address_house_number = address.house_number
+            order.address_city = address.city
+            order.address_zip = address.zip
+            order.address_country = address.country
+            order.address_additional_comments = address.additional_comments
+            keep_order(request, order)
+            return redirect("checkout_card")
+        except ObjectDoesNotExist:
+            error_message = "Invalid address."
         print("Das post:", request.POST)
     return render(
-        request, "orders/checkout_address.html"
-    )  # TODO: If user has no address, not continue, etc.
+        request, "orders/checkout_address.html",
+        {"error_message": error_message}
+    )
 
 
 @login_required
-def checkout_card(
-    request,
-):  # TODO: Make sure address has been selected & cart not empty
-    cvc_error = (
-        None  # TODO: Go back to address page address is selected but can't continue
-    )
+def checkout_card(request):
+    # TODO: Make sure address has been selected & cart not empty
+    # TODO: Go back to address page address is selected but can't continue
+    error_message = None
+    order = get_order(request)  # TODO: Check stuff with and stuff
     if request.method == "POST":
         cvc = request.POST.get("CVCfield")
-        print("Das post:", request.POST)
         try:
+            card = request.user.card_set.get(pk=request.POST.get("card"))
             cvc_int = int(cvc)
             if len(cvc) != 3:
                 raise ValueError
-            request.session["card_cvc"] = cvc_int
+            request.session["checkout_card"] = serializers.serialize("json", [card])
+            request.session["checkout_cvc"] = cvc_int
             return redirect("checkout_confirm")
         except ValueError:
-            cvc_error = "Invalid CVC number."
-    order = get_order(request)
+            error_message = "Invalid CVC number."
+        except ObjectDoesNotExist:
+            error_message = "Invalid card."
     return render(
         request,
         "orders/checkout_card.html",
-        {"checkout_card_id": order.card_id, "cvc_error": cvc_error},
-    )  # If user has no address, not continue, etc.
+        {"error_message": error_message},
+    )
 
 
 def get_order(request):
@@ -53,49 +66,15 @@ def get_order(request):
         return order
 
 
-def set_address_in_order(request, id):
-    order = get_order(request)
-    order.address_id = id
+def keep_order(request, order):
     request.session["order"] = serializers.serialize("json", [order])
-
-
-def choose_address(request, id):  # TODO: AXIOS Call move to view ting form ting
-    if request.method == "POST":
-        try:
-            address = request.user.address_set.get(
-                pk=id
-            )  # Make sure user has the address
-            set_address_in_order(request, address.id)
-            return JsonResponse({"message": "Success"}, status=201)
-        except ObjectDoesNotExist:
-            return JsonResponse({"message": "Error: Address not found."}, status=404)
-    return JsonResponse({"message": "Error: Method not supported."}, status=405)
-
-
-def set_card_in_order(request, id):
-    order = get_order(request)
-    order.card_id = id
-    request.session["order"] = serializers.serialize("json", [order])
-
-
-def choose_card(request, id):  # AXIOS call move to card view ting select ting
-    if request.method == "POST":
-        try:
-            card = request.user.card_set.get(pk=id)  # Make sure user has the card
-            set_card_in_order(request, card.id)
-            return JsonResponse({"message": "Success"}, status=201)
-        except ObjectDoesNotExist:
-            return JsonResponse({"message": "Error: Card not found."}, status=404)
-    return JsonResponse({"message": "Error: Method not supported."}, status=405)
 
 
 @login_required
-def checkout_confirm(
-    request,
-):  # TODO: Make sure address and card have been selected & cart not empty
+def checkout_confirm(request):
+    # TODO: Make sure address and card have been selected & cart not empty
+    order = get_order(request)
     if request.method == "POST":  # TODO: CHECK IF DATE IS TO OLD MAYBE REJECT?
-        order = get_order(request)
-        order.user_id = request.user.id
         order.date = now()
         order.status = "Placed"
         order.save()
@@ -106,9 +85,14 @@ def checkout_confirm(
         del request.session["order"]
         del request.session["order_items"]
         del request.session["cart"]
+        del request.session["cart_total"]
         return redirect("checkout_finished")
-        # TODO: CLEAR CASH
-    order = get_order(request)
+    order.first_name = request.user.first_name
+    order.last_name = request.user.last_name
+    order.phone_number = request.user.profile.phone
+    keep_order(request, order)
+    for obj in serializers.deserialize("json", request.session.get("checkout_card")):
+        card = obj.object
     order_items = []
     for obj in serializers.deserialize("json", request.session.get("order_items")):
         order_items.append(obj.object)
@@ -118,9 +102,12 @@ def checkout_confirm(
         {  # TODO: Probably pass in card, address and user as well
             "order": order,
             "order_items": order_items,
+            "card": card
         },
     )
 
 
+@login_required
 def checkout_finished(request):
+    # TODO: Some checks that the user just did finish an order and so forth
     return render(request, "orders/checkout_finished.html")

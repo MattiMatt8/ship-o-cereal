@@ -9,7 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from ShipOCereal import settings
 from orders.models import OrderItem, Order
-from orders.views import set_address_in_order, set_card_in_order, get_order
+from orders.views import get_order, keep_order
 from products.models import Product
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
@@ -219,12 +219,11 @@ def cart_amount(request):
     shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)), 2)
     if products_amount != 0:
-        for obj in serializers.deserialize("json", request.session.get("order")):
-            order = obj.object
+        order = get_order(request)
         order.total = total_amount
         order.shipping_cost = shipping_amount
         order.products_total = products_amount
-        request.session["order"] = serializers.serialize("json", [order])
+        keep_order(request, order)
     return JsonResponse(
         {
             "data": {
@@ -244,12 +243,9 @@ def cart(request):
     updated_cart = {}
     order_items = []
     products_amount_fraction = Fraction()
-    order = Order()
-    old_order = get_order(request)
-    print("old order:", old_order)
-    if old_order is not None:
-        order.card_id = old_order.card_id
-        order.address_id = old_order.address_id
+    order = get_order(request)
+    if order is None:
+        order = Order()
     if cart:
         for product_id, quantity in cart.items():
             try:
@@ -274,7 +270,7 @@ def cart(request):
         float(products_amount_fraction + Fraction(order.shipping_cost)), 2
     )
     if len(order_items) > 0:
-        request.session["order"] = serializers.serialize("json", [order])
+        keep_order(request, order)
         request.session["order_items"] = serializers.serialize("json", order_items)
 
     else:

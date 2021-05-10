@@ -29,10 +29,19 @@ for (let cardInput of cardInputs) {
         }
     });
     cardInput.addEventListener("click", (e) => {
-        const id = Number(cardInput.value);
         const cvcField = cvc;
         const cvcInfo = cvcMessage;
-        selectCard(id, cvcField, cvcInfo);
+        if (currentlySelectedCVC) {
+            currentlySelectedCVC.classList.add("hidden");
+            currentlySelectedCVC.disabled = true;
+            currentlySelectedCVCmessage.classList.add("hidden");
+        }
+        cvcField.value = "";
+        cvcField.classList.remove("hidden");
+        cvcField.disabled = false;
+        cvcInfo.classList.remove("hidden");
+        currentlySelectedCVC = cvcField;
+        currentlySelectedCVCmessage = cvcInfo;
     });
 }
 // TODO: Select card automatically after it has been added
@@ -48,31 +57,3 @@ for (let cardInput of cardInputs) {
 // TODO: CHECK on user what stuff is required when registering for account
 
 // TODO: In checkout check the date of the order and make sure it is not older than a day or something
-
-function selectCard(id, cvcField, cvcInfo) {
-    axios
-        .post(CHECKOUT_URL + "card/" + id + "/", null, {
-            headers: {"X-CSRFToken": CSRF_TOKEN},
-        })
-        .then((response) => {
-            if (currentlySelectedCVC) {
-                currentlySelectedCVC.classList.add("hidden");
-                currentlySelectedCVC.disabled = true;
-                currentlySelectedCVCmessage.classList.add("hidden");
-            }
-            cvcField.value = "";
-            cvcField.classList.remove("hidden");
-            cvcField.disabled = false;
-            cvcInfo.classList.remove("hidden");
-            currentlySelectedCVC = cvcField;
-            currentlySelectedCVCmessage = cvcInfo;
-
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-// enableButton();
-// Ting.length
-// isNaN(Number(Ting))

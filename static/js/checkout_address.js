@@ -5,7 +5,20 @@ for (let addressInput of addressesInputs) {
     enableButton();
   }
   addressInput.addEventListener("click", (e) => {
-    const id = Number(addressInput.value);
     enableButton();
   });
+}
+
+window.addEventListener( "pageshow", (e) => {
+  if (e.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    for (let addressInput of addressesInputs) {
+      if (addressInput.checked === true) {
+        enableButton();
+      }
+    }
+  }
+});
+
+window.onhashchange = function() {
+ console.log("has chagne")
 }
