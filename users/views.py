@@ -107,14 +107,7 @@ def add_card(request):
             card = form.save(commit=False)
             card.user_id = request.user.id
             card.save()
-<<<<<<< HEAD
             return redirect("profile" if next_query is None else next_query)
-=======
-            if next_query:
-                set_card_in_order(request, card.id)
-                return redirect(next_query)
-            return redirect("profile")
->>>>>>> f501fc63f138f6840ebbb882cc32c7a89e7c1985
     else:
         form = AddUserCardForm()
     return render(request, "users/add_card.html", {"form": form})
@@ -158,14 +151,9 @@ def update_cart(request, id):
             request.session["cart_total"] = 0
             cart_total = 0
         old_quantity = cart.get(str_id)
-<<<<<<< HEAD
-        if (cart_total + quantity - (old_quantity if old_quantity else 0)) > settings.MAX_ITEMS_IN_CART:
-=======
         if (
             cart_total + quantity - (old_quantity if old_quantity else 0)
         ) > settings.MAX_ITEMS_IN_CART:
-            print("DAS ERROR")
->>>>>>> f501fc63f138f6840ebbb882cc32c7a89e7c1985
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
         if old_quantity:
             request.session["cart_total"] -= old_quantity
@@ -249,7 +237,6 @@ def cart_amount(request):
     )
 
 
-
 @ensure_csrf_cookie
 def cart(request):
     cart = request.session.get("cart")
@@ -259,7 +246,7 @@ def cart(request):
     products_amount_fraction = Fraction()
     order = Order()
     old_order = get_order(request)
-    print("old order:",old_order)
+    print("old order:", old_order)
     if old_order is not None:
         order.card_id = old_order.card_id
         order.address_id = old_order.address_id
