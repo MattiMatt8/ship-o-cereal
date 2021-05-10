@@ -7,10 +7,9 @@ function getProductsListener() {
 
     // Event delegation for fetching products
     function handleForm(event) {
-        // event.preventDefault();
         event.target.form.submit();
-
     }
+
     document.getElementsByTagName("form")[1]
         .addEventListener("change", handleForm);
 }

@@ -17,13 +17,12 @@ PRODUCT_ORDER_BY_FIELDS = (
     ("price", "Price: Low to High"),
     ("-price", "Price: High to Low"),
     ("name", "Name: A to Z"),
-    ("-name", "Price: Z to A"),
+    ("-name", "Name: Z to A"),
     ("-id", "Newest arrivals"),
 )
 
 
 class ProductFilter(FilterSet):
-
     # Filters
     price = NumberFilter(field_name="price")
     name = CharFilter(field_name="name")

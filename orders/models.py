@@ -11,11 +11,11 @@ class Order(models.Model):
     total = models.FloatField()
     products_total = models.FloatField()
     date = models.DateTimeField(default=now)
-    status = models.CharField(max_length=255) # Maybe smaller?
+    status = models.CharField(max_length=255)  # Maybe smaller?
     shipping_cost = models.FloatField()
     address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
     card = models.ForeignKey(Card, on_delete=models.DO_NOTHING)
-    items = models.ManyToManyField(Product, through='OrderItem')
+    items = models.ManyToManyField(Product, through="OrderItem")
 
 
 class OrderItem(models.Model):
@@ -25,4 +25,4 @@ class OrderItem(models.Model):
     price = models.FloatField()
 
     class Meta:
-        unique_together = ('order', 'product')
+        unique_together = ("order", "product")

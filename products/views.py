@@ -16,7 +16,6 @@ class FilteredListView(FilterView):
 
         return self.filterset.qs.distinct()
 
-
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
@@ -45,9 +44,7 @@ class ProductsInCategoryListView(FilteredListView):
     def get_queryset(self, **kwargs):
         category = self.get_category()
 
-        return self.queryset \
-            .filter(category=category) \
-
+        return self.queryset.filter(category=category)
 
 
 @ensure_csrf_cookie
