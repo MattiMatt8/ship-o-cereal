@@ -63,6 +63,40 @@ function deleteFromCart(id, callback = undefined, in_cart = false) {
     });
 }
 
+function newSearch(search, callback = undefined) {
+  axios
+    .post(
+      "/profile/search/new/",
+      { search: search },
+      { headers: { "X-CSRFToken": CSRF_TOKEN } }
+    )
+    .then((response) => {
+      if (callback) {
+        callback();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function deleteSearch(id, callback = undefined) {
+  axios
+    .post(
+      "/profile/search/" + id + "/delete/",
+      null,
+      { headers: { "X-CSRFToken": CSRF_TOKEN } }
+    )
+    .then((response) => {
+      if (callback) {
+        callback();
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
 function cartUpdateTotal(quantity, oldQuantity) {
   cartTotal += quantity - Number(oldQuantity);
   cartTotalElement.innerText = cartTotal;
