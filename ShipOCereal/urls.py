@@ -29,7 +29,7 @@ urlpatterns = [
     path("", include("orders.urls"), name="orders"),
     path("products/", include("products.urls"), name="products"),
     path("admin/", admin.site.urls),
-    path("search", ProductSearch.as_view(), name="search"),
+    path("search/", ProductSearch.as_view(), name="search"),
 ]
 
 if settings.DEBUG:
