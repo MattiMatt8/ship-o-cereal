@@ -12,7 +12,7 @@ def checkout_address(request):
     cart = request.session.get("cart")
     if order is None or cart is None or len(cart) == 0:
         raise PermissionDenied
-    if (request.method == "POST"):
+    if request.method == "POST":
         try:
             address = request.user.address_set.get(pk=request.POST.get("address"))
             order.address_street_name = address.street_name
@@ -33,8 +33,9 @@ def checkout_address(request):
         except ValueError:
             pass
     return render(
-        request, "orders/checkout_address.html",
-        {"error_message": error_message, "select_address": select_address}
+        request,
+        "orders/checkout_address.html",
+        {"error_message": error_message, "select_address": select_address},
     )
 
 
@@ -89,8 +90,13 @@ def keep_order(request, order):
 def checkout_confirm(request):
     order = get_order(request)
     cart = request.session.get("cart")
-    if order is None or order.address_zip is None or request.session.get("checkout_cvc") is None or cart is None or len(
-            cart) == 0:
+    if (
+        order is None
+        or order.address_zip is None
+        or request.session.get("checkout_cvc") is None
+        or cart is None
+        or len(cart) == 0
+    ):
         raise PermissionDenied
     date_diff = now() - order.date
     if date_diff.days > 1:
@@ -122,11 +128,7 @@ def checkout_confirm(request):
     return render(
         request,
         "orders/checkout_confirm.html",
-        {
-            "order": order,
-            "order_items": order_items,
-            "card": card
-        },
+        {"order": order, "order_items": order_items, "card": card},
     )
 
 

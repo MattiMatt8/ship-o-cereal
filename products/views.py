@@ -46,7 +46,6 @@ class ProductsInCategoryListView(FilteredListView):
 
 
 class ProductSearch(FilteredListView):
-
     filterset_class = ProductSearchFilter
     template_name = "search.html"
 

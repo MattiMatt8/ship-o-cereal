@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0007_remove_order_user'),
+        ("orders", "0007_remove_order_user"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order',
-            name='address_additional_comments',
+            model_name="order",
+            name="address_additional_comments",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

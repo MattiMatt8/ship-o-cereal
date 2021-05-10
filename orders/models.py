@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from users.models import Address, Card
 
 
-class Order(models.Model): # TODO: Connect to user again.
+class Order(models.Model):  # TODO: Connect to user again.
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     total = models.FloatField()
     products_total = models.FloatField()
@@ -21,7 +21,9 @@ class Order(models.Model): # TODO: Connect to user again.
     address_city = models.CharField(max_length=255)
     address_zip = models.IntegerField()
     address_country = models.CharField(max_length=255)
-    address_additional_comments = models.CharField(max_length=255, blank=True, null=True)
+    address_additional_comments = models.CharField(
+        max_length=255, blank=True, null=True
+    )
 
 
 class OrderItem(models.Model):

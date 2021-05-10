@@ -6,69 +6,69 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0005_alter_order_status'),
+        ("orders", "0005_alter_order_status"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='order',
-            name='address',
+            model_name="order",
+            name="address",
         ),
         migrations.RemoveField(
-            model_name='order',
-            name='card',
+            model_name="order",
+            name="card",
         ),
         migrations.AddField(
-            model_name='order',
-            name='address_additional_comments',
+            model_name="order",
+            name="address_additional_comments",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='address_city',
+            model_name="order",
+            name="address_city",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='address_country',
+            model_name="order",
+            name="address_country",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='address_house_number',
+            model_name="order",
+            name="address_house_number",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='address_street_name',
+            model_name="order",
+            name="address_street_name",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='address_zip',
+            model_name="order",
+            name="address_zip",
             field=models.IntegerField(default=1),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='first_name',
+            model_name="order",
+            name="first_name",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='last_name',
+            model_name="order",
+            name="last_name",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='order',
-            name='phone_number',
+            model_name="order",
+            name="phone_number",
             field=models.CharField(default=1, max_length=255),
             preserve_default=False,
         ),

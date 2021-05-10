@@ -1,0 +1,12 @@
+<nav>
+  <ul class="flex text-customViolet text-xl">
+    <!-- Product categories -->
+    {% for category in categories %}
+      <li class="mx-4">
+        <a class="border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
+           href="{% url 'product-category' category_name=category.name %}">{{ category.name }}</a>
+      </li>
+    {% endfor %}
+    <!-- END Product categories -->
+  </ul>
+</nav>
