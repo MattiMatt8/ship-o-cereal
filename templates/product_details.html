@@ -42,20 +42,11 @@
           </div>
           <div class="flex flex-row mb-16">
             {% for label in product.labels.all %}
-              {% if label.id == 1 %}
-                <!-- START Gluten free icons -->
+              {% with "components/icons/"|addstr:label.icon as template %}
                 <span class="mr-2">
-                  {% include 'components/icons/gluten-free-icon.html' with classAttr="w-12 h-12" %}
+                  {% include template with classAttr="w-12 h-12" %}
                 </span>
-              {% elif label.id == 2 %}
-                <span class="mr-2">
-                  {% include 'components/icons/healthy-icon.html' with classAttr="w-12 h-12" %}
-                </span>
-              {% elif label.id == 3 %}
-                <span class="mr-2">
-                  {% include 'components/icons/sugary-icon.html' with classAttr="w-12 h-12" %}
-                </span>
-              {% endif %}
+              {% endwith %}
             {% endfor %}
           </div>
 
