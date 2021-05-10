@@ -58,5 +58,3 @@ window.addEventListener( "pageshow", (e) => {
 });
 // TODO: Select card automatically after it has been added
 // TODO: Select address automatically after it has been added
-
-// TODO: Travelling between views can't skip steps and confirmation stuff some for finished step
