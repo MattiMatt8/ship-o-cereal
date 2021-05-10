@@ -5,7 +5,12 @@
     <!-- START Image and meta data -->
     <div class="flex flex-row">
       <!-- IMAGE -->
-      <div class="">
+      <div class="relative">
+        {% if product.discounted_price is not None %}
+          <div class="absolute -right-5 -top-5">
+            {% include 'components/icons/sale-logo.html' with discount=product.percentage_off|stringformat:"i" %}
+          </div>
+        {% endif %}
         <img
             class="object-cover object-center w-96 h-full rounded-t-md"
             src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
@@ -43,7 +48,7 @@
               <span class="mr-2">
             {% include template with classAttr="w-12 h-12" %}
           </span>
-              {% endwith %}
+            {% endwith %}
             {% endfor %}
           </div>
         </div>
@@ -54,7 +59,14 @@
         <div>
           <!-- START Add to cart button -->
           <div class="">
-            <h3 class="text-3xl mb-4">${{ product.price }}</h3>
+            <div class="flex">
+              {% if product.discounted_price is None %}
+                <h3 class="text-3xl mb-4">${{ product.price }}</h3>
+              {% else %}
+                <h3 class="text-3xl mb-4 mr-2 text-customRed">${{ product.discounted_price }}</h3>
+                <h3 class="text-xl mb-4 text-gray-400 line-through">${{ product.price }}</h3>
+              {% endif %}
+            </div>
             <div class="flex">
               <button
                   id="buy-btn"

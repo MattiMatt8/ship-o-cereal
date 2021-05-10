@@ -1,8 +1,14 @@
 {% load static %}
 {% load product_card_extras %}
 <div class="rounded-md w-64 shadow-lg hover:shadow-xl bg-gray-50 text-customGray flex flex-col">
+
   <!--div class="bg-customBlue h-2/3 rounded-t-md text-white flex justify-center items-center text-customViolet">Image</div -->
-  <a href="/products/{{ product.id }}" class="h-56">
+  <a href="/products/{{ product.id }}" class="h-56 relative">
+    {% if product.discounted_price is not None %}
+      <div class="absolute -right-5 -top-5">
+        {% include 'components/icons/sale-logo.html' with discount=product.percentage_off|stringformat:"i" %}
+      </div>
+    {% endif %}
     <img
         src="{% static 'images/' %}{{ product.category }}/{{ product.image_set.first.name }}"
         class="rounded-t-md object-cover object-center h-full w-full"
@@ -11,15 +17,18 @@
   <div class="p-4 h-full flex flex-col justify-between">
     <div>
       <!-- START Label icons -->
-      <div class="flex flex-row">
+      <div class="flex flex-row justify-between">
         <!-- START Healthy icons -->
-        {% for label in product.labels.all %}
-          {% with "components/icons/"|addstr:label.icon as template %}
-            <span class="mr-2">
+        <div class="flex flex-row">
+          {% for label in product.labels.all %}
+            {% with "components/icons/"|addstr:label.icon as template %}
+              <span class="mr-2">
             {% include template with classAttr="w-6 h-6" %}
             </span>
-          {% endwith %}
-        {% endfor %}
+            {% endwith %}
+          {% endfor %}
+        </div>
+
       </div>
       <!-- END Label icons -->
       <h3 class="text-xl break-words">{{ product.name }}</h3>
@@ -27,40 +36,50 @@
         <span class="text-sm text-thin">{{ product.weight }}gr</span>
       {% endif %}
     </div>
-    <div class="flex flex-row justify-between items-center {% if product.weight is None %} mt-5 {% endif %}">
-      <span class="block text-3xl">${{ product.price }}</span>
-      <!-- This shows only when user hasn't added this to their cart -->
-      <button
-          class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} block bg-customGreen py-2 px-3 text-white rounded-md text-lg buy-btn w-30 h-10 flex justify-center items-center"
-          data-product-id="{{ product.id }}"
-      >Add to cart
-      </button>
-      <!-- This shows only when the user has added this to their cart -->
-      <div
-          class="text-customGray amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% elif cart is None %} hidden {% endif %}">
-        <div class="custom-number-input w-30">
-          <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
-            <button
-                class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
-                data-action="decrement"
-                type="button">
-              <span class="m-auto text-2xl font-thin">−</span>
-            </button>
-            <input
-                type="text"
-                data-product-id="{{ product.id }}"
-                class="outline-none focus:outline-none text-center w-10 bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
-                name="custom-input-number" value="{% if cart %}{{ cart|get_item:product.id }}{% else %}0{% endif %}"/>
 
-            <button data-action="increment"
-                    class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-9 rounded-r cursor-pointer">
-              <span class="m-auto text-2xl font-thin">+</span>
-            </button>
+    <div class="{% if product.weight is None %} mt-5 {% endif %}">
+      {% if product.discounted_price is not None %}
+        <span class="text-xl text-gray-400 line-through">${{ product.price }}</span>
+      {% endif %}
+      <div class="flex flex-row justify-between items-center">
+        {% if product.discounted_price is None %}
+          <span class="block text-3xl">${{ product.price }}</span>
+        {% else %}
+          <span class="block text-3xl text-customRed">${{ product.discounted_price }}</span>
+        {% endif %}
+        <!-- This shows only when user hasn't added this to their cart -->
+        <button
+            class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} block bg-customGreen py-2 px-3 text-white rounded-md text-lg buy-btn w-30 h-10 flex justify-center items-center"
+            data-product-id="{{ product.id }}"
+        >Add to cart
+        </button>
+        <!-- This shows only when the user has added this to their cart -->
+        <div
+            class="text-customGray amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% elif cart is None %} hidden {% endif %}">
+          <div class="custom-number-input w-30">
+            <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
+              <button
+                  class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
+                  data-action="decrement"
+                  type="button">
+                <span class="m-auto text-2xl font-thin">−</span>
+              </button>
+              <input
+                  type="text"
+                  data-product-id="{{ product.id }}"
+                  class="outline-none focus:outline-none text-center w-10 bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
+                  name="custom-input-number" value="{% if cart %}{{ cart|get_item:product.id }}{% else %}0{% endif %}"/>
+
+              <button data-action="increment"
+                      class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-9 rounded-r cursor-pointer">
+                <span class="m-auto text-2xl font-thin">+</span>
+              </button>
+            </div>
           </div>
         </div>
+
+
       </div>
-
-
     </div>
   </div>
   <!--/a-->
