@@ -26,9 +26,7 @@
           <div class="flex flex-row my-2">
             <!-- START Stars -->
             <div class="flex flex-row">
-              {% for item in "x"|ljust:"5" %}
-                {% include 'components/icons/star_filled.html' %}
-              {% endfor %}
+              {% for item in "x"|ljust:"5" %} {% include 'components/icons/star_filled.html' %} {% endfor %}
             </div>
             <!-- END Stars -->
             <span class="ml-4 font-light text-sm"
@@ -41,37 +39,43 @@
             <span></span>
           </div>
           <div class="flex flex-row mb-16">
-            {% for label in product.labels.all %}
-              {% with "components/icons/"|addstr:label.icon as template %}
-                <span class="mr-2">
-                  {% include template with classAttr="w-12 h-12" %}
-                </span>
+            {% for label in product.labels.all %} {% with "components/icons/"|addstr:label.icon as template %}
+              <span class="mr-2">
+            {% include template with classAttr="w-12 h-12" %}
+          </span>
               {% endwith %}
             {% endfor %}
           </div>
-
         </div>
         <div class="">
           <h3 class="text-xl font-medium">Product description</h3>
           <p>{{ product.description }}</p>
         </div>
         <div>
-
           <!-- START Add to cart button -->
           <div class="">
             <h3 class="text-3xl mb-4">${{ product.price }}</h3>
             <div class="flex">
-              <button id="buy-btn" data-product-id="{{ product.id }}"
-                      class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32">
+              <button
+                  id="buy-btn"
+                  data-product-id="{{ product.id }}"
+                  class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32"
+              >
                 Add to cart
               </button>
-              <div id="amount-btns" class="{% if quantity is None %} hidden {% endif %} text-customGray">
+              <div
+                  id="amount-btns"
+                  class="{% if quantity is None %} hidden {% endif %} text-customGray"
+              >
                 <div class="custom-number-input w-32">
-                  <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
+                  <div
+                      class="flex flex-row h-10 w-full rounded-lg relative bg-transparent"
+                  >
                     <button
                         class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none hover:text-gray-700 hover:bg-gray-200"
                         data-action="decrement"
-                        type="button">
+                        type="button"
+                    >
                       <span class="m-auto text-2xl font-thin">−</span>
                     </button>
                     <input
@@ -80,16 +84,17 @@
                         data-product-id="{{ product.id }}"
                         class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
                         name="custom-input-number"
-                        value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"/>
-                    <button data-action="increment"
-                            class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer">
+                        value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"
+                    />
+                    <button
+                        data-action="increment"
+                        class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer"
+                    >
                       <span class="m-auto text-2xl font-thin">+</span>
                     </button>
                   </div>
                 </div>
               </div>
-
-
             </div>
           </div>
           <!-- END Add to cart button -->
@@ -106,15 +111,15 @@
             src="{% static 'images/' %}{{ product.category.name }}/{{ image }}"
         />
       {% endfor %}
-
-
     </div>
 
     <!-- START Nutrition stuff -->
-    <div class="mt-10 w-72">
-      <h1 class="text-2xl font-medium">Ingredients</h1>
-      <p>{{ product.contents }}</p>
-    </div>
+    {% if product.category_id == 1 %}
+      <div class="mt-10 w-2/5">
+        <h1 class="text-2xl font-medium">Ingredients</h1>
+        <p class="w-full">{{ product.contents }}</p>
+      </div>
+    {% endif %}
     <!-- END Nutrition stuff -->
 
     <!-- START Reviews -->
@@ -127,21 +132,15 @@
       {% include 'components/product_review.html' %}
       {% include 'components/product_review.html' %}
       <!-- END Single review -->
-
     </div>
     <!-- END Reviews -->
-
   </main>
-{% endblock %}
-
-{% block page_scripts %}
+{% endblock %} {% block page_scripts %}
   <script src="{% static 'js/product_details.js' %}"></script>
-{% endblock %}
-
-{% block page_styles %}
+{% endblock %} {% block page_styles %}
   <style>
-      input[type='number']::-webkit-inner-spin-button,
-      input[type='number']::-webkit-outer-spin-button {
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
           -webkit-appearance: none;
           margin: 0;
       }

@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 
-from .models import Brand, Category
+from .models import Brand, Category, ProductLabel
 from django_filters import (
     FilterSet,
     ModelMultipleChoiceFilter,
@@ -21,26 +21,29 @@ PRODUCT_ORDER_BY_FIELDS = (
 )
 
 
-class ProductFilter(FilterSet):
-    def filter_not_empty(queryset, name, value):
-        lookup = "__".join([name, "isnull"])
-        print(lookup)
-        return queryset.filter(**{lookup: False})
+def brands(request):
+    category = request.resolver_match.kwargs.get("category_name")
+    return Brand.objects.filter(
+        id__in=Product.objects.filter(
+            category_id=Category.objects.get(name=category)
+        ).values_list("brand_id")
+    )
 
+
+def labels(request):
+    category = request.resolver_match.kwargs.get("category_name")
+    return Label.objects.filter(id__in=ProductLabel.objects.filter(
+        id__in=Product.objects.filter(category_id=Category.objects.get(name=category))))
+
+
+class ProductFilter(FilterSet):
     # Filters
     price = NumberFilter(field_name="price")
     name = CharFilter(field_name="name")
     id = NumberFilter(field_name="newest")
-    labels = ModelMultipleChoiceFilter(
-        queryset=Label.objects.all(), conjoined=True, method=filter_not_empty
-    )
-
+    labels = ModelMultipleChoiceFilter(queryset=labels, conjoined=True)
     brand = ModelChoiceFilter(
-        queryset=Brand.objects.filter(
-            id__in=Product.objects.filter(
-                category_id=Category.objects.get(name="Cereal")
-            ).values_list("brand_id")
-        ),
+        queryset=brands,
         field_name="brand",
         empty_label=_("Select brand .."),
     )
@@ -65,8 +68,6 @@ class ProductFilter(FilterSet):
 
 
 class ProductSearchFilter(FilterSet):
-    name = CharFilter(lookup_expr="icontains")
-
     class Meta:
         model = Product
-        fields = ["name"]
+        fields = {"name": ["contains"]}
