@@ -30,7 +30,7 @@
         <p class="text-sm font-thin">Letters, digits and @/./+/-/_ only.</p>
       </div>
       <div class="mb-4">
-        {{ form.email.errors }}
+        <div class="text-red-500 text-sm italic">{{ form.email.errors }}</div>
         <label for="{{ form.email.id_for_label }}" class="block text-gray-700 text-base mb-2">Email</label>
         {{ form.email }}
       </div>

@@ -29,50 +29,34 @@ for (let cardInput of cardInputs) {
         }
     });
     cardInput.addEventListener("click", (e) => {
-        const id = Number(cardInput.value);
         const cvcField = cvc;
         const cvcInfo = cvcMessage;
-        selectCard(id, cvcField, cvcInfo);
+        if (currentlySelectedCVC) {
+            currentlySelectedCVC.classList.add("hidden");
+            currentlySelectedCVC.disabled = true;
+            currentlySelectedCVCmessage.classList.add("hidden");
+        }
+        cvcField.value = "";
+        cvcField.classList.remove("hidden");
+        cvcField.disabled = false;
+        cvcInfo.classList.remove("hidden");
+        currentlySelectedCVC = cvcField;
+        currentlySelectedCVCmessage = cvcInfo;
     });
 }
+
+window.addEventListener( "pageshow", (e) => {
+  if (e.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    for (let cardInput of cardInputs) {
+      if (cardInput.checked === true) {
+        let cvc = document.getElementById(`card-id-${cardInput.value}`);
+        cvc.classList.remove("hidden");
+        cvc.disabled = false;
+      }
+    }
+  }
+});
 // TODO: Select card automatically after it has been added
 // TODO: Select address automatically after it has been added
 
-// TODO: Store CVC code between pages?
-
 // TODO: Travelling between views can't skip steps and confirmation stuff some for finished step
-
-// TODO: Cart keep until order confirm
-// TODO: Or recreate the cart?
-
-// TODO: CHECK on user what stuff is required when registering for account
-
-// TODO: In checkout check the date of the order and make sure it is not older than a day or something
-
-function selectCard(id, cvcField, cvcInfo) {
-    axios
-        .post(CHECKOUT_URL + "card/" + id + "/", null, {
-            headers: {"X-CSRFToken": CSRF_TOKEN},
-        })
-        .then((response) => {
-            if (currentlySelectedCVC) {
-                currentlySelectedCVC.classList.add("hidden");
-                currentlySelectedCVC.disabled = true;
-                currentlySelectedCVCmessage.classList.add("hidden");
-            }
-            cvcField.value = "";
-            cvcField.classList.remove("hidden");
-            cvcField.disabled = false;
-            cvcInfo.classList.remove("hidden");
-            currentlySelectedCVC = cvcField;
-            currentlySelectedCVCmessage = cvcInfo;
-
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-// enableButton();
-// Ting.length
-// isNaN(Number(Ting))

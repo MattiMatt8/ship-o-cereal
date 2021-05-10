@@ -2,12 +2,10 @@ from django.db import models
 from products.models import Product
 from django.utils.timezone import now
 from django.contrib.auth.models import User
-
 from users.models import Address, Card
 
 
-class Order(models.Model):
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+class Order(models.Model): # TODO: Connect to user again.
     total = models.FloatField()
     products_total = models.FloatField()
     date = models.DateTimeField(default=now)
@@ -22,7 +20,7 @@ class Order(models.Model):
     address_city = models.CharField(max_length=255)
     address_zip = models.IntegerField()
     address_country = models.CharField(max_length=255)
-    address_additional_comments = models.CharField(max_length=255)
+    address_additional_comments = models.CharField(max_length=255, blank=True, null=True)
 
 
 class OrderItem(models.Model):
