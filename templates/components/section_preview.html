@@ -29,7 +29,7 @@
   </div>
   <div class="flex flex-row justify-between">
     {% for product in products %}
-      {% include 'components/product_card.html' with product=product cart=cart product_id=product.id %}
+      {% include 'components/product_card.html' with product=product cart=cart %}
     {% endfor %}
   </div>
 </section>
