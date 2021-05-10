@@ -49,3 +49,6 @@ class SearchHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(default=now)
     search = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ["-id"]
