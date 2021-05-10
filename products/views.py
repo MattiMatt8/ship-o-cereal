@@ -30,7 +30,7 @@ class FilteredListView(FilterView):
 
 class ProductsInCategoryListView(FilteredListView):
 
-    paginate_by = 10
+    paginate_by = 20
     filterset_class = ProductFilter
     queryset = Product.objects.all()
     context_object_name = "products"

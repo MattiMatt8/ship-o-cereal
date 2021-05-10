@@ -168,3 +168,13 @@ function searchListener() {
     .getElementsByTagName("form")[0]
     .addEventListener("submit", handleForm);
 }
+
+
+// Listen for delete search history
+const searchDeleteButtons = document.getElementsByClassName('search-delete-button');
+Array.from(searchDeleteButtons).forEach(button => {
+  button.addEventListener('click', e => {
+    const id = button.dataset.searchId;
+    console.log(`Gonna delete: ${id}`);
+  })
+})

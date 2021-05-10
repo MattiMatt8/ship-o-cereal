@@ -18,5 +18,7 @@
     </div>
   </button>
   <!-- DROPDOWN -->
-  {% include "components/header/search/search_history.html" %}
+  {% if user.is_authenticated and user.searchhistory_set.all|length > 0 %}
+    {% include "components/header/search/search_history.html" %}
+  {% endif %}
 </form>
