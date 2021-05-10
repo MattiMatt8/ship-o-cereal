@@ -9,14 +9,18 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('orders', '0008_alter_order_address_additional_comments'),
+        ("orders", "0008_alter_order_address_additional_comments"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='user',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.DO_NOTHING, to='auth.user'),
+            model_name="order",
+            name="user",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.DO_NOTHING,
+                to="auth.user",
+            ),
             preserve_default=False,
         ),
     ]
