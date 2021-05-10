@@ -17,13 +17,13 @@ from users.forms.UpdateUserForm import UpdateUserForm
 from users.forms.RegisterForm import RegisterForm
 from users.forms.AddUserCardForm import AddUserCardForm
 from users.forms.UpdateUserCardForm import UpdateUserCardForm
-from users.models import Profile
+from users.models import Profile, SearchHistory
 import json
 
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect("index")  # TODO: Possibly change where it redirects
+        return redirect("index")
     if request.method == "POST":
         form = RegisterForm(data=request.POST)
         if form.is_valid():
@@ -204,7 +204,7 @@ def delete_from_cart(request, id):
                 {"message": "Item deleted from cart.", "quantity": quantity}, status=200
             )
         except KeyError:
-            return JsonResponse({"message": "Error: Item does not exist."}, status=405)
+            return JsonResponse({"message": "Error: Item does not exist."}, status=404)
 
 
 def cart_amount(request):
@@ -282,3 +282,27 @@ def cart(request):
     return render(
         request, "users/cart.html", {"order": order, "order_items": order_items}
     )
+
+
+def new_search(request):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            body = json.loads(request.body.decode("utf-8"))
+            new_search_history = SearchHistory(user_id=request.user.id, search=body.get("search"))
+            new_search_history.save()
+            return JsonResponse({"message": "Added to users search history."}, status=201)
+        return JsonResponse({"message": "Error: User not authorized."}, status=401)
+    return JsonResponse({"message": "Error: Method not supported."}, status=405)
+
+
+def delete_search(request, id):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            try:
+                search_history = request.user.searchhistory_set.get(pk=id)
+                search_history.delete()
+                return JsonResponse({"message": "Added to users search history."}, status=201)
+            except ObjectDoesNotExist:
+                return JsonResponse({"message": "Error: Item does not exist."}, status=404)
+        return JsonResponse({"message": "Error: User not authorized."}, status=401)
+    return JsonResponse({"message": "Error: Method not supported."}, status=405)

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from users.models import Address, Card
 
 
-class Order(models.Model):  # TODO: Connect to user again.
+class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     total = models.FloatField()
     products_total = models.FloatField()
