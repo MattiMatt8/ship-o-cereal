@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('orders', '0002_delete_cartitem'),
+        ("orders", "0002_delete_cartitem"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order',
-            name='products_total',
+            model_name="order",
+            name="products_total",
             field=models.FloatField(default=1),
             preserve_default=False,
         ),

@@ -18,10 +18,10 @@ from django.urls import path, include
 from . import views, settings
 from django.conf.urls.static import static
 
-handler400 = 'ShipOCereal.views.bad_request'
-handler403 = 'ShipOCereal.views.permission_denied'
-handler404 = 'ShipOCereal.views.page_not_found'
-handler500 = 'ShipOCereal.views.server_error'
+handler400 = "ShipOCereal.views.bad_request"
+handler403 = "ShipOCereal.views.permission_denied"
+handler404 = "ShipOCereal.views.page_not_found"
+handler500 = "ShipOCereal.views.server_error"
 
 urlpatterns = [
     path("", views.HomePageView.as_view(), name="index"),
@@ -32,5 +32,4 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-        urlpatterns += static(settings.MEDIA_URL,
-                              document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
