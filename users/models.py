@@ -21,6 +21,9 @@ class Card(models.Model):
     month = models.IntegerField()
     year = models.IntegerField()
 
+    class Meta:
+        ordering = ["id"]
+
 
 class Country(models.Model):
     country = models.CharField(max_length=255, primary_key=True)
@@ -37,6 +40,9 @@ class Address(models.Model):
     additional_comments = models.CharField(max_length=255, blank=True, null=True)
     zip = models.IntegerField()
     city = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ["id"]
 
 
 class SearchHistory(models.Model):

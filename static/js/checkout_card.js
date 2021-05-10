@@ -22,10 +22,14 @@ for (let cardInput of cardInputs) {
                 enableButton();
                 buttonEnabled = true;
                 cvcInfo.classList.add("hidden");
+                cvc.classList.remove("border-customRed");
+                cvc.classList.add("border-customGreen");
             }
         } else {
             if (buttonEnabled) disableButton();
             if (currentlySelectedCVCmessage.classList.contains("hidden")) currentlySelectedCVCmessage.classList.remove("hidden");
+            cvc.classList.remove("border-customGreen");
+            cvc.classList.add("border-customRed");
         }
     });
     cardInput.addEventListener("click", (e) => {
@@ -52,9 +56,8 @@ window.addEventListener( "pageshow", (e) => {
         let cvc = document.getElementById(`card-id-${cardInput.value}`);
         cvc.classList.remove("hidden");
         cvc.disabled = false;
+        cvc.value = "";
       }
     }
   }
 });
-// TODO: Select card automatically after it has been added
-// TODO: Select address automatically after it has been added

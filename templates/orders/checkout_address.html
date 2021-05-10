@@ -16,7 +16,8 @@
               <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
                 <label class="cursor-pointer">
                   <div class="px-4 py-6">
-                    <input value="{{ address.id }}" type="radio" name="address" class="mx-2 address-input">
+                    <input value="{{ address.id }}" type="radio" name="address" class="mx-2 address-input"
+                      {% if select_address == address.id %}checked{% endif %}>
                     <span class="text-md font-medium mr-2">Address {{ forloop.counter }}</span>
                     <span
                             class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}{% if address.additional_comments is not None %}, {{ address.additional_comments }}{% endif %}</span>

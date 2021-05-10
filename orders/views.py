@@ -25,9 +25,16 @@ def checkout_address(request):
             return redirect("checkout_card")
         except ObjectDoesNotExist:
             error_message = "Invalid address."
+    select = request.GET.get("select")
+    select_address = None
+    if select:
+        try:
+            select_address = int(select)
+        except ValueError:
+            pass
     return render(
         request, "orders/checkout_address.html",
-        {"error_message": error_message}
+        {"error_message": error_message, "select_address": select_address}
     )
 
 
@@ -52,10 +59,17 @@ def checkout_card(request):
             error_message = "Invalid CVC number."
         except ObjectDoesNotExist:
             error_message = "Invalid card."
+    select = request.GET.get("select")
+    select_card = None
+    if select:
+        try:
+            select_card = int(select)
+        except ValueError:
+            pass
     return render(
         request,
         "orders/checkout_card.html",
-        {"error_message": error_message},
+        {"error_message": error_message, "select_card": select_card},
     )
 
 
