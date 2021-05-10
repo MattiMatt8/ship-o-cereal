@@ -3,59 +3,62 @@
 {% block content %}
   <main class="container mx-auto mb-16 mt-10 text-customGray">
     {% include 'components/back_button.html' %}
-    <h1 class="text-3xl mb-2">Checkout</h1>
-    <h3 class="text-xl">Select a shipping address</h3>
-    <!-- START Card Container-->
-    <div class="flex flex-row justify-between">
-      <div>
-        <ul class="flex flex-col mt-6 mb-4">
-          {% for address in user.address_set.all %}
-
-            <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
-              <label class="cursor-pointer">
-                <div class="px-4 py-6">
-                  <input value="{{ address.id }}" type="radio" name="address" class="mx-2 address-input"
-                         {% if checkout_address_id == address.id %}checked{% endif %}>
-                  <span class="text-md font-medium mr-2">Address {{ forloop.counter }}</span>
-                  <span
-                          class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}{% if address.additional_comments is not None %}, {{ address.additional_comments }}{% endif %}</span>
-
-                  <span class="ml-2">
-                    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
-                       href="/profile/addresses/{{ address.id }}/?next=/checkout/address/">Change</a>
-                  </span>
-                </div>
-              </label>
-            </li>
-
-          {% endfor %}
-        </ul>
-        <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="/profile/addresses/new/?next=/checkout/address/">New address
-        </a>
-      </div>
-      <div class="flex flex-col">
+    <form method="post">
+      {% csrf_token %}
+      <h1 class="text-3xl mb-2">Checkout</h1>
+      <h3 class="text-xl">Select a shipping address</h3>
+      <!-- START Card Container-->
+      <div class="flex flex-row justify-between">
         <div>
-          <h4 class="text-center mb-4 font-light text-sm">Step 1</h4>
-          <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
-          <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
-          <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
+          <ul class="flex flex-col mt-6 mb-4">
+            {% for address in user.address_set.all %}
+
+              <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
+                <label class="cursor-pointer">
+                  <div class="px-4 py-6">
+                    <input value="{{ address.id }}" type="radio" name="address" class="mx-2 address-input"
+                           {% if checkout_address_id == address.id %}checked{% endif %}>
+                    <span class="text-md font-medium mr-2">Address {{ forloop.counter }}</span>
+                    <span
+                            class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}{% if address.additional_comments is not None %}, {{ address.additional_comments }}{% endif %}</span>
+
+                    <span class="ml-2">
+                      <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
+                         href="{% url 'update_address' id=address.id %}?next=/checkout/address/">Change</a>
+                    </span>
+                  </div>
+                </label>
+              </li>
+
+            {% endfor %}
+          </ul>
+          <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+             href="{% url 'add_address' %}?next=/checkout/address/">New address
+          </a>
+        </div>
+        <div class="flex flex-col">
+          <div>
+            <h4 class="text-center mb-4 font-light text-sm">Step 1</h4>
+            <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
+            <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
+            <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="w-full mt-10 flex flex-row justify-between">
-      <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-         href="/cart/">Previous step
-      </a>
-      <button id="next-disabled" type="button" class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
-         href="#">Next step
-      </button>
-      <a id="next-enabled" class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden"
-         href="/checkout/card/">Next step
-      </a>
-    </div>
-    <h4 id="text-disabled" class="text-right mt-1">*Address required to continue</h4>
+      <div class="w-full mt-10 flex flex-row justify-between">
+        <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
+           href="{% url 'cart' %}">Previous step
+        </a>
+        <button id="next-disabled" type="button" class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
+           >Next step
+        </button>
+        <button id="next-enabled" class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden"
+           type="submit">Next step
+        </button>
+      </div>
+      <h4 id="text-disabled" class="text-right mt-1">*Address required to continue</h4>
+    </form>
   </main>
 
 {% endblock %}

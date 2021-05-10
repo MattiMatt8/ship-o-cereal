@@ -9,7 +9,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from ShipOCereal import settings
 from orders.models import OrderItem, Order
-from orders.views import set_address_in_order, set_card_in_order
+from orders.views import set_address_in_order, set_card_in_order, get_order
 from products.models import Product
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
@@ -63,10 +63,7 @@ def add_address(request):
             address = form.save(commit=False)
             address.user_id = request.user.id
             address.save()
-            if (next_query):
-                set_address_in_order(request, address.id)
-                return redirect(next_query)
-            return redirect("profile")
+            return redirect("profile" if next_query is None else next_query)
     else:
         form = UserAddressForm()
     return render(request, "users/add_address.html", {
@@ -108,10 +105,7 @@ def add_card(request):
             card = form.save(commit=False)
             card.user_id = request.user.id
             card.save()
-            if (next_query):
-                set_card_in_order(request, card.id)
-                return redirect(next_query)
-            return redirect("profile")
+            return redirect("profile" if next_query is None else next_query)
     else:
         form = AddUserCardForm()
     return render(request, "users/add_card.html", {
@@ -159,7 +153,6 @@ def update_cart(request, id):
             cart_total = 0
         old_quantity = cart.get(str_id)
         if (cart_total + quantity - (old_quantity if old_quantity else 0)) > settings.MAX_ITEMS_IN_CART:
-            print("DAS ERROR")
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
         if old_quantity:
             request.session["cart_total"] -= old_quantity
@@ -227,8 +220,7 @@ def cart_amount(request):
         }
     }, status=200)
 
-# TODO: While in cart make it so that if amount is changed or item delete it changes the OrderItem which
-# TODO: will be stored a session
+
 @ensure_csrf_cookie
 def cart(request):
     cart = request.session.get("cart")
@@ -237,6 +229,11 @@ def cart(request):
     order_items = []
     products_amount_fraction = Fraction()
     order = Order()
+    old_order = get_order(request)
+    print("old order:",old_order)
+    if old_order is not None:
+        order.card_id = old_order.card_id
+        order.address_id = old_order.address_id
     if cart:
         for product_id, quantity in cart.items():
             try:

@@ -2,6 +2,6 @@
   <h4 class="text-base font-medium mb-1.5">Expires {{ month }}/{{ year }}</h4>
   <h3 class="text-base">XXXX-XXXX-XXXX-{{ last_numbers }}</h3>
   <div class="flex flex-row justify-end mt-2">
-    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75" href="cards/{{ card_id }}/">Change</a>
+    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75" href="{% url 'update_card' id=card_id %}">Change</a>
   </div>
 </li>

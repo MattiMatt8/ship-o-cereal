@@ -122,7 +122,6 @@ const renderNotification = (message, type) => {
 const setInputFilter = (textbox, inputFilter) => {
     ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
         textbox.addEventListener(event, function (e) {
-            this.selectionStart = this.selectionEnd = this.value.length;
             if (inputFilter(this.value) && this.value != 0) {
                 // If a number was an input, it's safe to make the request to the server
                 const callback = (error) => {

@@ -36,7 +36,7 @@
             <h3 class="text-center text-2xl font-light">Total amount</h3>
             <h3 id="total_amount" class="text-center text-3xl my-2">${{ order.total }}</h3>
             <div class="flex justify-center">
-              <a class="rounded p-2 bg-customGreen text-white" href="/checkout/address/">Go to checkout</a>
+              <a class="rounded p-2 bg-customGreen text-white" href="{% url 'checkout_address' %}">Go to checkout</a>
             </div>
           </div>
         </div>

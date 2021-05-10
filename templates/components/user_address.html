@@ -9,6 +9,6 @@
     {% endif %}
   </h3>
   <div class="flex flex-row justify-end mt-2">
-    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75" href="addresses/{{ address.id }}/">Change</a>
+    <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75" href="{% url 'update_address' id=address.id %}">Change</a>
   </div>
 </li>

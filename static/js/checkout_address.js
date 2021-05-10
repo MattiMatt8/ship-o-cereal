@@ -6,19 +6,6 @@ for (let addressInput of addressesInputs) {
   }
   addressInput.addEventListener("click", (e) => {
     const id = Number(addressInput.value);
-    selectAddress(id);
+    enableButton();
   });
-}
-
-function selectAddress(id) {
-  axios
-    .post(CHECKOUT_URL + "address/" + id + "/", null, {
-      headers: { "X-CSRFToken": CSRF_TOKEN },
-    })
-    .then((response) => {
-      enableButton();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 }

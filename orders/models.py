@@ -11,11 +11,19 @@ class Order(models.Model):
     total = models.FloatField()
     products_total = models.FloatField()
     date = models.DateTimeField(default=now)
-    status = models.CharField(max_length=255) # Maybe smaller?
+    status = models.CharField(max_length=255, default="Placed") # Maybe smaller?
     shipping_cost = models.FloatField()
-    address = models.ForeignKey(Address, on_delete=models.DO_NOTHING)
-    card = models.ForeignKey(Card, on_delete=models.DO_NOTHING)
     items = models.ManyToManyField(Product, through='OrderItem')
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=255)
+    address_street_name = models.CharField(max_length=255)
+    address_house_number = models.CharField(max_length=255)
+    address_city = models.CharField(max_length=255)
+    address_zip = models.IntegerField()
+    address_country = models.CharField(max_length=255)
+    address_additional_comments = models.CharField(max_length=255)
+
 
 
 class OrderItem(models.Model):

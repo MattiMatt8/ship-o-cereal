@@ -19,6 +19,7 @@
               class="rounded border border-customViolet text-base py-1 px-4 mb-3 mr-3 focus:outline-none hover:shadow-md">
         Orders
       </button>
+      <!-- TODO: CHECK THESE BUTTONS OUT -->
       <button type="button"
               class="rounded border border-customViolet text-base py-1 px-4 mb-3 focus:outline-none hover:shadow-md">
         Search
@@ -80,7 +81,7 @@
           {% endfor %}
         </ul>
         <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="addresses/new/">New address
+           href="{% url 'add_address' %}">New address
         </a>
       </div>
       <div class="ml-20 w-72">
@@ -91,7 +92,7 @@
           {% endfor %}
         </ul>
         <a class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-           href="cards/new/">New card
+           href="{% url 'add_card' %}">New card
         </a>
       </div>
     </section>
