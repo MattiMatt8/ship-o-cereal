@@ -2,11 +2,10 @@ from django.db import models
 from products.models import Product
 from django.utils.timezone import now
 from django.contrib.auth.models import User
-
 from users.models import Address, Card
 
 
-class Order(models.Model):
+class Order(models.Model): # TODO: Connect to user again.
     total = models.FloatField()
     products_total = models.FloatField()
     date = models.DateTimeField(default=now)

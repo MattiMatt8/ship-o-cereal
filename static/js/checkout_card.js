@@ -44,16 +44,19 @@ for (let cardInput of cardInputs) {
         currentlySelectedCVCmessage = cvcInfo;
     });
 }
+
+window.addEventListener( "pageshow", (e) => {
+  if (e.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+    for (let cardInput of cardInputs) {
+      if (cardInput.checked === true) {
+        let cvc = document.getElementById(`card-id-${cardInput.value}`);
+        cvc.classList.remove("hidden");
+        cvc.disabled = false;
+      }
+    }
+  }
+});
 // TODO: Select card automatically after it has been added
 // TODO: Select address automatically after it has been added
 
-// TODO: Store CVC code between pages?
-
 // TODO: Travelling between views can't skip steps and confirmation stuff some for finished step
-
-// TODO: Cart keep until order confirm
-// TODO: Or recreate the cart?
-
-// TODO: CHECK on user what stuff is required when registering for account
-
-// TODO: In checkout check the date of the order and make sure it is not older than a day or something

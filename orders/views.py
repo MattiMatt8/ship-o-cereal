@@ -9,8 +9,10 @@ from django.utils.timezone import now
 def checkout_address(request):  # TODO: Make sure cart is not empty
     # TODO: Go back to address page address is selected but can't continue
     # TODO: address not on the user error
-    order = get_order(request)
     error_message = None
+    order = get_order(request)
+    if order is None:
+        print("Error does not have an order") # TODO: What shall I do here?
     if (request.method == "POST"):
         try:
             address = request.user.address_set.get(pk=request.POST.get("address"))
@@ -24,7 +26,6 @@ def checkout_address(request):  # TODO: Make sure cart is not empty
             return redirect("checkout_card")
         except ObjectDoesNotExist:
             error_message = "Invalid address."
-        print("Das post:", request.POST)
     return render(
         request, "orders/checkout_address.html",
         {"error_message": error_message}
@@ -37,6 +38,10 @@ def checkout_card(request):
     # TODO: Go back to address page address is selected but can't continue
     error_message = None
     order = get_order(request)  # TODO: Check stuff with and stuff
+    if order is None:
+        print("Error does not have an order") # TODO: What shall I do here?
+    elif order.address_zip is None:
+        print("Error address has not been selected") # TODO: What shall I do here?
     if request.method == "POST":
         cvc = request.POST.get("CVCfield")
         try:
@@ -74,7 +79,16 @@ def keep_order(request, order):
 def checkout_confirm(request):
     # TODO: Make sure address and card have been selected & cart not empty
     order = get_order(request)
-    if request.method == "POST":  # TODO: CHECK IF DATE IS TO OLD MAYBE REJECT?
+    if order is None:
+        print("Error does not have an order") # TODO: What shall I do here?
+    elif order.address_zip is None:
+        print("Error address has not been selected") # TODO: What shall I do here?
+    elif request.session.get("checkout_cvc") is None:
+        print("Error card has not been selected") # TODO: What shall I do here
+    date_diff = now() - order.date
+    if date_diff.days > 1:
+        print("Order invalid") # TODO: What shall I do here
+    if request.method == "POST":
         order.date = now()
         order.status = "Placed"
         order.save()
@@ -82,6 +96,7 @@ def checkout_confirm(request):
             order_item = obj.object
             order_item.order_id = order.id
             order_item.save()
+        request.session["last_order_completed"] = serializers.serialize("json", [order])
         del request.session["order"]
         del request.session["order_items"]
         del request.session["cart"]
@@ -110,4 +125,10 @@ def checkout_confirm(request):
 @login_required
 def checkout_finished(request):
     # TODO: Some checks that the user just did finish an order and so forth
-    return render(request, "orders/checkout_finished.html")
+    last_order_completed = request.session.get("last_order_completed")
+    if last_order_completed is not None:
+        for obj in serializers.deserialize("json", last_order_completed):
+            order = obj.object
+        del request.session["last_order_completed"]
+        return render(request, "orders/checkout_finished.html", {"order_id": order.id})
+    return render(request, "orders/checkout_finished.html") # TODO: Different view or redirect?

@@ -18,7 +18,3 @@ window.addEventListener( "pageshow", (e) => {
     }
   }
 });
-
-window.onhashchange = function() {
- console.log("has chagne")
-}

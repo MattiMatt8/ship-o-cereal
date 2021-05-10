@@ -278,3 +278,9 @@ def cart(request):
     return render(
         request, "users/cart.html", {"order": order, "order_items": order_items}
     )
+
+
+def cart_count(request):
+    """Returns how many items are currently in the cart."""
+    cart_total = request.session.get("cart_total")
+    return JsonResponse({"cart_total": cart_total if cart_total else 0}, status=200)
