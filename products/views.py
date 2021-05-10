@@ -71,13 +71,14 @@ class ProductsInCategoryListView(FilteredListView):
         return Category.objects.get(name=self.kwargs["category_name"])
 
 
-class ProductSearch(FilteredListView):
+class ProductSearchView(FilteredListView):
     """
     A class for listing and paginating products based on search paremeters.
     """
 
     filterset_class = ProductSearchFilter
     template_name = "product_search.html"
+    paginate_by = 20
 
     def get(self, request, *args, **kwargs):
         """Method for handling a GET request when searching for products."""

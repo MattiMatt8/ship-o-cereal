@@ -14,7 +14,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from products.views import ProductSearch
+from products.views import ProductSearchView
 from . import views, settings
 from django.conf.urls.static import static
 
@@ -29,7 +29,7 @@ urlpatterns = [
     path("", include("orders.urls"), name="orders"),
     path("products/", include("products.urls"), name="products"),
     path("admin/", admin.site.urls),
-    path("search/", ProductSearch.as_view(), name="search"),
+    path("search/", ProductSearchView.as_view(), name="search"),
 ]
 
 if settings.DEBUG:
