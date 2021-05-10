@@ -22,11 +22,19 @@ PRODUCT_ORDER_BY_FIELDS = (
 
 
 class ProductFilter(FilterSet):
+    def filter_not_empty(queryset, name, value):
+        lookup = "__".join([name, "isnull"])
+        print(lookup)
+        return queryset.filter(**{lookup: False})
+
     # Filters
     price = NumberFilter(field_name="price")
     name = CharFilter(field_name="name")
     id = NumberFilter(field_name="newest")
-    labels = ModelMultipleChoiceFilter(queryset=Label.objects.all(), conjoined=True)
+    labels = ModelMultipleChoiceFilter(
+        queryset=Label.objects.all(), conjoined=True, method=filter_not_empty
+    )
+
     brand = ModelChoiceFilter(
         queryset=Brand.objects.filter(
             id__in=Product.objects.filter(
@@ -57,6 +65,8 @@ class ProductFilter(FilterSet):
 
 
 class ProductSearchFilter(FilterSet):
+    name = CharFilter(lookup_expr="icontains")
+
     class Meta:
         model = Product
-        fields = {"name": ["contains"]}
+        fields = ["name"]

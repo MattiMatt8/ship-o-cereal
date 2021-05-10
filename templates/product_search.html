@@ -1,0 +1,12 @@
+<div class="flex flex-wrap -mx-8">
+{% if searched %}
+  <h1>You searched for.. {{ searched }}</h1>
+{% else %}
+  <h1>Hey you forgot to search ..</h1>
+{% endif %}
+{% for product in products.qs %}
+  <div class="p-4 w-1/5 flex justify-center items-start">
+    {{product.name}}
+  </div>
+{% endfor %}
+</div>
