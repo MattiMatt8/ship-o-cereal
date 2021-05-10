@@ -1,8 +1,12 @@
+from builtins import int
+
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
 from django.shortcuts import render, get_object_or_404, redirect
 
+from orders.models import OrderItem
 from .forms.AddReview import AddReview
 from .models import Category, Product
 from .filters import ProductFilter, ProductSearchFilter
@@ -113,7 +117,11 @@ def product_details(request, id):
 
 @login_required
 def add_review(request, id):
-    # TODO: Check if person has already purchased the product
+    # TODO: Maybe display what item is being review at the top?
+    if request.user.review_set.filter(product_id=id):
+        raise PermissionDenied
+    elif not request.user.order_set.filter(id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")):
+        raise PermissionDenied
     if request.method == "POST":
         form = AddReview(data=request.POST)
         if form.is_valid():
