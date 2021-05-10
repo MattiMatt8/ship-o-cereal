@@ -7,6 +7,7 @@ from django_filters.views import FilterView
 from django.shortcuts import render, get_object_or_404, redirect
 
 from orders.models import OrderItem
+from users.models import SearchHistory
 from .forms.AddReview import AddReview
 from .models import Category, Product
 from .filters import ProductFilter, ProductSearchFilter
@@ -82,6 +83,11 @@ class ProductSearch(FilteredListView):
         """Method for handling a GET request when searching for products."""
 
         product_name = request.GET.get("query")  # The product name provided
+
+        # Add the search query to the user's search history
+        if not request.user.is_anonymous:
+            new_search_history_item = SearchHistory(user=request.user, search=product_name)
+            new_search_history_item.save()
 
         # If product name provided then
         # render template and filter queryset with given product name
