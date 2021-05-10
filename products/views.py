@@ -76,7 +76,7 @@ class ProductSearch(FilteredListView):
     def get(self, request, *args, **kwargs):
         """Method for handling a GET request when searching for products."""
 
-        product_name = request.GET.get("searched")  # The product name provided
+        product_name = request.GET.get("query")  # The product name provided
 
         # If product name provided then
         # render template and filter queryset with given product name
