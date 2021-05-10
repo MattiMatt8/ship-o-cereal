@@ -1,6 +1,8 @@
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+
+from .forms import AddReview
 from .models import Category, Product
 from .filters import ProductFilter, ProductSearchFilter
 
@@ -45,8 +47,8 @@ class ProductsInCategoryListView(FilteredListView):
     all products or products matching query parameters.
     """
 
-    paginate_by = 20
-    filterset_class = ProductFilter
+    paginate_by = 20  # Display 20 products at a time
+    filterset_class = ProductFilter  # Filter to apply
     queryset = Product.objects.all()
     context_object_name = "products"
     template_name = "category/category.html"
@@ -64,23 +66,33 @@ class ProductsInCategoryListView(FilteredListView):
 
 
 class ProductSearch(FilteredListView):
+    """
+    A class for listing and paginating products based on search paremeters.
+    """
+
     filterset_class = ProductSearchFilter
     template_name = "product_search.html"
 
     def get(self, request, *args, **kwargs):
-        searched = request.GET.get("searched")
+        """Method for handling a GET request when searching for products."""
 
-        if searched:
+        product_name = request.GET.get("searched")  # The product name provided
+
+        # If product name provided then
+        # render template and filter queryset with given product name
+        if product_name:
             filterset = self.filterset_class(
-                request.GET, queryset=Product.objects.filter(name__icontains=searched)
+                request.GET,
+                queryset=Product.objects.filter(name__icontains=product_name),
             )
 
+            # Render template with products containing given product name
             return render(
                 request,
                 self.template_name,
-                {"searched": searched, "products": filterset},
+                {"searched": product_name, "products": filterset},
             )
-
+        # Product name not provided
         else:
             return render(request, self.template_name, {})
 
@@ -97,3 +109,42 @@ def product_details(request, id):
         "product_details.html",
         {"product": product, "quantity": quantity},
     )
+
+
+#
+# @login_required
+# def add_review(request):
+#     if request.method == "POST":
+#         form = AddReview(data=request.POST)
+#         if form.is_valid():
+#             review = form.save(commit=False)
+#             review.user_id = request.user.id
+#             review.save()
+#             return redirect("profile")
+#     else:
+#         form = AddUserCardForm()
+#     return render(request, "users/add_card.html", {"form": form})
+#
+#
+# @login_required
+# def update_review(request, id):
+#     next_query = request.GET.get("next")
+#     card = get_object_or_404(request.user.card_set, pk=id)
+#     if request.method == "POST":
+#         form = UpdateUserCardForm(data=request.POST, instance=card)
+#         if form.is_valid():
+#             form.save()
+#             return redirect("profile" if next_query is None else next_query)
+#     else:
+#         form = UpdateUserCardForm(instance=card)
+#     return render(
+#         request, "users/update_card.html", {"form": form, "next_query": next_query}
+#     )
+#
+#
+# @login_required
+# def delete_review(request, id):
+#     next_query = request.GET.get("next")
+#     card = get_object_or_404(request.user.card_set, pk=id)
+#     card.delete()
+#     return redirect("profile" if next_query is None else next_query)

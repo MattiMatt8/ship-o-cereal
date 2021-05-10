@@ -44,7 +44,8 @@ class Product(models.Model):
     )  # Need to check, review should update this each time
     price = models.FloatField()
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    percentage_off = models.FloatField(default=0)
+    percentage_off = models.FloatField(default=0, blank=True)
+    discounted_price = models.FloatField(blank=True, null=True)
     labels = models.ManyToManyField(Label, through="ProductLabel")
     reviews = models.ManyToManyField(User, through="Review")
 
