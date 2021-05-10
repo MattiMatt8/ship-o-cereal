@@ -105,6 +105,7 @@ def checkout_confirm(request):
     order.first_name = request.user.first_name
     order.last_name = request.user.last_name
     order.phone_number = request.user.profile.phone
+    order.user_id = request.user.id
     keep_order(request, order)
     for obj in serializers.deserialize("json", request.session.get("checkout_card")):
         card = obj.object

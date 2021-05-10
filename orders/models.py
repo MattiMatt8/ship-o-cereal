@@ -6,6 +6,7 @@ from users.models import Address, Card
 
 
 class Order(models.Model): # TODO: Connect to user again.
+    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     total = models.FloatField()
     products_total = models.FloatField()
     date = models.DateTimeField(default=now)
