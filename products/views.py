@@ -47,8 +47,8 @@ class ProductsInCategoryListView(FilteredListView):
     all products or products matching query parameters.
     """
 
-    paginate_by = 10
-    filterset_class = ProductFilter
+    paginate_by = 10  # Display 10 products at a time
+    filterset_class = ProductFilter  # Filter to apply
     queryset = Product.objects.all()
     context_object_name = "products"
     template_name = "category/category.html"
@@ -66,23 +66,32 @@ class ProductsInCategoryListView(FilteredListView):
 
 
 class ProductSearch(FilteredListView):
+    """
+    A class for listing and paginating products based on search paremeters.
+    """
+
     filterset_class = ProductSearchFilter
     template_name = "product_search.html"
 
     def get(self, request, *args, **kwargs):
-        searched = request.GET.get("searched")
+        """Method for handling a GET request when searching for products."""
 
-        if searched:
+        product_name = request.GET.get("searched")  # The product name provided
+
+        # If product name provided then
+        # render template and filter queryset with given product name
+        if product_name:
             filterset = self.filterset_class(
-                request.GET, queryset=Product.objects.filter(name__icontains=searched)
+                request.GET, queryset=Product.objects.filter(name__icontains=product_name)
             )
 
+            # Render template with products containing given product name
             return render(
                 request,
                 self.template_name,
-                {"searched": searched, "products": filterset},
+                {"searched": product_name, "products": filterset},
             )
-
+        # Product name not provided
         else:
             return render(request, self.template_name, {})
 
