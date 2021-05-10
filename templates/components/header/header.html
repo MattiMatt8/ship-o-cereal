@@ -1,0 +1,25 @@
+<header>
+  <div class="flex items-center my-4">
+    <!-- Logo -->
+    <div>
+      <a href="/"> {% include "components/icons/header-logo.html" %} </a>
+    </div>
+    <!-- END Logo -->
+
+    <!-- Navbar -->
+    <div class="flex w-2/5...">
+      {% include "components/header/navbar.html" %}
+    </div>
+    <!-- END Navbar -->
+
+    <div class="w-full flex flex-row justify-end">
+      <!-- Searchbar -->
+      {% include "components/header/search/searchbar.html" %}
+      <!-- END Searchbar -->
+
+      <!-- Cart and profile -->
+      {% include "components/header/toolbar.html" %}
+      <!-- END Cart and profile -->
+    </div>
+  </div>
+</header>

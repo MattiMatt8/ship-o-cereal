@@ -1,0 +1,26 @@
+<!-- Cart -->
+<a
+    href="{% url 'cart' %}"
+    class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6 relative"
+>
+  {% include "components/icons/header-cart-icon.html" %}
+  <div
+      class="bg-customBlue rounded-full p-1 h-5 absolute -top-1 -right-1 flex items-center justify-center text-customGray"
+  >
+    <p id="cart_total">{{ total_in_cart }}</p>
+  </div>
+</a>
+<!-- END Cart -->
+
+<!-- User profile -->
+<a
+    href="{% url 'profile' %}"
+    class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6"
+>
+{% if user.is_authenticated %}
+  {% include "components/icons/header-profile-icon.html" %}
+{% else %}
+  {% include "components/icons/header-login-register-icon.html" %}
+{% endif %}
+</a>
+<!-- END User profile -->
