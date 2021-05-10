@@ -155,5 +155,13 @@ const setInputFilter = (textbox, inputFilter) => {
             }
         });
     });
+}
 
+function searchListener() {
+
+    function handleForm(event) {
+        event.target.form.submit();
+    }
+    document.getElementsByTagName("form")[0]
+        .addEventListener("submit", handleForm);
 }

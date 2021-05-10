@@ -2,10 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
-
-from orders.models import OrderItem
 from .models import Category, Product
-from .filters import ProductFilter
+from .filters import ProductFilter, ProductSearchFilter
 
 
 class FilteredListView(FilterView):
@@ -31,7 +29,7 @@ class FilteredListView(FilterView):
 
 
 class ProductsInCategoryListView(FilteredListView):
-    # Calls filtered list view
+
     paginate_by = 10
     filterset_class = ProductFilter
     queryset = Product.objects.all()
@@ -45,6 +43,12 @@ class ProductsInCategoryListView(FilteredListView):
         category = self.get_category()
 
         return self.queryset.filter(category=category)
+
+
+class ProductSearch(FilteredListView):
+
+    filterset_class = ProductSearchFilter
+    template_name = "search.html"
 
 
 @ensure_csrf_cookie

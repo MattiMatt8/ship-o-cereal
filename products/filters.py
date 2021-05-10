@@ -51,3 +51,9 @@ class ProductFilter(FilterSet):
         self.form.fields["ordering"].widget.attrs = {
             "class": "rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-42 h-9 pl-3 pr-10"
         }
+
+
+class ProductSearchFilter(FilterSet):
+    class Meta:
+        model = Product
+        fields = {"name": ["contains"]}

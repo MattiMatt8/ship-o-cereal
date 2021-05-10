@@ -8,5 +8,5 @@ urlpatterns = [
         views.ProductsInCategoryListView.as_view(),
         name="product-category",
     ),
-    path(),
+    path("search/<str:keyword>", views.ProductSearch.as_view(), name="product-search"),
 ]
