@@ -104,12 +104,12 @@ searchDropdown.addEventListener("mouseleave", (e) => {
   }
 });
 
-const renderNotification = (message, type) => {
+const renderNotification = (object, type) => {
   if (type === "error") {
     const errorNotification = document.getElementById("error-notification");
     const messageSpan = document.getElementById("error-notification-message");
 
-    messageSpan.textContent = message;
+    messageSpan.textContent = object.response.data.message;
 
     errorNotification.classList.add("right-6");
     errorNotification.classList.remove("-right-96");
