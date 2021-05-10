@@ -22,11 +22,18 @@ class Card(models.Model):
     year = models.IntegerField()
 
 
+class Country(models.Model):
+    country = models.CharField(max_length=255, primary_key=True)
+
+    def __str__(self):
+        return self.country
+
+
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     street_name = models.CharField(max_length=255)
     house_number = models.IntegerField()
-    country = models.CharField(max_length=255)
+    country = models.ForeignKey(Country, on_delete=models.DO_NOTHING)
     additional_comments = models.CharField(max_length=255, blank=True, null=True)
     zip = models.IntegerField()
     city = models.CharField(max_length=255)
@@ -36,7 +43,3 @@ class SearchHistory(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(default=now)
     search = models.CharField(max_length=255)
-
-
-class Country(models.Model): # TODO: Have foreign key to this in address?
-    country = models.CharField(max_length=255, primary_key=True)

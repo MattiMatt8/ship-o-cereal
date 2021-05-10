@@ -73,11 +73,6 @@ function cartDeleteFromTotal(quantity = 1) {
   cartTotalElement.innerText = cartTotal;
 }
 
-window.addEventListener( "pageshow", (e) => {
-  if (e.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-    console.log("Going back");
-  }
-});
 
 // Searchbar
 

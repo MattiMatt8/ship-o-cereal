@@ -68,7 +68,9 @@ def add_address(request):
             address = form.save(commit=False)
             address.user_id = request.user.id
             address.save()
-            return redirect("profile" if next_query is None else next_query)
+            if next_query:
+                return redirect(f"{next_query}?select={address.id}")
+            return redirect("profile")
     else:
         form = UserAddressForm()
     return render(request, "users/add_address.html", {"form": form})
@@ -107,7 +109,9 @@ def add_card(request):
             card = form.save(commit=False)
             card.user_id = request.user.id
             card.save()
-            return redirect("profile" if next_query is None else next_query)
+            if next_query:
+                return redirect(f"{next_query}?select={card.id}")
+            return redirect("profile")
     else:
         form = AddUserCardForm()
     return render(request, "users/add_card.html", {"form": form})
@@ -278,9 +282,3 @@ def cart(request):
     return render(
         request, "users/cart.html", {"order": order, "order_items": order_items}
     )
-
-
-def cart_count(request):
-    """Returns how many items are currently in the cart."""
-    cart_total = request.session.get("cart_total")
-    return JsonResponse({"cart_total": cart_total if cart_total else 0}, status=200)
