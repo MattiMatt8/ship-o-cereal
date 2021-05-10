@@ -1,8 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import AddReview
+from .forms.AddReview import AddReview
 from .models import Category, Product
 from .filters import ProductFilter, ProductSearchFilter
 
@@ -109,40 +110,44 @@ def product_details(request, id):
         {"product": product, "quantity": quantity},
     )
 
-#
-# @login_required
-# def add_review(request):
-#     if request.method == "POST":
-#         form = AddReview(data=request.POST)
-#         if form.is_valid():
-#             review = form.save(commit=False)
-#             review.user_id = request.user.id
-#             review.save()
-#             return redirect("profile")
-#     else:
-#         form = AddUserCardForm()
-#     return render(request, "users/add_card.html", {"form": form})
-#
-#
-# @login_required
-# def update_review(request, id):
-#     next_query = request.GET.get("next")
-#     card = get_object_or_404(request.user.card_set, pk=id)
-#     if request.method == "POST":
-#         form = UpdateUserCardForm(data=request.POST, instance=card)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("profile" if next_query is None else next_query)
-#     else:
-#         form = UpdateUserCardForm(instance=card)
-#     return render(
-#         request, "users/update_card.html", {"form": form, "next_query": next_query}
-#     )
-#
-#
-# @login_required
-# def delete_review(request, id):
-#     next_query = request.GET.get("next")
-#     card = get_object_or_404(request.user.card_set, pk=id)
-#     card.delete()
-#     return redirect("profile" if next_query is None else next_query)
+
+@login_required
+def add_review(request, id):
+    # TODO: Check if person has already purchased the product
+    if request.method == "POST":
+        form = AddReview(data=request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user_id = request.user.id
+            review.product_id = id
+            review.save()
+            return redirect("product-details", id=id)
+    else:
+        form = AddReview()
+    return render(request, "products/add_review.html", {"form": form})
+
+
+@login_required
+def update_review(request, id, review_id):
+    pass
+    # next_query = request.GET.get("next")
+    # card = get_object_or_404(request.user.card_set, pk=id)
+    # if request.method == "POST":
+    #     form = UpdateUserCardForm(data=request.POST, instance=card)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect("profile" if next_query is None else next_query)
+    # else:
+    #     form = UpdateUserCardForm(instance=card)
+    # return render(
+    #     request, "users/update_card.html", {"form": form, "next_query": next_query}
+    # )
+    #
+
+@login_required
+def delete_review(request, id, review_id):
+    pass
+    # next_query = request.GET.get("next")
+    # card = get_object_or_404(request.user.card_set, pk=id)
+    # card.delete()
+    # return redirect("profile" if next_query is None else next_query)
