@@ -8,7 +8,6 @@ from django_filters import (
     NumberFilter,
     OrderingFilter,
     CharFilter,
-    UUIDFilter, ChoiceFilter,
 )
 from .models import Product, Label
 
@@ -27,8 +26,7 @@ class ProductFilter(FilterSet):
     price = NumberFilter(field_name="price")
     name = CharFilter(field_name="name")
     id = NumberFilter(field_name="newest")
-    # labels = ModelMultipleChoiceFilter(queryset=Label.objects.all())
-    labels = ModelMultipleChoiceFilter(queryset=Label.objects.all())
+    labels = ModelMultipleChoiceFilter(queryset=Label.objects.all(), conjoined=True)
     brand = ModelChoiceFilter(
         queryset=Brand.objects.filter(
             id__in=Product.objects.filter(
