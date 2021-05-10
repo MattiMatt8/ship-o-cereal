@@ -1,8 +1,13 @@
+from builtins import int
+
+from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .forms import AddReview
+from orders.models import OrderItem
+from .forms.AddReview import AddReview
 from .models import Category, Product
 from .filters import ProductFilter, ProductSearchFilter
 
@@ -76,7 +81,7 @@ class ProductSearch(FilteredListView):
     def get(self, request, *args, **kwargs):
         """Method for handling a GET request when searching for products."""
 
-        product_name = request.GET.get("searched")  # The product name provided
+        product_name = request.GET.get("query")  # The product name provided
 
         # If product name provided then
         # render template and filter queryset with given product name
@@ -111,40 +116,50 @@ def product_details(request, id):
     )
 
 
-#
-# @login_required
-# def add_review(request):
-#     if request.method == "POST":
-#         form = AddReview(data=request.POST)
-#         if form.is_valid():
-#             review = form.save(commit=False)
-#             review.user_id = request.user.id
-#             review.save()
-#             return redirect("profile")
-#     else:
-#         form = AddUserCardForm()
-#     return render(request, "users/add_card.html", {"form": form})
-#
-#
-# @login_required
-# def update_review(request, id):
-#     next_query = request.GET.get("next")
-#     card = get_object_or_404(request.user.card_set, pk=id)
-#     if request.method == "POST":
-#         form = UpdateUserCardForm(data=request.POST, instance=card)
-#         if form.is_valid():
-#             form.save()
-#             return redirect("profile" if next_query is None else next_query)
-#     else:
-#         form = UpdateUserCardForm(instance=card)
-#     return render(
-#         request, "users/update_card.html", {"form": form, "next_query": next_query}
-#     )
-#
-#
-# @login_required
-# def delete_review(request, id):
-#     next_query = request.GET.get("next")
-#     card = get_object_or_404(request.user.card_set, pk=id)
-#     card.delete()
-#     return redirect("profile" if next_query is None else next_query)
+@login_required
+def add_review(request, id):
+    # TODO: Maybe display what item is being review at the top?
+    if request.user.review_set.filter(product_id=id):
+        raise PermissionDenied
+    elif not request.user.order_set.filter(
+        id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
+    ):
+        raise PermissionDenied
+    if request.method == "POST":
+        form = AddReview(data=request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user_id = request.user.id
+            review.product_id = id
+            review.save()
+            return redirect("product-details", id=id)
+    else:
+        form = AddReview()
+    return render(request, "products/add_review.html", {"form": form})
+
+
+@login_required
+def update_review(request, id, review_id):
+    pass
+    # next_query = request.GET.get("next")
+    # card = get_object_or_404(request.user.card_set, pk=id)
+    # if request.method == "POST":
+    #     form = UpdateUserCardForm(data=request.POST, instance=card)
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect("profile" if next_query is None else next_query)
+    # else:
+    #     form = UpdateUserCardForm(instance=card)
+    # return render(
+    #     request, "users/update_card.html", {"form": form, "next_query": next_query}
+    # )
+    #
+
+
+@login_required
+def delete_review(request, id, review_id):
+    pass
+    # next_query = request.GET.get("next")
+    # card = get_object_or_404(request.user.card_set, pk=id)
+    # card.delete()
+    # return redirect("profile" if next_query is None else next_query)

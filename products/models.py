@@ -76,8 +76,8 @@ class Review(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(default=now)
-    stars = models.FloatField()
-    review = models.CharField(max_length=255)
+    stars = models.IntegerField()
+    review = models.TextField(max_length=500)
 
     class Meta:
         unique_together = ("user", "product")
