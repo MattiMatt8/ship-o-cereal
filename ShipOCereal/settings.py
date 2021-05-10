@@ -77,6 +77,7 @@ TEMPLATES = [
             ],
             "libraries": {
                 "product_card_extras": "ShipOCereal.templatetags.product_card_extras",
+                "general": "ShipOCereal.templatetags.general",
             },
         },
     },

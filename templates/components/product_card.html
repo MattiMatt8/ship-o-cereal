@@ -13,25 +13,13 @@
       <!-- START Label icons -->
       <div class="flex flex-row">
         <!-- START Healthy icons -->
-        <!-- NOT SO DYNAMIC  -->
         {% for label in product.labels.all %}
-          {% if label.id == 1 %}
-            <!-- START Gluten free icons -->
+          {% with "components/icons/"|addstr:label.icon as template %}
             <span class="mr-2">
-          {% include 'components/icons/gluten-free-icon.html' with classAttr="w-6 h-6" %}
+            {% include template with classAttr="w-6 h-6" %}
             </span>
-          {% elif label.id == 2 %}
-            <span class="mr-2">
-          {% include 'components/icons/healthy-icon.html' with classAttr="w-6 h-6" %}
-            </span>
-          {% elif label.id == 3 %}
-            <span class="mr-2">
-            {% include 'components/icons/sugary-icon.html' with classAttr="w-6 h-6" %}
-            </span>
-          {% endif %}
+          {% endwith %}
         {% endfor %}
-
-
       </div>
       <!-- END Label icons -->
       <h3 class="text-xl break-words">{{ product.name }}</h3>
