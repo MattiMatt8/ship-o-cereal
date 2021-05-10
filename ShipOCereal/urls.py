@@ -14,7 +14,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from products.views import ProductSearch
+from products.views import ProductSearchView
 from . import views, settings
 from django.conf.urls.static import static
 
