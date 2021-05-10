@@ -114,30 +114,33 @@ const searchInput = document.getElementById("search-input");
 const searchDropdown = document.getElementById("search-dropdown");
 let isHoveringDropdown = false;
 
-searchInput.addEventListener("focusin", (e) => {
-    searchDropdown.classList.add("animate-searchDropdownOpen");
-    searchDropdown.classList.remove("animate-searchDropdownClose");
-});
+// Only available for users, searchdropdown is not rendered for non-users
+if (searchDropdown) {
+    searchInput.addEventListener("focusin", (e) => {
+        searchDropdown.classList.add("animate-searchDropdownOpen");
+        searchDropdown.classList.remove("animate-searchDropdownClose");
+    });
 
-searchInput.addEventListener("focusout", (e) => {
-    if (!isHoveringDropdown) {
-        searchDropdown.classList.remove("animate-searchDropdownOpen");
-        searchDropdown.classList.add("animate-searchDropdownClose");
-    }
-});
+    searchInput.addEventListener("focusout", (e) => {
+        if (!isHoveringDropdown) {
+            searchDropdown.classList.remove("animate-searchDropdownOpen");
+            searchDropdown.classList.add("animate-searchDropdownClose");
+        }
+    });
 
-searchDropdown.addEventListener("mouseover", (e) => {
-    isHoveringDropdown = true;
-});
 
-searchDropdown.addEventListener("mouseleave", (e) => {
-    isHoveringDropdown = false;
-    if (!(document.activeElement === searchInput)) {
-        searchDropdown.classList.remove("animate-searchDropdownOpen");
-        searchDropdown.classList.add("animate-searchDropdownClose");
-    }
-});
+    searchDropdown.addEventListener("mouseover", (e) => {
+        isHoveringDropdown = true;
+    });
 
+    searchDropdown.addEventListener("mouseleave", (e) => {
+        isHoveringDropdown = false;
+        if (!(document.activeElement === searchInput)) {
+            searchDropdown.classList.remove("animate-searchDropdownOpen");
+            searchDropdown.classList.add("animate-searchDropdownClose");
+        }
+    });
+}
 const renderNotification = (object, type) => {
     if (type === "error") {
         const errorNotification = document.getElementById("error-notification");
@@ -218,16 +221,13 @@ Array.from(searchDeleteButtons).forEach(button => {
 
                 // If search history is empty this hould remove the whole dropdown box
                 if (numOfListItemsAfterDelete === 0) {
-                    button.parentElement.parentElement.parentElement.remove()
+                    button.parentElement.parentElement.parentElement.classList.add('hidden');
                 } else {
                     // If search got deleted on the backend then remove the list item
                     button.parentElement.remove()
                 }
             }
         }
-        
-
-
-
+        deleteSearch(id, callback);
     })
-})
+});
