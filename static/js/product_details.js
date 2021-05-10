@@ -47,10 +47,8 @@ function decrement(e) {
                 amountSelect.classList.add("hidden");
             }
         }
-
         deleteFromCart(id, callback);
     }
-
 }
 
 function increment(e) {

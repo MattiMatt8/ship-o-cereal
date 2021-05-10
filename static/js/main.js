@@ -115,45 +115,43 @@ const renderNotification = (message, type) => {
 }
 
 
-
 // Input filter used for validation
 
 // Restricts input for the given textbox to the given inputFilter function.
 const setInputFilter = (textbox, inputFilter) => {
-    ["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
-        textbox.addEventListener(event, function (e) {
-            this.selectionStart = this.selectionEnd = this.value.length;
-            if (inputFilter(this.value) && this.value != 0) {
-                // If a number was an input, it's safe to make the request to the server
-                const callback = (error) => {
-                    if (!error) {
-                        // If success then mark the new number as an old number we can revert to if something fails.
-                        this.oldValue = this.value;
-                        this.oldSelectionStart = this.selectionStart;
-                        this.oldSelectionEnd = this.selectionEnd;
-                        return
-                    } else if (this.hasOwnProperty("oldValue")) {
-                        this.value = this.oldValue;
-                        this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-                    } else {
-                        this.value = "";
-                    }
-                    // TODO: Display error notification
-                    renderNotification(error, "error")
+    //["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+    textbox.addEventListener("input", function (e) {
+        if (inputFilter(this.value) && this.value != 0) {
+            // If a number was an input, it's safe to make the request to the server
+            const callback = (error) => {
+                if (!error) {
+                    // If success then mark the new number as an old number we can revert to if something fails.
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                    return
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                } else {
+                    this.value = "";
                 }
-
-                const id = e.target.dataset.productId;
-                updateCart(id, Number(e.target.value), callback);
-                return
+                // TODO: Display error notification
+                renderNotification(error, "error")
             }
 
-            if (this.hasOwnProperty("oldValue")) {
-                this.value = this.oldValue;
-                this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-            } else {
-                this.value = "";
-            }
-        });
+            const id = e.target.dataset.productId;
+            updateCart(id, Number(e.target.value), callback);
+            return
+        }
+
+        if (this.hasOwnProperty("oldValue")) {
+            this.value = this.oldValue;
+            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+        } else {
+            this.value = "";
+        }
     });
+    //});
 
 }
