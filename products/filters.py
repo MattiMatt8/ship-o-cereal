@@ -1,6 +1,6 @@
 from django.utils.translation import gettext_lazy as _
 
-from .models import Brand
+from .models import Brand, Category
 from django_filters import (
     FilterSet,
     ModelMultipleChoiceFilter,
@@ -29,7 +29,7 @@ class ProductFilter(FilterSet):
     id = NumberFilter(field_name="newest")
     labels = ModelMultipleChoiceFilter(queryset=Label.objects.all())
     brand = ModelChoiceFilter(
-        queryset=Brand.objects.all(),
+        queryset=Brand.objects.filter(id__in = Product.objects.filter(category_id=Category.objects.get(name="Cereal")).values_list("brand_id")),
         field_name="brand",
         empty_label=_("Select brand .."),
     )
