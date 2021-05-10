@@ -111,10 +111,12 @@
     </div>
 
     <!-- START Nutrition stuff -->
+    {% if product.category_id == 1 %}
     <div class="mt-10 w-72">
       <h1 class="text-2xl font-medium">Ingredients</h1>
       <p>{{ product.contents }}</p>
     </div>
+    {% endif %}
     <!-- END Nutrition stuff -->
 
     <!-- START Reviews -->
