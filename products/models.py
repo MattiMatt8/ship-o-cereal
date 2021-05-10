@@ -51,6 +51,9 @@ class Product(models.Model):
     def __str__(self):  # Maybe add more to the return
         return self.name
 
+    class Meta:
+        indexes = [models.Index(fields=["name"])]
+
 
 class Image(models.Model):
     name = models.CharField(max_length=255)
