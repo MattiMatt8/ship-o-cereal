@@ -47,7 +47,24 @@ class ProductsInCategoryListView(FilteredListView):
 
 class ProductSearch(FilteredListView):
     filterset_class = ProductSearchFilter
-    template_name = "search.html"
+    template_name = "product_search.html"
+
+    def get(self, request, *args, **kwargs):
+        searched = request.GET.get("searched")
+
+        if searched:
+            filterset = self.filterset_class(
+                request.GET, queryset=Product.objects.filter(name__icontains=searched)
+            )
+
+            return render(
+                request,
+                self.template_name,
+                {"searched": searched, "products": filterset},
+            )
+
+        else:
+            return render(request, self.template_name, {})
 
 
 @ensure_csrf_cookie
