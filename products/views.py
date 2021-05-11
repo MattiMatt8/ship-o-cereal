@@ -1,7 +1,6 @@
-from builtins import int
-
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
 from django.shortcuts import render, get_object_or_404, redirect
@@ -37,10 +36,6 @@ class FilteredListView(FilterView):
         context = super().get_context_data(**kwargs)
         context["filterset"] = self.filterset
 
-        self.get_context_filters(context)
-        return context
-
-    def get_context_filters(self, context):
         filters = ""
         for k, v in context["filterset"].data.items():
             if k != "page":
@@ -48,6 +43,7 @@ class FilteredListView(FilterView):
 
         context["filters"] = filters
 
+        return context
 
 
 class ProductsInCategoryListView(FilteredListView):
@@ -88,6 +84,7 @@ class ProductSearchView(FilteredListView):
 
         product_name = request.GET.get("query")  # The product name provided
 
+
         # Add the search query to the user's search history
         if not request.user.is_anonymous:
             new_search_history_item = SearchHistory(user=request.user, search=product_name)
@@ -97,9 +94,18 @@ class ProductSearchView(FilteredListView):
         # render template and filter queryset with given product name
         if product_name:
             filterset = self.filterset_class(request.GET, queryset=Product.objects.filter(name__icontains=product_name))
+            paginator = Paginator(object_list=filterset.qs, per_page=2)  # Show 25 contacts per page.
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
 
-            context = {"searched": product_name, "filterset": filterset.qs}
-            # self.get_context_filters(context)
+            context = {
+                "searched": product_name,
+                "products": filterset.qs,
+                "paginator": paginator,
+                "page_obj": page_obj,
+                "is_paginated": True,
+                "filters": f"?query={product_name}"
+            }
 
             print(context)
             # {"searched": product_name, "filterset": filterset.qs}
