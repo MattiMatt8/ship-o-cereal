@@ -42,7 +42,8 @@ class OrderDetailView(DetailView):
     template_name = "profile/order_history/order_details.html"
 
     def get_context_data(self, **kwargs):
-        order = get_object_or_404(self.model, pk=kwargs['pk'])
+
+        order = get_object_or_404(self.model, pk=self.kwargs['pk'])
         context = {"order": order}
 
         print(context)
