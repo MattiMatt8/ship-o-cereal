@@ -5,12 +5,22 @@ from django.contrib.auth.models import User
 from users.models import Address, Card
 
 
+class Status(models.Model):
+    name = models.CharField(max_length=255, primary_key=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+
+
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     total = models.FloatField()
     products_total = models.FloatField()
     date = models.DateTimeField(default=now)
-    status = models.CharField(max_length=255, default="Placed")
+    status = models.ForeignKey(Status, on_delete=models.DO_NOTHING)
     shipping_cost = models.FloatField()
     items = models.ManyToManyField(Product, through="OrderItem")
     first_name = models.CharField(max_length=255)

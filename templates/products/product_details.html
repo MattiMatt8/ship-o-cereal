@@ -12,8 +12,8 @@
           </div>
         {% endif %}
         <img
-            class="object-cover object-center w-96 h-full rounded-t-md"
-            src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
+                class="object-cover object-center w-96 h-full rounded-t-md"
+                src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
         />
       </div>
       <!-- META DATA -->
@@ -69,38 +69,38 @@
             </div>
             <div class="flex">
               <button
-                  id="buy-btn"
-                  data-product-id="{{ product.id }}"
-                  class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32"
+                      id="buy-btn"
+                      data-product-id="{{ product.id }}"
+                      class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32"
               >
                 Add to cart
               </button>
               <div
-                  id="amount-btns"
-                  class="{% if quantity is None %} hidden {% endif %} text-customGray"
+                      id="amount-btns"
+                      class="{% if quantity is None %} hidden {% endif %} text-customGray"
               >
                 <div class="custom-number-input w-32">
                   <div
-                      class="flex flex-row h-10 w-full rounded-lg relative bg-transparent"
+                          class="flex flex-row h-10 w-full rounded-lg relative bg-transparent"
                   >
                     <button
-                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none hover:text-gray-700 hover:bg-gray-200"
-                        data-action="decrement"
-                        type="button"
+                            class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none hover:text-gray-700 hover:bg-gray-200"
+                            data-action="decrement"
+                            type="button"
                     >
                       <span class="m-auto text-2xl font-thin">−</span>
                     </button>
                     <input
-                        id="amount-input"
-                        type="text"
-                        data-product-id="{{ product.id }}"
-                        class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
-                        name="custom-input-number"
-                        value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"
+                            id="amount-input"
+                            type="text"
+                            data-product-id="{{ product.id }}"
+                            class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
+                            name="custom-input-number"
+                            value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"
                     />
                     <button
-                        data-action="increment"
-                        class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer"
+                            data-action="increment"
+                            class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer"
                     >
                       <span class="m-auto text-2xl font-thin">+</span>
                     </button>
@@ -119,8 +119,8 @@
     <div class="flex flex-row w-96 mt-4 wrap">
       {% for image in product.image_set.all %}
         <img
-            class="object-cover object-center w-24 h-24 mr-4"
-            src="{% static 'images/' %}{{ product.category.name }}/{{ image }}"
+                class="object-cover object-center w-24 h-24 mr-4"
+                src="{% static 'images/' %}{{ product.category.name }}/{{ image }}"
         />
       {% endfor %}
     </div>
@@ -141,12 +141,17 @@
       {% else %}
         <h1 class="text-2xl font-medium">Reviews</h1>
       {% endif %}
-
       <!-- Create new review -->
       <div class="w-80 mb-4">
         <h2 class="text-lg mb-2">Please leave a review.</h2>
         <form method="post" class="flex flex-col" id="new-review-form">
           {% csrf_token %}
+          <div class="mb-2">
+            <div class="text-red-500 text-sm italic">{{ form.title.errors }}</div>
+            <label for="{{ form.title.id_for_label }}"
+                   class="block text-gray-700 text-base mb-2">Title</label>
+            {{ form.title }}
+          </div>
           <div class="mb-2">
             <div class="text-red-500 text-sm italic">{{ form.stars.errors }}</div>
             <label for="{{ form.stars.id_for_label }}"

@@ -13,7 +13,7 @@ class AddReview(ModelForm):
 
     class Meta:
         model = Review
-        fields = ("stars", "review")
+        fields = ("stars", "review", "title")
         widgets = {
             "stars": widgets.NumberInput(
                 attrs={
@@ -25,5 +25,8 @@ class AddReview(ModelForm):
                     "class": "border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none",
                     "placeholder": "I thought it was..."
                 }
-            )
+            ),
+            "title": widgets.TextInput(
+                attrs={"class": "border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"}
+            ),
         }

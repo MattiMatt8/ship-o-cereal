@@ -7,12 +7,12 @@ document.getElementById("new-review-form").addEventListener("submit", submitRevi
 function submitReview(event) {
     event.preventDefault();
     let stars = document.getElementById("id_stars").value;
+    let title = document.getElementById("id_title").value;
     let review = document.getElementById("id_review").value;
-    let productId = event.currentTarget.dataset.productId;
     axios
         .post(
             "reviews/new/",
-            {stars: stars, review: review},
+            {stars: stars, title: title, review: review},
             {headers: {"X-CSRFToken": CSRF_TOKEN}}
         )
         .then((response) => {

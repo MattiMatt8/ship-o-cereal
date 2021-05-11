@@ -10,6 +10,7 @@ from users.models import SearchHistory
 from .forms.AddReview import AddReview
 from .models import Category, Product
 from .filters import ProductFilter
+import json
 
 
 class FilteredListView(FilterView):
@@ -134,7 +135,12 @@ def add_review(request, id):
             id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
         ):
             return JsonResponse({"message": "Error: Operation not allowed."}, status=403)
-        form = AddReview(data=request.POST)
+        body = json.loads(request.body.decode("utf-8"))
+        form = AddReview(data={
+            "stars": body.get("stars"),
+            "title": body.get("title"),
+            "review": body.get("review")
+        })
         if form.is_valid():
             review = form.save(commit=False)
             review.user_id = request.user.id
