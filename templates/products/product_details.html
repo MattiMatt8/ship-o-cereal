@@ -137,10 +137,49 @@
     <!-- START Reviews -->
     <div class="flex flex-col mt-10 w-1/3">
       {% if not product.review_set.all %}
-        <h1 class="text-2xl font-medium">No reviews yet, buy this product and make one!</h1>
+        <h1 class="text-2xl font-medium">No reviews yet.</h1>
       {% else %}
         <h1 class="text-2xl font-medium">Reviews</h1>
       {% endif %}
+
+      <!-- Create new review -->
+      <div class="w-80 mb-4">
+        <h2 class="text-lg mb-2">Please leave a review.</h2>
+        <form method="post" class="flex flex-col" id="new-review-form">
+          {% csrf_token %}
+          <div class="mb-2">
+            <div class="text-red-500 text-sm italic">{{ form.stars.errors }}</div>
+            <label for="{{ form.stars.id_for_label }}"
+                   class="block text-gray-700 text-base mb-2">Stars</label>
+            <div class="flex flex-row">
+              {% for item in "x"|ljust:"5" %}
+                <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
+                  {% if forloop.counter == 1 %}
+                    {% include 'components/icons/star_filled.html' with hidden=False id=forloop.counter %}
+                  {% else %}
+                    {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
+                    {% include 'components/icons/star_filled.html' with hidden=True id=forloop.counter %}
+                  {% endif %}
+                </button>
+              {% endfor %}
+              <input value="1" type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
+            </div>
+          </div>
+          <div class="mb-4">
+            <div class="text-red-500 text-sm italic">{{ form.review.errors }}</div>
+            <label for="{{ form.review.id_for_label }}"
+                   class="block text-gray-700 text-base mb-2">Review</label>
+            {{ form.review }}
+          </div>
+          <div class="flex justify-end mb-3">
+            <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
+                    type="submit">Post review
+            </button>
+          </div>
+        </form>
+      </div>
+      <!-- END of new review -->
+
       <!-- START Single review -->
       {% for review in product.review_set.all %}
         {% include 'components/product_review.html' with first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars picture=review.user.profile.picture %}
@@ -151,6 +190,7 @@
   </main>
 {% endblock %} {% block page_scripts %}
   <script src="{% static 'js/product_details.js' %}"></script>
+  <script src="{% static 'js/product_review.js' %}"></script>
 {% endblock %} {% block page_styles %}
   <style>
       input[type="number"]::-webkit-inner-spin-button,

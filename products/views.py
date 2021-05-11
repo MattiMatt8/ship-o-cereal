@@ -107,23 +107,33 @@ def product_details(request, id):
     product = get_object_or_404(Product, pk=id)
     if cart:
         quantity = cart.get(str(id))
+
+    form = None
+    if not request.user.review_set.filter(product_id=id) and request.user.order_set.filter(
+            id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")):
+        # Creates a add review if the user has purchased the product and has not already made a review on it
+        form = AddReview()
+
     return render(
         request,
-        "products/product_details.html",
-        {"product": product, "quantity": quantity},
+        "products/product_details.html", {
+            "product": product,
+            "quantity": quantity,
+            "form": form
+        },
     )
+
 
 
 @login_required
 def add_review(request, id):
-    # TODO: Maybe display what item is being review at the top?
+    """Endpoint to post a new review."""
     if request.method == "POST":
-        if request.user.review_set.filter(product_id=id):
-            raise PermissionDenied
-        elif not request.user.order_set.filter(
+        # If the user has made a review or has not already purchased the product
+        if request.user.review_set.filter(product_id=id) or not request.user.order_set.filter(
             id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
         ):
-            raise PermissionDenied
+            return JsonResponse({"message": "Error: Operation not allowed."}, status=403)
         form = AddReview(data=request.POST)
         if form.is_valid():
             review = form.save(commit=False)
@@ -131,19 +141,21 @@ def add_review(request, id):
             review.product_id = id
             review.save()
             return JsonResponse(
-                {"message": "Added to users search history."}, status=201
+                {"message": "Review has been added for the product."}, status=201
             )
-        return JsonResponse({"message": "Added to users search history."}, status=201)
+        return JsonResponse({"message": "Form not valid."}, status=400)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
 
 
 # @login_required
 # def add_review(request, id):
 #     # TODO: Maybe display what item is being review at the top?
+#     # User has already created a review
 #     if request.user.review_set.filter(product_id=id):
 #         raise PermissionDenied
+#     # User has not purchased the product
 #     elif not request.user.order_set.filter(
-#         id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
+#             id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
 #     ):
 #         raise PermissionDenied
 #     if request.method == "POST":
