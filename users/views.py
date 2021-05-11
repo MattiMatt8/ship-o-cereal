@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 
 from ShipOCereal import settings
 from orders.models import OrderItem, Order
@@ -23,14 +23,31 @@ import json
 
 
 class OrdersListView(ListView):
-    template_name = "profile/orders/orders.html"
+    """Class based view for listing the order history of a given user."""
+
+    template_name = "profile/order_history/orders.html"
     model = Order
 
+    def get_context_data(self):
+        """Returns a context containing all orders for a given user."""
+
+        orders = self.request.user.order_set.all()  # match orders by user in request
+
+        return {"order_history": orders}
+
+
+class OrderDetailView(DetailView):
+
+    model = Order
+    template_name = "profile/order_history/order_details.html"
+
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        orders = self.request.user.order_set.all()
-        context["order_history"] = orders
+        order = get_object_or_404(self.model, pk=kwargs['pk'])
+        context = {"order": order}
+
+        print(context)
         return context
+
 
 def register(request):
     '''View for registering a new user.'''

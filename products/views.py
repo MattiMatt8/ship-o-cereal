@@ -15,8 +15,8 @@ import json
 
 class FilteredListView(FilterView):
     """
-    A parent class implementing ListView functionality with
-    added queryset filtering and pagination maintenance.
+    A parent class base view for implementing ListView functionality
+    with added queryset filtering and pagination maintenance.
     """
 
     def get_queryset(self):
@@ -55,7 +55,7 @@ class FilteredListView(FilterView):
 
 class ProductsInCategoryListView(FilteredListView):
     """
-    A class for listing and paginating products in a category, either
+    Class based view for listing and paginating products in a category, either
     all products or products matching query parameters.
     """
 
@@ -78,7 +78,7 @@ class ProductsInCategoryListView(FilteredListView):
 
 class ProductSearchView(FilteredListView):
     """
-    A class for listing and paginating search results
+    Class based view for listing and paginating search results
     plus products matching query parameters.
     """
 
