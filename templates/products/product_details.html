@@ -143,7 +143,7 @@
       {% endif %}
       <!-- START Single review -->
       {% for review in product.review_set.all %}
-        {% include 'components/product_review.html' with first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars %}
+        {% include 'components/product_review.html' with first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars picture=review.user.profile.picture %}
       {% endfor %}
       <!-- END Single review -->
     </div>
