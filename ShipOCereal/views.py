@@ -22,7 +22,7 @@ class HomePageView(View):
         for category in categories:
             context["categories"][category] = Product.objects.filter(
                 category=category.id
-            ).order_by("-total_score")[:5]
+            ).order_by("-review_calculated")[:5]
 
         return render(request, "index.html", context=context)
 
