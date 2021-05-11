@@ -84,12 +84,6 @@ class ProductSearchView(FilteredListView):
 
         product_name = request.GET.get("query")  # The product name provided
 
-
-        # Add the search query to the user's search history
-        if not request.user.is_anonymous:
-            new_search_history_item = SearchHistory(user=request.user, search=product_name)
-            new_search_history_item.save()
-
         # If product name provided then
         # render template and filter queryset with given product name
         if product_name:

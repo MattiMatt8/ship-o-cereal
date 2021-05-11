@@ -110,6 +110,7 @@ function cartDeleteFromTotal(quantity = 1) {
 
 // Searchbar
 
+const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById("search-input");
 const searchDropdown = document.getElementById("search-dropdown");
 let isHoveringDropdown = false;
@@ -231,3 +232,9 @@ Array.from(searchDeleteButtons).forEach(button => {
         deleteSearch(id, callback);
     })
 });
+
+searchForm.addEventListener('submit', e => {
+    console.log({searchForm})
+    newSearch('Yeeet')
+    //e.preventDefault()
+})

@@ -1,5 +1,5 @@
 {% csrf_token %}
-<form class="block self-center relative w-96" action="{% url 'search' %}">
+<form id="search-form" class="block self-center relative w-96" action="{% url 'search' %}">
   <label class="hidden" for="search-form">Search</label>
   <input
       id="search-input"
