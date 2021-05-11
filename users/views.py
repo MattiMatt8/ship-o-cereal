@@ -25,12 +25,12 @@ import json
 class OrdersListView(ListView):
     template_name = "profile/orders/orders.html"
     model = Order
-    context_object_name = "order_history"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         orders = self.request.user.order_set.all()
-
+        context["order_history"] = orders
+        return context
 
 def register(request):
     '''View for registering a new user.'''
