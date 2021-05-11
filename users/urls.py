@@ -31,5 +31,5 @@ urlpatterns = [
     path("cart/amount/", views.cart_amount, name="cart_amount"),
     path("profile/search/new/", views.new_search, name="new_search"),
     path("profile/search/<int:id>/delete/", views.delete_search, name="delete_search"),
-    path("profile/orders", views.OrdersListView.as_view(), name="view-orders")
+    path("profile/orders", views.OrdersListView.as_view(), name="order-history")
 ]
