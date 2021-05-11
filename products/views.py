@@ -43,6 +43,7 @@ class FilteredListView(FilterView):
 
         context["filters"] = filters
 
+        print(context)
         return context
 
 
@@ -75,36 +76,33 @@ class ProductSearchView(FilteredListView):
     A class for listing and paginating products based on search paremeters.
     """
 
-    paginate_by = 20
     filterset_class = ProductSearchFilter
     template_name = "product_search.html"
 
     def get(self, request, *args, **kwargs):
         """Method for handling a GET request when searching for products."""
 
-        product_name = request.GET.get("query")  # The product name provided
+        # The product name provided
+        product_name = request.GET.get("query")
+        print(product_name)
 
-
-        # Add the search query to the user's search history
-        if not request.user.is_anonymous:
-            new_search_history_item = SearchHistory(user=request.user, search=product_name)
-            new_search_history_item.save()
-
-        # If product name provided then
+        # If product name provided
         # render template and filter queryset with given product name
         if product_name:
             filterset = self.filterset_class(request.GET, queryset=Product.objects.filter(name__icontains=product_name))
-            paginator = Paginator(object_list=filterset.qs, per_page=2)  # Show 25 contacts per page.
+
+            paginator = Paginator(object_list=filterset.qs, per_page=20)
             page_number = request.GET.get('page')
             page_obj = paginator.get_page(page_number)
 
             context = {
                 "searched": product_name,
-                "products": filterset.qs,
+                # "products": filterset.qs,
                 "paginator": paginator,
                 "page_obj": page_obj,
                 "is_paginated": True,
-                "filters": f"?query={product_name}"
+                "filters": f"&query={product_name}"
+
             }
 
             print(context)
