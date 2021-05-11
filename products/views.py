@@ -89,27 +89,25 @@ class ProductSearchView(FilteredListView):
         # If product name provided
         # render template and filter queryset with given product name
         if product_name:
-            filterset = self.filterset_class(
-                request.GET,
-                queryset=Product.objects.filter(name__icontains=product_name),
-            )
 
+            # Get the products containing product name
+            filterset = self.filterset_class(request.GET, queryset=Product.objects.filter(name__icontains=product_name))
+
+            # Display 20 products per page
             paginator = Paginator(object_list=filterset.qs, per_page=20)
-            page_number = request.GET.get("page")
+            page_number = request.GET.get('page')  # Current page
             page_obj = paginator.get_page(page_number)
 
+            # Products accessed in the page_obj
             context = {
                 "searched": product_name,
-                # "products": filterset.qs,
                 "paginator": paginator,
                 "page_obj": page_obj,
                 "is_paginated": True,
-                "filters": f"&query={product_name}",
+                "filters": f"&query={product_name}"
             }
 
-            print(context)
-            # {"searched": product_name, "filterset": filterset.qs}
-            # Render template with products containing given product name
+            # Render products to site
             return render(request, self.template_name, context)
         # Product name not provided
         else:
