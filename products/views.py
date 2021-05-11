@@ -62,7 +62,7 @@ class ProductsInCategoryListView(FilteredListView):
     filterset_class = ProductFilter  # Filter to apply
     queryset = Product.objects.all()
     context_object_name = "products"
-    template_name = "category/category.html"
+    template_name = "products/products.html"
 
     def get_queryset(self):
         """Returns a queryset with products in a category matching given query parameters."""
@@ -85,7 +85,7 @@ class ProductSearchView(FilteredListView):
     filterset_class = ProductFilter  # Filter to apply
     queryset = Product.objects.all()
     context_object_name = "products"
-    template_name = "category/category.html"
+    template_name = "products/products.html"
 
     def get_queryset(self):
         """Returns a queryset with products that their names contain the searched parameter."""
