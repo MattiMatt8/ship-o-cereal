@@ -1,8 +1,3 @@
-/* */
-const getQueryString = () => {return window.location.search};
-const categoryUrlPath = () => {return window.location.pathname};
-
-
 function getProductsListener() {
 
     // Event delegation for fetching products
