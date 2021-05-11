@@ -32,11 +32,12 @@ class OrdersListView(ListView):
         orders = self.request.user.order_set.all()
 
 
-
 def register(request):
+    '''View for registering a new user.'''
     if request.user.is_authenticated:
         return redirect("index")
     if request.method == "POST":
+        # Registers the account if it's valid
         form = RegisterForm(data=request.POST)
         if form.is_valid():
             user = form.save()
@@ -50,7 +51,9 @@ def register(request):
 
 @login_required
 def profile(request):
+    '''View for the users profile.'''
     if request.method == "POST":
+        # Updates the users profile if it's valid
         form = UpdateUserForm(
             data=request.POST, files=request.FILES, instance=request.user
         )
@@ -61,6 +64,7 @@ def profile(request):
             )
             profile_form.save()
     else:
+        # Creates a form with the users current information
         form = UpdateUserForm(
             instance=request.user,
             initial={
@@ -73,15 +77,19 @@ def profile(request):
 
 @login_required
 def add_address(request):
+    '''View for adding a new address to the user.'''
+    # Gets the query if the user should be redirected to a different page
     next_query = request.GET.get("next")
 
     if request.method == "POST":
+        # Creates the address for the user if it's valid
         form = UserAddressForm(data=request.POST)
         if form.is_valid():
             address = form.save(commit=False)
             address.user_id = request.user.id
             address.save()
             if next_query:
+                # Sends the user to a custom page
                 return redirect(f"{next_query}?select={address.id}")
             return redirect("profile")
     else:
@@ -91,12 +99,15 @@ def add_address(request):
 
 @login_required
 def update_address(request, id):
+    """View to update users address."""
     next_query = request.GET.get("next")
     address = get_object_or_404(request.user.address_set, pk=id)
     if request.method == "POST":
+        # Updates the users address if it's valid
         form = UserAddressForm(data=request.POST, instance=address)
         if form.is_valid():
             form.save()
+            # Sends the user to his profile or a custom page
             return redirect("profile" if next_query is None else next_query)
     else:
         form = UserAddressForm(instance=address)
@@ -169,7 +180,7 @@ def update_cart(request, id):
             cart_total = 0
         old_quantity = cart.get(str_id)
         if (
-            cart_total + quantity - (old_quantity if old_quantity else 0)
+                cart_total + quantity - (old_quantity if old_quantity else 0)
         ) > settings.MAX_ITEMS_IN_CART:
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
         if old_quantity:
@@ -178,7 +189,7 @@ def update_cart(request, id):
         if in_cart:
             order_items = []
             for obj in serializers.deserialize(
-                "json", request.session.get("order_items")
+                    "json", request.session.get("order_items")
             ):
                 order_item = obj.object
                 if order_item.product.id == id:
@@ -205,7 +216,7 @@ def delete_from_cart(request, id):
             if in_cart:
                 order_items = []
                 for obj in serializers.deserialize(
-                    "json", request.session.get("order_items")
+                        "json", request.session.get("order_items")
                 ):
                     order_item = obj.object
                     if order_item.product.id != id:
@@ -224,14 +235,11 @@ def cart_amount(request):
     cart = request.session.get("cart")
     products_amount_fraction = Fraction()
     if cart:
-        for product_id, quantity in cart.items():
-            try:
-                product = Product.objects.get(pk=int(product_id))
-                products_amount_fraction += (
-                    Fraction.from_float(product.price) * quantity
-                )
-            except ObjectDoesNotExist:
-                pass
+        for obj in serializers.deserialize("json", request.session.get("order_items")):
+            order_item = obj.object
+            products_amount_fraction += (
+                    Fraction.from_float(order_item.price) * order_item.quantity
+            )
     products_amount = round(float(products_amount_fraction), 2)
     shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)), 2)
@@ -267,12 +275,14 @@ def cart(request):
         for product_id, quantity in cart.items():
             try:
                 product = Product.objects.get(pk=int(product_id))
+                price = product.discounted_price if product.discounted_price else product.price
                 order_items.append(
-                    OrderItem(quantity=quantity, product=product, price=product.price)
+                    OrderItem(quantity=quantity, product=product,
+                              price=price)
                 )
                 cart_total += quantity
                 products_amount_fraction += (
-                    Fraction.from_float(product.price) * quantity
+                        Fraction.from_float(price) * quantity
                 )
                 updated_cart[product_id] = quantity
             except ObjectDoesNotExist:
@@ -319,4 +329,3 @@ def delete_search(request, id):
                 return JsonResponse({"message": "Error: Item does not exist."}, status=404)
         return JsonResponse({"message": "Error: User not authorized."}, status=401)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
-
