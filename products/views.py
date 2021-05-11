@@ -84,7 +84,10 @@ class ProductSearchView(FilteredListView):
 
         # The product name provided
         product_name = request.GET.get("query")
-        print(product_name)
+
+        if not request.GET.get("page") and not request.user.is_anonymous:
+            user_search_history_item = SearchHistory(user=request.user, search=product_name)
+            user_search_history_item.save()
 
         # If product name provided
         # render template and filter queryset with given product name
