@@ -109,7 +109,6 @@ function cartDeleteFromTotal(quantity = 1) {
 
 
 // Searchbar
-
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById("search-input");
 const searchDropdown = document.getElementById("search-dropdown");
@@ -117,11 +116,13 @@ let isHoveringDropdown = false;
 
 // Only available for users, searchdropdown is not rendered for non-users
 if (searchDropdown) {
+    // When a logged in user focuses on the search bar, a dropdown list with their search history should happen
     searchInput.addEventListener("focusin", (e) => {
         searchDropdown.classList.add("animate-searchDropdownOpen");
         searchDropdown.classList.remove("animate-searchDropdownClose");
     });
 
+    // If user is no longer focusing on search input, only hide the dropdown if he's not hovering over it
     searchInput.addEventListener("focusout", (e) => {
         if (!isHoveringDropdown) {
             searchDropdown.classList.remove("animate-searchDropdownOpen");
@@ -129,11 +130,13 @@ if (searchDropdown) {
         }
     });
 
-
+    // Listen if user enters the dropdown and set isHoveringDropdown to true
     searchDropdown.addEventListener("mouseover", (e) => {
         isHoveringDropdown = true;
     });
 
+    // Listen if user leaves the dropdown and set isHoveringDropdown to false, but only remove the
+    // dropdown if he's not focused on the input
     searchDropdown.addEventListener("mouseleave", (e) => {
         isHoveringDropdown = false;
         if (!(document.activeElement === searchInput)) {
@@ -142,6 +145,10 @@ if (searchDropdown) {
         }
     });
 }
+
+// Render a notification to be displayed for the user
+// TODO: Make this dynamic, prehaps if type is success, have the notification green or something similar
+// Maybe we don't need a green notification?
 const renderNotification = (object, type) => {
     if (type === "error") {
         const errorNotification = document.getElementById("error-notification");

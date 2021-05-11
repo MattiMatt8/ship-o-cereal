@@ -93,6 +93,7 @@ class ProductSearchView(FilteredListView):
 
         # The product name provided
         return self.queryset.filter(name__icontains=self.kwargs["search_str"])
+
     # TODO: search empty ting
     # TODO: Test same for category and product detail sites
 
@@ -127,7 +128,9 @@ def add_review(request, id):
             review.user_id = request.user.id
             review.product_id = id
             review.save()
-            return JsonResponse({"message": "Added to users search history."}, status=201)
+            return JsonResponse(
+                {"message": "Added to users search history."}, status=201
+            )
         return JsonResponse({"message": "Added to users search history."}, status=201)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
 
