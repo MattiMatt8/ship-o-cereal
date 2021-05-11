@@ -234,7 +234,5 @@ Array.from(searchDeleteButtons).forEach(button => {
 });
 
 searchForm.addEventListener('submit', e => {
-    console.log({searchForm})
-    newSearch('Yeeet')
-    //e.preventDefault()
+    newSearch(searchInput.value);
 })
