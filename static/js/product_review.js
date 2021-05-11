@@ -5,6 +5,8 @@ let stopHoverMove = false;
 document.getElementById("new-review-form").addEventListener("submit", submitReview);
 
 function submitReview(event) {
+    // When a new review is submitted, send to the server the request and if it's
+    // successful it will then update the view for the user with his review.
     event.preventDefault();
     let stars = document.getElementById("id_stars").value;
     let title = document.getElementById("id_title").value;
@@ -16,7 +18,7 @@ function submitReview(event) {
             {headers: {"X-CSRFToken": CSRF_TOKEN}}
         )
         .then((response) => {
-            console.log("SUCESS");
+            document.getElementById("new-review").classList.add("hidden");
         })
         .catch((error) => {
             console.log(error);

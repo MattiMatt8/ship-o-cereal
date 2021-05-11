@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
 <main class="container mx-auto">
   <h1 class="flex justify-center text-4xl text-customGray font-medium">Order history</h1>
 
-<table class="m-5 w-5/6 mx-auto">
-  <thead>
-    <tr class="text-left text-xl text-customViolet">
-      <th class="px-4 py-3">Order No.</th>
-      <th class="px-4 py-3">Ship to</th>
-      <th class="px-4 py-3">Order date</th>
-      <th class="px-4 py-3">Status</th>
-      <th class="px-4 py-3">Total</th>
-    </tr>
-  </thead>
+  <!-- Order history table -->
+  <table class="w-4/5 mt-6 mx-auto">
+    <thead class="border-b-2 border-customViolet">
+      <tr class="text-left text-xl text-customViolet">
+        <th class="px-4 py-3">Order No.</th>
+        <th class="px-4 py-3">Ship to</th>
+        <th class="px-4 py-3">Order date</th>
+        <th class="px-4 py-3">Status</th>
+        <th class="px-4 py-3">Total</th>
+      </tr>
+    </thead>
 
-  <tbody>
-    <!-- Order history -->
+    <tbody>
+    <!-- Previous order -->
     {% for order in order_history %}
       <tr class="border-b">
         <td class="px-4 py-3">{{ order.id }}</td>
@@ -34,8 +34,8 @@
       </tr>
     {% endfor %}
     <!-- END Order history -->
-  </tbody>
-</table>
+    </tbody>
+  </table>
 </main>
 
 {% endblock %}
