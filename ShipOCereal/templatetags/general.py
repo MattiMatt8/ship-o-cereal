@@ -5,3 +5,7 @@ from django.template.defaulttags import register
 def addstr(arg1, arg2):
     """concatenate arg1 & arg2"""
     return str(arg1) + str(arg2)
+
+@register.filter(name='times')
+def times(number):
+    return range(int(number))

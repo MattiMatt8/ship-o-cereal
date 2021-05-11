@@ -2,9 +2,9 @@
      class="z-20 overflow-y-auto absolute overflow-hidden w-full max-h-0 border-customGray rounded-xl border top-3 bg-white">
   <ul
       class="w-full shadow-lg hover:shadow-xl text-customGray">
-    {% for result in user.searchhistory_set.all %}
+    {% for result in user.searchhistory_set.all|slice:":10" %}
       <li class="flex items-center justify-between border-b p-3 border-gray-300">
-        <a href="#">{{ result.search }}</a>
+        <button class="w-full text-left search-term-button" type="button" data-search-value="{{ result.search }}">{{ result.search }}</button>
         <button type="button" class="search-delete-button" data-search-id="{{ result.id }}">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                xmlns="http://www.w3.org/2000/svg">
