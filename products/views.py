@@ -109,7 +109,7 @@ def product_details(request, id):
         quantity = cart.get(str(id))
     return render(
         request,
-        "product_details.html",
+        "products/product_details.html",
         {"product": product, "quantity": quantity},
     )
 
