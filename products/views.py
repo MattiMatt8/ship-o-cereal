@@ -107,7 +107,8 @@ class ProductSearchView(FilteredListView):
                 "paginator": paginator,
                 "page_obj": page_obj,
                 "is_paginated": True,
-                "filters": f"&query={product_name}"
+                "filters": f"&query={product_name}",
+                "filterset": filterset
             }
 
             # Render products to site

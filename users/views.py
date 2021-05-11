@@ -6,6 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.generic import ListView
 
 from ShipOCereal import settings
 from orders.models import OrderItem, Order
@@ -19,6 +20,17 @@ from users.forms.AddUserCardForm import AddUserCardForm
 from users.forms.UpdateUserCardForm import UpdateUserCardForm
 from users.models import Profile, SearchHistory
 import json
+
+
+class OrdersListView(ListView):
+    template_name = "profile/orders/orders.html"
+    model = Order
+    context_object_name = "order_history"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        orders = self.request.user.order_set.all()
+
 
 
 def register(request):
@@ -56,12 +68,13 @@ def profile(request):
                 "picture": request.user.profile.picture,
             },
         )
-    return render(request, "users/profile.html", {"form": form})
+    return render(request, "profile/profile.html", {"form": form})
 
 
 @login_required
 def add_address(request):
     next_query = request.GET.get("next")
+
     if request.method == "POST":
         form = UserAddressForm(data=request.POST)
         if form.is_valid():
@@ -306,3 +319,4 @@ def delete_search(request, id):
                 return JsonResponse({"message": "Error: Item does not exist."}, status=404)
         return JsonResponse({"message": "Error: User not authorized."}, status=401)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
+
