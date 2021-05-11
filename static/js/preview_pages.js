@@ -16,7 +16,6 @@ Array.from(buttons).forEach(buyButton => {
         };
         updateCart(id, 1, callback);
     });
-
 })
 
 function decrement(e) {
