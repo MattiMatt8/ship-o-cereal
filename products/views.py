@@ -45,6 +45,7 @@ class FilteredListView(FilterView):
         search = self.kwargs.get("search_str")
         if search:
             context["page_name"] = f"Search results for {search}"
+            context["search_str"] = search
         else:
             category = self.kwargs.get("category_name")
             context["page_name"] = f"All {category}"
@@ -90,8 +91,6 @@ class ProductSearchView(FilteredListView):
         """Returns a queryset with products that their names contain the searched parameter."""
 
         search = self.kwargs.get("search_str")
-
-        print("LEN QUERY: ", len(self.request.GET))
 
         # Adds the search to the search history if the user is logged in and just did the search
         if len(self.request.GET) == 0 and self.request.user.is_authenticated:
