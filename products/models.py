@@ -49,7 +49,7 @@ class Product(models.Model):
     labels = models.ManyToManyField(Label, through="ProductLabel")
     reviews = models.ManyToManyField(User, through="Review")
 
-    def __str__(self):  # Maybe add more to the return
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -84,5 +84,5 @@ class Review(models.Model):
     class Meta:
         unique_together = ("user", "product")
 
-    def __str__(self):  # todo: Add more to the return
+    def __str__(self):
         return self.review

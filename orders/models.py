@@ -10,7 +10,7 @@ class Order(models.Model):
     total = models.FloatField()
     products_total = models.FloatField()
     date = models.DateTimeField(default=now)
-    status = models.CharField(max_length=255, default="Placed")  # Maybe smaller?
+    status = models.CharField(max_length=255, default="Placed")
     shipping_cost = models.FloatField()
     items = models.ManyToManyField(Product, through="OrderItem")
     first_name = models.CharField(max_length=255)

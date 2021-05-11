@@ -13,10 +13,10 @@
                  class="block text-gray-700 text-base mb-2">Stars</label>
           <div class="flex flex-row">
             {% for item in "x"|ljust:"5" %}
-            <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
+              <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
                 {% include 'components/icons/star_filled.html' with hidden=True id=forloop.counter %}
                 {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
-            </button>
+              </button>
             {% endfor %}
             <input type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
           </div>

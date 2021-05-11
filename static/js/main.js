@@ -116,18 +116,12 @@ const searchDropdown = document.getElementById("search-dropdown");
 let isHoveringDropdown = false;
 
 
-searchBtn.addEventListener("click", submitSearch);
+searchForm.addEventListener("submit", submitSearch);
 
 function submitSearch(event) {
     // Redirects the user to the search page when he searches
     event.preventDefault();
-    let search = searchInput.value;
-    if (search === "") {
-        renderNotification({"response": {"data": {"message": "Search can't be empty!"}}}, "error");
-    }
-    else {
-        window.location.href = `/search/${searchInput.value}`
-    }
+    window.location.href = `/search/${searchInput.value}`;
 }
 
 
