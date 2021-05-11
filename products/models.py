@@ -35,13 +35,13 @@ class Product(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.DO_NOTHING)
     weight = models.IntegerField(blank=True, null=True)
     stock = models.IntegerField(default=0)
-    active = models.BooleanField(default=True, null=True)  # Default?
-    total_score = models.FloatField(
-        default=0
-    )  # Need to check, review should update this each time
-    total_reviews = models.IntegerField(
-        default=0
-    )  # Need to check, review should update this each time
+    active = models.BooleanField(default=True, null=True)
+    # Total review score before dividing by total of reviewers
+    total_review_score = models.FloatField(default=0, blank=True)
+    # Total people that have reviewed the product
+    total_reviewers = models.IntegerField(default=0, blank=True)
+    # Current review calculated already
+    review_calculated = models.FloatField(default=0, blank=True)
     price = models.FloatField()
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     percentage_off = models.FloatField(default=0, blank=True)
