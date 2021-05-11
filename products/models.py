@@ -78,6 +78,8 @@ class Review(models.Model):
     date = models.DateTimeField(default=now)
     stars = models.IntegerField()
     review = models.TextField(max_length=500)
+    title = models.CharField(max_length=255)
+
 
     class Meta:
         unique_together = ("user", "product")

@@ -2,27 +2,31 @@
 {% load static %}
 {% block content %}
 
-<main class="container mx-auto my-10">
-  {% include 'components/back_button.html' %}
-  {% include "category/category_filters.html" %}
-  <!-- Products on page -->
-  <div class="flex flex-wrap -mx-8">
-    {% for product in object_list %}
-      <div class="p-4 w-1/5 flex justify-center items-start">
-        {% include 'components/product_card.html' with product=product %}
-      </div>
-    {% endfor %}
-  </div>
-  <!-- END Products on page -->
+  <main class="container mx-auto my-10 text-customGray">
+    {% include 'components/back_button.html' %}
+    <h1 class="text-5xl font-light text-center text-customGray mt-8 mb-4">{{ page_name }}</h1>
+    {% include "category/category_filters.html" %}
+    <!-- Products on page -->
+    <div class="flex flex-wrap -mx-8">
+      {% for product in object_list %}
+        <div class="p-4 w-1/5 flex justify-center items-start">
+          {% include 'components/product_card.html' with product=product %}
+        </div>
+      {% endfor %}
+    </div>
+    {% if not object_list %}
+      <h3 class="text-lg text-light mt-4">No products found...</h3>
+    {% endif %}
+    <!-- END Products on page -->
 
-  <!-- Product page numbers -->
-  <div class="flex justify-center mt-8">
-    {% include 'components/pagination.html' with filters=filters is_paginated=is_paginated paginator=paginator page_obj=page_obj %}
-  </div>
-  <!-- END Product page numbers -->
-</main>
-<script src="{% static 'js/categories.js' %}"></script>
+    <!-- Product page numbers -->
+    <div class="flex justify-center mt-8">
+      {% include 'components/pagination.html' with filters=filters is_paginated=is_paginated paginator=paginator page_obj=page_obj %}
+    </div>
+    <!-- END Product page numbers -->
+  </main>
+  <script src="{% static 'js/categories.js' %}"></script>
 {% endblock %}
 {% block page_scripts %}
-<script src="{% static 'js/preview_pages.js' %}"></script>
+  <script src="{% static 'js/preview_pages.js' %}"></script>
 {% endblock %}

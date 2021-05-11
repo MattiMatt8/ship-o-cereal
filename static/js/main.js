@@ -110,9 +110,26 @@ function cartDeleteFromTotal(quantity = 1) {
 
 // Searchbar
 const searchForm = document.getElementById('search-form');
+const searchBtn = document.getElementById("search-btn");
 const searchInput = document.getElementById("search-input");
 const searchDropdown = document.getElementById("search-dropdown");
 let isHoveringDropdown = false;
+
+
+searchBtn.addEventListener("click", submitSearch);
+
+function submitSearch(event) {
+    // Redirects the user to the search page when he searches
+    event.preventDefault();
+    let search = searchInput.value;
+    if (search === "") {
+        renderNotification({"response": {"data": {"message": "Search can't be empty!"}}}, "error");
+    }
+    else {
+        window.location.href = `/search/${searchInput.value}`
+    }
+}
+
 
 // Only available for users, searchdropdown is not rendered for non-users
 if (searchDropdown) {
@@ -239,3 +256,12 @@ Array.from(searchDeleteButtons).forEach(button => {
         deleteSearch(id, callback);
     })
 });
+
+
+// Search history buttons
+const searchTermButtons = document.getElementsByClassName('search-term-button');
+Array.from(searchTermButtons).forEach(btn => {
+    btn.addEventListener("click", () => window.location.href = `/search/${btn.dataset.searchValue}`
+    );
+})
+
