@@ -256,3 +256,12 @@ Array.from(searchDeleteButtons).forEach(button => {
         deleteSearch(id, callback);
     })
 });
+
+
+// Search history buttons
+const searchTermButtons = document.getElementsByClassName('search-term-button');
+Array.from(searchTermButtons).forEach(btn => {
+    btn.addEventListener("click", () => window.location.href = `/search/${btn.dataset.searchValue}`
+    );
+})
+
