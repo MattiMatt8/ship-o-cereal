@@ -232,7 +232,7 @@ Array.from(searchDeleteButtons).forEach(button => {
         deleteSearch(id, callback);
     })
 });
-
-searchForm.addEventListener('submit', e => {
-    newSearch(searchInput.value);
-})
+//
+// searchForm.addEventListener('submit', e => {
+//     newSearch(searchInput.value);
+// })

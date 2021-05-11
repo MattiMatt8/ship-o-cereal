@@ -23,17 +23,28 @@ PRODUCT_ORDER_BY_FIELDS = (
 
 def brands(request):
     category = request.resolver_match.kwargs.get("category_name")
+    if category:
+        return Brand.objects.filter(
+            id__in=Product.objects.filter(
+                category_id=Category.objects.get(name=category)
+            ).values_list("brand_id")
+        )
+    search = request.resolver_match.kwargs.get("search_str")
     return Brand.objects.filter(
         id__in=Product.objects.filter(
-            category_id=Category.objects.get(name=category)
+            name__icontains=search
         ).values_list("brand_id")
     )
 
 
 def labels(request):
     category = request.resolver_match.kwargs.get("category_name")
+    if category:
+        return Label.objects.filter(id__in=ProductLabel.objects.filter(
+            product_id__in=Product.objects.filter(category_id=Category.objects.get(name=category))).values_list("label_id"))
+    search = request.resolver_match.kwargs.get("search_str")
     return Label.objects.filter(id__in=ProductLabel.objects.filter(
-        id__in=Product.objects.filter(category_id=Category.objects.get(name=category))))
+        product_id__in=Product.objects.filter(name__icontains=search)).values_list("label_id"))
 
 
 class ProductFilter(FilterSet):
@@ -60,14 +71,9 @@ class ProductFilter(FilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.form.fields["brand"].widget.attrs = {
-            "class": "rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-64 h-9 pl-3 pr-10"
+            "class": "filter-btn rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-64 h-9 pl-3 pr-10"
         }
         self.form.fields["ordering"].widget.attrs = {
-            "class": "rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-42 h-9 pl-3 pr-10"
+            "class": "filter-btn rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-42 h-9 pl-3 pr-10"
         }
 
-
-class ProductSearchFilter(FilterSet):
-    class Meta:
-        model = Product
-        fields = {"name": ["contains"]}

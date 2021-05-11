@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
 from django.shortcuts import render, get_object_or_404, redirect
@@ -9,7 +10,7 @@ from orders.models import OrderItem
 from users.models import SearchHistory
 from .forms.AddReview import AddReview
 from .models import Category, Product
-from .filters import ProductFilter, ProductSearchFilter
+from .filters import ProductFilter
 
 
 class FilteredListView(FilterView):
@@ -42,8 +43,12 @@ class FilteredListView(FilterView):
                 filters += f"&{k}={v}"
 
         context["filters"] = filters
-
-        print(context)
+        search = self.kwargs.get("serach_str")
+        if search:
+            context["page_name"] = f"Search results for {search}"
+        else:
+            category = self.kwargs.get("category_name")
+            context["page_name"] = f"All {category}"
         return context
 
 
@@ -73,45 +78,23 @@ class ProductsInCategoryListView(FilteredListView):
 
 class ProductSearchView(FilteredListView):
     """
-    A class for listing and paginating products based on search paremeters.
+    A class for listing and paginating products in a category, either
+    all products or products matching query parameters.
     """
 
-    filterset_class = ProductSearchFilter
-    template_name = "product_search.html"
+    paginate_by = 20  # Display 20 products at a time
+    filterset_class = ProductFilter  # Filter to apply
+    queryset = Product.objects.all()
+    context_object_name = "products"
+    template_name = "category/category.html"
 
-    def get(self, request, *args, **kwargs):
-        """Method for handling a GET request when searching for products."""
+    def get_queryset(self):
+        """Returns a queryset with products in a category matching given query parameters."""
 
         # The product name provided
-        product_name = request.GET.get("query")
-        print(product_name)
-
-        # If product name provided
-        # render template and filter queryset with given product name
-        if product_name:
-
-            # Get the products containing product name
-            filterset = self.filterset_class(request.GET, queryset=Product.objects.filter(name__icontains=product_name))
-
-            # Display 20 products per page
-            paginator = Paginator(object_list=filterset.qs, per_page=20)
-            page_number = request.GET.get('page')  # Current page
-            page_obj = paginator.get_page(page_number)
-
-            # Products accessed in the page_obj
-            context = {
-                "searched": product_name,
-                "paginator": paginator,
-                "page_obj": page_obj,
-                "is_paginated": True,
-                "filters": f"&query={product_name}"
-            }
-
-            # Render products to site
-            return render(request, self.template_name, context)
-        # Product name not provided
-        else:
-            return render(request, self.template_name, {})
+        return self.queryset.filter(name__icontains=self.kwargs["search_str"])
+    # TODO: search empty ting
+    # TODO: Test same for category and product detail sites
 
 
 @ensure_csrf_cookie
@@ -131,23 +114,44 @@ def product_details(request, id):
 @login_required
 def add_review(request, id):
     # TODO: Maybe display what item is being review at the top?
-    if request.user.review_set.filter(product_id=id):
-        raise PermissionDenied
-    elif not request.user.order_set.filter(
-        id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
-    ):
-        raise PermissionDenied
     if request.method == "POST":
+        if request.user.review_set.filter(product_id=id):
+            raise PermissionDenied
+        elif not request.user.order_set.filter(
+            id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
+        ):
+            raise PermissionDenied
         form = AddReview(data=request.POST)
         if form.is_valid():
             review = form.save(commit=False)
             review.user_id = request.user.id
             review.product_id = id
             review.save()
-            return redirect("product-details", id=id)
-    else:
-        form = AddReview()
-    return render(request, "products/add_review.html", {"form": form})
+            return JsonResponse({"message": "Added to users search history."}, status=201)
+        return JsonResponse({"message": "Added to users search history."}, status=201)
+    return JsonResponse({"message": "Error: Method not supported."}, status=405)
+
+
+# @login_required
+# def add_review(request, id):
+#     # TODO: Maybe display what item is being review at the top?
+#     if request.user.review_set.filter(product_id=id):
+#         raise PermissionDenied
+#     elif not request.user.order_set.filter(
+#         id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
+#     ):
+#         raise PermissionDenied
+#     if request.method == "POST":
+#         form = AddReview(data=request.POST)
+#         if form.is_valid():
+#             review = form.save(commit=False)
+#             review.user_id = request.user.id
+#             review.product_id = id
+#             review.save()
+#             return redirect("product-details", id=id)
+#     else:
+#         form = AddReview()
+#     return render(request, "products/add_review.html", {"form": form})
 
 
 @login_required
