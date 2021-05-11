@@ -4,9 +4,8 @@ from . import views
 from users.forms.LoginForm import LoginForm
 
 urlpatterns = [
-    path(
-        "login/",
-        LoginView.as_view(
+    path("login/",
+            LoginView.as_view(
             template_name="users/login.html",
             authentication_form=LoginForm,
             redirect_authenticated_user=True,
@@ -32,4 +31,5 @@ urlpatterns = [
     path("cart/amount/", views.cart_amount, name="cart_amount"),
     path("profile/search/new/", views.new_search, name="new_search"),
     path("profile/search/<int:id>/delete/", views.delete_search, name="delete_search"),
+    path("profile/orders", views.OrdersListView.as_view(), name="view-orders")
 ]
