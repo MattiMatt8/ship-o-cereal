@@ -38,6 +38,9 @@ class Order(models.Model):
     def __str__(self):
         return f"Order number: {self.id}"
 
+    class Meta:
+        ordering = ["-id"]
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
