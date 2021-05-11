@@ -1,5 +1,3 @@
-from webbrowser import get
-
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
@@ -47,6 +45,7 @@ class FilteredListView(FilterView):
         search = self.kwargs.get("search_str")
         if search:
             context["page_name"] = f"Search results for {search}"
+            context["search_str"] = search
         else:
             category = self.kwargs.get("category_name")
             context["page_name"] = f"All {category}"
@@ -91,11 +90,14 @@ class ProductSearchView(FilteredListView):
     def get_queryset(self):
         """Returns a queryset with products that their names contain the searched parameter."""
 
-        # The product name provided
-        return self.queryset.filter(name__icontains=self.kwargs["search_str"])
+        search = self.kwargs.get("search_str")
 
-    # TODO: search empty ting
-    # TODO: Test same for category and product detail sites
+        # Adds the search to the search history if the user is logged in and just did the search
+        if len(self.request.GET) == 0 and self.request.user.is_authenticated:
+            user_search_history_item = SearchHistory(user=self.request.user, search=search)
+            user_search_history_item.save()
+
+        return self.queryset.filter(name__icontains=search)
 
 
 @ensure_csrf_cookie
