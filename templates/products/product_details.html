@@ -150,15 +150,15 @@
             <div class="mb-1">
               <div class="text-red-500 text-sm italic">{{ form.title.errors }}</div>
               <label for="{{ form.title.id_for_label }}"
-                     class="block text-gray-700 text-base mb-2">Title</label>
+                     class="block text-gray-700 text-base mb-1">Title</label>
               <input type="text" name="title"
                      class="border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
                      maxlength="255" required="" id="id_title" placeholder="It was...">
             </div>
-            <div class="mb-1">
+            <div class="mb-3">
               <div class="text-red-500 text-sm italic">{{ form.stars.errors }}</div>
               <label for="{{ form.stars.id_for_label }}"
-                     class="block text-gray-700 text-base mb-2">Stars</label>
+                     class="block text-gray-700 text-base mb-1">Stars</label>
               <div class="flex flex-row">
                 {% for item in "x"|ljust:"5" %}
                   <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
@@ -173,10 +173,10 @@
                 <input value="1" type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
               </div>
             </div>
-            <div class="mb-2">
+            <div class="mb-3">
               <div class="text-red-500 text-sm italic">{{ form.review.errors }}</div>
               <label for="{{ form.review.id_for_label }}"
-                     class="block text-gray-700 text-base mb-2">Review</label>
+                     class="block text-gray-700 text-base mb-1">Review</label>
               <textarea name="review" cols="40" rows="5"
                         class="border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none"
                         placeholder="I thought it was... because..." maxlength="500" required="" id="id_review"></textarea>

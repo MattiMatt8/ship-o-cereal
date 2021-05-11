@@ -18,7 +18,6 @@ function submitReview(event) {
             {headers: {"X-CSRFToken": CSRF_TOKEN}}
         )
         .then((response) => {
-            console.log("SUCESS");
             document.getElementById("new-review").classList.add("hidden");
         })
         .catch((error) => {
