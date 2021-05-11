@@ -37,14 +37,17 @@ class FilteredListView(FilterView):
         context = super().get_context_data(**kwargs)
         context["filterset"] = self.filterset
 
-        # Adding filter query parameters to maintain pagination
+        self.get_context_filters(context)
+        return context
+
+    def get_context_filters(self, context):
         filters = ""
         for k, v in context["filterset"].data.items():
             if k != "page":
                 filters += f"&{k}={v}"
 
         context["filters"] = filters
-        return context
+
 
 
 class ProductsInCategoryListView(FilteredListView):
@@ -76,9 +79,9 @@ class ProductSearchView(FilteredListView):
     A class for listing and paginating products based on search paremeters.
     """
 
+    paginate_by = 20
     filterset_class = ProductSearchFilter
     template_name = "product_search.html"
-    paginate_by = 20
 
     def get(self, request, *args, **kwargs):
         """Method for handling a GET request when searching for products."""
@@ -93,17 +96,15 @@ class ProductSearchView(FilteredListView):
         # If product name provided then
         # render template and filter queryset with given product name
         if product_name:
-            filterset = self.filterset_class(
-                request.GET,
-                queryset=Product.objects.filter(name__icontains=product_name),
-            )
+            filterset = self.filterset_class(request.GET, queryset=Product.objects.filter(name__icontains=product_name))
 
+            context = {"searched": product_name, "filterset": filterset.qs}
+            # self.get_context_filters(context)
+
+            print(context)
+            # {"searched": product_name, "filterset": filterset.qs}
             # Render template with products containing given product name
-            return render(
-                request,
-                self.template_name,
-                {"searched": product_name, "products": filterset},
-            )
+            return render(request, self.template_name, context)
         # Product name not provided
         else:
             return render(request, self.template_name, {})
