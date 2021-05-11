@@ -125,9 +125,8 @@ def product_details(request, id):
     )
 
 
-
 @login_required
-def add_review(request, id):
+def add_review(request, id): # TODO: Make added review show automatically
     """Endpoint to post a new review."""
     if request.method == "POST":
         # If the user has made a review or has not already purchased the product
@@ -147,7 +146,13 @@ def add_review(request, id):
             review.product_id = id
             review.save()
             return JsonResponse(
-                {"message": "Review has been added for the product."}, status=201
+                {
+                    "message": "Review has been added for the product.",
+                    "data": {
+                        "full_name": f"{request.user.first_name} {request.user.last_name}",
+                        "profile_image": f"/static/media/{request.user.profile.picture}"
+                    }
+                 }, status=201
             )
         return JsonResponse({"message": "Form not valid."}, status=400)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)

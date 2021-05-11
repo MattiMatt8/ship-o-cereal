@@ -19,6 +19,8 @@ function submitReview(event) {
         )
         .then((response) => {
             document.getElementById("new-review").classList.add("hidden");
+            console.log("Full name: " + response.data.data.full_name);
+            console.log("Image: " + response.data.data.profile_image);
         })
         .catch((error) => {
             console.log(error);
