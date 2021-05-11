@@ -37,14 +37,18 @@ class FilteredListView(FilterView):
         context = super().get_context_data(**kwargs)
         context["filterset"] = self.filterset
 
-        # Adding filter query parameters to maintain pagination
+        self.get_context_filters(context)
+        return context
+
+    @staticmethod
+    def get_context_filters(context):
         filters = ""
         for k, v in context["filterset"].data.items():
             if k != "page":
                 filters += f"&{k}={v}"
 
         context["filters"] = filters
-        return context
+
 
 
 class ProductsInCategoryListView(FilteredListView):
@@ -76,9 +80,9 @@ class ProductSearchView(FilteredListView):
     A class for listing and paginating products based on search paremeters.
     """
 
+    paginate_by = 20
     filterset_class = ProductSearchFilter
     template_name = "product_search.html"
-    paginate_by = 20
 
     def get(self, request, *args, **kwargs):
         """Method for handling a GET request when searching for products."""
