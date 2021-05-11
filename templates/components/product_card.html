@@ -1,6 +1,6 @@
 {% load static %}
 {% load product_card_extras %}
-<div class="rounded-md w-64 shadow-lg hover:shadow-xl bg-gray-50 text-customGray flex flex-col">
+<div class="rounded-md lg:w-44 xl:w-52 2xl:w-64 shadow-lg hover:shadow-xl bg-gray-50 text-customGray flex flex-col">
 
   <!--div class="bg-customBlue h-2/3 rounded-t-md text-white flex justify-center items-center text-customViolet">Image</div -->
   <a href="/products/{{ product.id }}" class="h-56 relative">
@@ -39,17 +39,17 @@
 
     <div class="{% if product.weight is None %} mt-5 {% endif %}">
       {% if product.discounted_price is not None %}
-        <span class="text-xl text-gray-400 line-through">${{ product.price }}</span>
+        <span class="text-lg 2xl:text-xl text-gray-400 line-through">${{ product.price }}</span>
       {% endif %}
       <div class="flex flex-row justify-between items-center">
         {% if product.discounted_price is None %}
-          <span class="block text-3xl">${{ product.price }}</span>
+          <span class="block text-xl 2xl:text-3xl">${{ product.price }}</span>
         {% else %}
-          <span class="block text-3xl text-customRed">${{ product.discounted_price }}</span>
+          <span class="block text-xl 2xl:text-3xl text-customRed">${{ product.discounted_price }}</span>
         {% endif %}
         <!-- This shows only when user hasn't added this to their cart -->
         <button
-            class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} block bg-customGreen py-2 px-3 text-white rounded-md text-lg buy-btn w-30 h-10 flex justify-center items-center"
+            class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} block bg-customGreen p-2 text-white rounded-md text-md 2xl:text-lg buy-btn w-30 h-10 flex justify-center items-center"
             data-product-id="{{ product.id }}"
         >Add to cart
         </button>

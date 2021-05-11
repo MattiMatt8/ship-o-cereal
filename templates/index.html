@@ -5,6 +5,11 @@
 
   {% include "components/advertisement.html" %}
   <main class="container mx-auto my-10">
+  <span class="sm:hidden">sm</span>
+<span class="md:hidden">md</span>
+<span class="lg:hidden">lg</span>
+<span class="xl:hidden">xl</span>
+<span class="2xl:hidden">2xl</span>
     <h1 class="flex justify-center text-4xl text-customGray font-medium">Top rated products!</h1>
     <!-- Preview of top 5 products in categories -->
     {% for k, v in categories.items %}

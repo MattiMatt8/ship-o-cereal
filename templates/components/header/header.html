@@ -7,14 +7,19 @@
     <!-- END Logo -->
 
     <!-- Navbar -->
-    <div class="flex w-2/5...">
+    <div class="flex w-full md:w-2/5 flex-col">
       {% include "components/header/navbar.html" %}
+      <div class="flex justify-center md:hidden mt-4 w-full">
+        {% include "components/header/search/searchbar.html" %}
+      </div>
     </div>
     <!-- END Navbar -->
 
     <div class="w-full flex flex-row justify-end">
       <!-- Searchbar -->
-      {% include "components/header/search/searchbar.html" %}
+      <div class="hidden md:flex items-center">
+        {% include "components/header/search/searchbar.html" %}
+      </div>
       <!-- END Searchbar -->
 
       <!-- Cart and profile -->

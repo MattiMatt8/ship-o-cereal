@@ -31,7 +31,12 @@
           <div class="flex flex-row my-2">
             <!-- START Stars -->
             <div class="flex flex-row">
-              {% for item in "x"|ljust:"5" %} {% include 'components/icons/star_filled.html' %} {% endfor %}
+              {% for item in product.review_calculated|times %}
+                {% include 'components/icons/star_filled.html' %}
+              {% endfor %}
+              {% for item in product.review_calculated|get_unfilled_stars %}
+                {% include 'components/icons/star_unfilled.html' %}
+              {% endfor %}
             </div>
             <!-- END Stars -->
             <span class="ml-4 font-light text-sm"
