@@ -35,6 +35,9 @@ class Order(models.Model):
         max_length=255, blank=True, null=True
     )
 
+    def __str__(self):
+        return f"Order number: {self.id}"
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
