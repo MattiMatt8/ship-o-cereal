@@ -41,7 +41,7 @@
       {% if product.discounted_price is not None %}
         <span class="text-lg 2xl:text-xl text-gray-400 line-through">${{ product.price }}</span>
       {% endif %}
-      <div class="flex flex-row justify-between items-center">
+      <div class="flex  lx:flex-row justify-between items-center">
         {% if product.discounted_price is None %}
           <span class="block text-xl 2xl:text-3xl">${{ product.price }}</span>
         {% else %}

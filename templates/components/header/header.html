@@ -1,5 +1,5 @@
 <header>
-  <div class="flex items-center my-4">
+  <div class="flex items-center my-4 flex-col sm:flex-row">
     <!-- Logo -->
     <div>
       <a href="/"> {% include "components/icons/header-logo.html" %} </a>
@@ -7,24 +7,24 @@
     <!-- END Logo -->
 
     <!-- Navbar -->
-    <div class="flex w-full md:w-2/5 flex-col">
-      {% include "components/header/navbar.html" %}
-      <div class="flex justify-center md:hidden mt-4 w-full">
-        {% include "components/header/search/searchbar.html" %}
-      </div>
-    </div>
-    <!-- END Navbar -->
+    <div class="flex flex-col w-full items-center sm:flex-row">
+        {% include "components/header/navbar.html" %}
+      <!-- END Navbar -->
 
-    <div class="w-full flex flex-row justify-end">
-      <!-- Searchbar -->
-      <div class="hidden md:flex items-center">
-        {% include "components/header/search/searchbar.html" %}
-      </div>
-      <!-- END Searchbar -->
+      <div class="w-full flex flex-col mt-2 sm:flex-row-reverse sm:mt-0">
+        <!-- END Searchbar -->
 
-      <!-- Cart and profile -->
-      {% include "components/header/toolbar.html" %}
-      <!-- END Cart and profile -->
+        <!-- Cart and profile -->
+        <div class="flex justify-center">
+          {% include "components/header/toolbar.html" %}
+        </div>
+        <!-- END Cart and profile -->
+        <!-- START Searchbar -->
+        <div class="flex mt-2 w-full sm:mt-0">
+          {% include "components/header/search/searchbar.html" %}
+        </div>
+        <!-- END Searchbar -->
+      </div>
     </div>
   </div>
 </header>

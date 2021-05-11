@@ -1,8 +1,8 @@
 <nav>
-  <ul class="flex text-customViolet text-xl">
+  <ul class="flex text-customViolet text-md my-2 md:text-lg">
     <!-- Product categories -->
     {% for category in categories %}
-      <li class="mx-4">
+      <li class="mx-2">
         <a class="border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
            href="{% url 'product-category' category_name=category.name %}">{{ category.name }}</a>
       </li>
