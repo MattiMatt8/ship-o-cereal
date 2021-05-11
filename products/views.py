@@ -1,10 +1,11 @@
+from webbrowser import get
+
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 
 from orders.models import OrderItem
 from users.models import SearchHistory
@@ -43,7 +44,7 @@ class FilteredListView(FilterView):
                 filters += f"&{k}={v}"
 
         context["filters"] = filters
-        search = self.kwargs.get("serach_str")
+        search = self.kwargs.get("search_str")
         if search:
             context["page_name"] = f"Search results for {search}"
         else:
@@ -72,14 +73,13 @@ class ProductsInCategoryListView(FilteredListView):
 
     def get_category(self):
         """Returns category object matching keyword argument 'category_name'."""
-
-        return Category.objects.get(name=self.kwargs["category_name"])
+        return get_object_or_404(Category, name=self.kwargs.get("category_name"))
 
 
 class ProductSearchView(FilteredListView):
     """
-    A class for listing and paginating products in a category, either
-    all products or products matching query parameters.
+    A class for listing and paginating search results
+    plus products matching query parameters.
     """
 
     paginate_by = 20  # Display 20 products at a time
@@ -89,7 +89,7 @@ class ProductSearchView(FilteredListView):
     template_name = "category/category.html"
 
     def get_queryset(self):
-        """Returns a queryset with products in a category matching given query parameters."""
+        """Returns a queryset with products that their names contain the searched parameter."""
 
         # The product name provided
         return self.queryset.filter(name__icontains=self.kwargs["search_str"])
