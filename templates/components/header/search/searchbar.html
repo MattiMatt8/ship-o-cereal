@@ -1,5 +1,5 @@
 {% csrf_token %}
-<form id="search-form" class="block self-center relative w-96" action="{% url 'search' %}">
+<form id="search-form" class="block self-center relative w-96">
   <label class="hidden" for="search-form">Search</label>
   <input
       id="search-input"
@@ -7,9 +7,10 @@
       placeholder="Search"
       type="text"
       autocomplete="off"
-      name="query"
+      name="search"
+      required
   />
-  <button class="z-30 absolute right-0 h-full w-10 rounded-r-xl bg-customGray">
+  <button class="z-30 absolute right-0 h-full w-10 rounded-r-xl bg-customGray focus:outline-none" id="search-btn">
     <div class="flex justify-center items-center">
       <svg class="w-6 h-6 justify-center" fill="none" stroke="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
