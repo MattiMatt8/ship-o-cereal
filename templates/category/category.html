@@ -2,11 +2,9 @@
 {% load static %}
 {% block content %}
 
-  <main class="container mx-auto my-10">
+  <main class="container mx-auto my-10 text-customGray">
     {% include 'components/back_button.html' %}
-    <div class="flex justify-center">
-      <h1 class="text-5xl text-medium text-customGray text-center my-20 border-b-4 border-customViolet">{{ page_name }}</h1>
-    </div>
+    <h1 class="text-5xl font-light text-center text-customGray mt-8 mb-4">{{ page_name }}</h1>
     {% include "category/category_filters.html" %}
     <!-- Products on page -->
     <div class="flex flex-wrap -mx-8">
@@ -16,6 +14,9 @@
         </div>
       {% endfor %}
     </div>
+    {% if not object_list %}
+      <h3 class="text-lg text-light mt-4">No products found...</h3>
+    {% endif %}
     <!-- END Products on page -->
 
     <!-- Product page numbers -->
