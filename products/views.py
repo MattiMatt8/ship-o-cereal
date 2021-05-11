@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 
 from orders.models import OrderItem
 from users.models import SearchHistory
-from .forms.AddReview import AddReview
+from .forms.ProductReviewForm import AddReview
 from .models import Category, Product
 from .filters import ProductFilter
 import json

@@ -80,9 +80,9 @@ class Review(models.Model):
     review = models.TextField(max_length=500)
     title = models.CharField(max_length=255)
 
-
     class Meta:
         unique_together = ("user", "product")
+        ordering = ["-id"]
 
     def __str__(self):
         return self.review
