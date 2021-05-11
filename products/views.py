@@ -40,8 +40,7 @@ class FilteredListView(FilterView):
         self.get_context_filters(context)
         return context
 
-    @staticmethod
-    def get_context_filters(context):
+    def get_context_filters(self, context):
         filters = ""
         for k, v in context["filterset"].data.items():
             if k != "page":
@@ -97,17 +96,15 @@ class ProductSearchView(FilteredListView):
         # If product name provided then
         # render template and filter queryset with given product name
         if product_name:
-            filterset = self.filterset_class(
-                request.GET,
-                queryset=Product.objects.filter(name__icontains=product_name),
-            )
+            filterset = self.filterset_class(request.GET, queryset=Product.objects.filter(name__icontains=product_name))
 
+            context = {"searched": product_name, "filterset": filterset.qs}
+            # self.get_context_filters(context)
+
+            print(context)
+            # {"searched": product_name, "filterset": filterset.qs}
             # Render template with products containing given product name
-            return render(
-                request,
-                self.template_name,
-                {"searched": product_name, "products": filterset},
-            )
+            return render(request, self.template_name, context)
         # Product name not provided
         else:
             return render(request, self.template_name, {})
