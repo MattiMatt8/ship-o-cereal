@@ -15,10 +15,10 @@
     </div>
     <h1 class="text-2xl font-medium mt-2">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
     <div class="flex flex-row mt-3 mb-4">
-      <button type="button"
-              class="rounded border border-customViolet text-base py-1 px-4 mb-3 mr-3 focus:outline-none hover:shadow-md">
-        Orders
-      </button>
+      <a class="rounded border border-customViolet text-base py-1 px-4 mb-3 mr-3 focus:outline-none hover:shadow-md"
+         href="{% url 'order-history' %}"
+      >Orders
+        </a>
     </div>
     <section class="flex flex-row">
       <div class="w-72">
