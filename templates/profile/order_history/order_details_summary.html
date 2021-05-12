@@ -1,0 +1,36 @@
+<h3 class="text-2xl mb-2">Order summary</h3>
+<div class="px-6 py-6 flex flex-col shadow-lg rounded mb-4">
+  <div class="flex flex-col">
+    <span class="text-lg font-medium mr-2">Full name</span>
+    <span class="text-lg font-light">{{ order.first_name }} {{ order.last_name }}</span>
+  </div>
+  <div class="flex flex-col">
+    <span class="text-lg font-medium mr-2">Phone number</span>
+    <span class="text-lg font-light">{{ order.phone_number }}</span>
+  </div>
+  <div class="flex flex-col">
+    <span class="text-lg font-medium mr-2">Shipping address</span>
+    <span class="text-lg font-light">
+      {{ order.address_street_name }} {{ order.address_house_number }}, {{ order.address_city }} {{ order.address_zip }}, {{ order.address_country }}{% if order.address_additional_comments is not None %},
+          {{ order.address_additional_comments }}{% endif %}</span>
+  </div>
+  <div class="flex flex-col">
+    <span class="text-lg font-medium mr-2">Order status</span>
+    <span class="text-lg font-light">{{ order.status }}</span>
+  </div>
+  <hr>
+  <div class="flex flex-col">
+    <span class="text-lg font-medium mr-2 mt-2">Products</span>
+    <span class="text-lg font-light">${{ order.products_total }}</span>
+  </div>
+  <div class="flex flex-col mb-4">
+    <span class="text-lg font-medium mr-2 mt-2">Shipping</span>
+    <span class="text-lg font-light">${% if order.shipping_cost == 0.0 %}0{% else %}
+      {{ order.shipping_cost }}{% endif %}</span>
+  </div>
+  <hr>
+  <div class="flex flex-col mt-4 text-center">
+    <span class="text-2xl font-bold">Total amount</span>
+    <span class="text-3xl">${{ order.total }}</span>
+  </div>
+</div>

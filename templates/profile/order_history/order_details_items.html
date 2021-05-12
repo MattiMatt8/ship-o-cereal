@@ -1,8 +1,11 @@
 {% load static %}
-{% block content %}
+{% regroup order.order_items by product.category as order_items %}
 <!-- Products in order -->
 <ul class="flex flex-col mb-6 w-full">
-{% for order_item in order_items %}
+{% for category in order_items %}
+  <h3 class="text-3xl mb-2">{{ category.grouper }}</h3>
+
+  {% for order_item in category.list %}
   <li class="inline shadow-lg self-start rounded mb-4 w-full">
     <div class="px-6 py-6 flex flex-row items-center justify-between">
       <!-- Product image & name -->
@@ -13,15 +16,16 @@
         <span class="block text-xl">{{ order_item.product.name }}</span>
       </div>
       <!-- END Product image & name -->
+
       <!-- Product price & QTY -->
       <div class="flex flex-row items-center ml-6">
         <span class="text-xl font-medium mr-6">${{ order_item.price }}</span>
         <span class="text-base font-light">QTY:&nbsp;{{ order_item.quantity }}</span>
       </div>
-      <!-- ENDProduct price & QTY -->
+      <!-- END Product price & QTY -->
     </div>
   </li>
-{% endfor %}
+  {% endfor %}
 </ul>
-<!-- Products in order -->
-{% endblock %}
+{% endfor %}
+<!-- END Products in order -->

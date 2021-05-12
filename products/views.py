@@ -8,7 +8,7 @@ from django.utils.timezone import now
 from orders.models import OrderItem
 from users.models import SearchHistory
 from .forms.ProductReviewForm import ProductReviewForm
-from .models import Category, Product
+from .models import Category, Product, Review
 from .filters import ProductFilter
 import json
 
@@ -151,7 +151,7 @@ def add_review(request, id):  # TODO: Fix when reviews popup how they are format
             review = form.save(commit=False)
             review.user_id = request.user.id
             review.product_id = id
-            # review.save()
+            review.save()
             return JsonResponse(
                 {
                     "message": "Review has been added for the product.",
@@ -195,7 +195,7 @@ def update_review(request, id):
                                              "review": f"{review.review}",
                                              "date": review.date
                                          }
-                                         }, status=201)
+                                         }, status=200)
             except ObjectDoesNotExist:
                 return JsonResponse({"message": "Error: Review does not exist."}, status=404)
             return JsonResponse({"message": "Review not valid."}, status=400)
@@ -204,9 +204,15 @@ def update_review(request, id):
 
 
 @login_required
-def delete_review(request, id, review_id):
-    pass
-    # next_query = request.GET.get("next")
-    # card = get_object_or_404(request.user.card_set, pk=id)
-    # card.delete()
-    # return redirect("profile" if next_query is None else next_query)
+def delete_review(request, id):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            try:
+                review = request.user.review_set.get(product_id=id)
+                review_id = review.id
+                review.delete()
+                return JsonResponse({"message": "Review deleted successfully.","data": {"id": review_id}}, status=200)
+            except ObjectDoesNotExist:
+                return JsonResponse({"message": "Error: Review does not exist."}, status=404)
+        return JsonResponse({"message": "Error: User not authorized."}, status=401)
+    return JsonResponse({"message": "Error: Method not supported."}, status=405)
