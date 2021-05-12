@@ -3,7 +3,7 @@ from django.forms import widgets, ModelForm
 from products.models import Review
 
 
-class AddReview(ModelForm):
+class ProductReviewForm(ModelForm):
 
     def clean_stars(self):
         stars = self.cleaned_data["stars"]

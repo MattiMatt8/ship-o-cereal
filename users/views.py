@@ -12,13 +12,14 @@ from ShipOCereal import settings
 from orders.models import OrderItem, Order
 from orders.views import get_order, keep_order
 from products.models import Product
+from users.forms.AddSearchHistoryForm import AddSearchHistoryForm
 from users.forms.ProfileForm import ProfileForm
 from users.forms.UserAddressForm import UserAddressForm
 from users.forms.UpdateUserForm import UpdateUserForm
 from users.forms.RegisterForm import RegisterForm
 from users.forms.AddUserCardForm import AddUserCardForm
 from users.forms.UpdateUserCardForm import UpdateUserCardForm
-from users.models import Profile, SearchHistory
+from users.models import Profile
 import json
 
 
@@ -329,9 +330,13 @@ def new_search(request):
     if request.method == "POST":
         if request.user.is_authenticated:
             body = json.loads(request.body.decode("utf-8"))
-            new_search_history = SearchHistory(user_id=request.user.id, search=body.get("search"))
-            new_search_history.save()
-            return JsonResponse({"message": "Added to users search history."}, status=201)
+            form = AddSearchHistoryForm(data={"search": body.get("search")})
+            if form.is_valid():
+                form.save(commit=False)
+                form.user_id = request.user.id
+                form.save()
+                return JsonResponse({"message": "Added to users search history."}, status=201)
+            return JsonResponse({"message": "Search not valid."}, status=400)
         return JsonResponse({"message": "Error: User not authorized."}, status=401)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
 
@@ -342,7 +347,7 @@ def delete_search(request, id):
             try:
                 search_history = request.user.searchhistory_set.get(pk=id)
                 search_history.delete()
-                return JsonResponse({"message": "Added to users search history."}, status=201)
+                return JsonResponse({"message": "Deleted from users search history."}, status=200)
             except ObjectDoesNotExist:
                 return JsonResponse({"message": "Error: Item does not exist."}, status=404)
         return JsonResponse({"message": "Error: User not authorized."}, status=401)

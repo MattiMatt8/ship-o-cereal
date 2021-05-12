@@ -1,6 +1,7 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
   <main class="container mx-auto my-16 text-customGray w-72 sm:w-4/5 md:w-full">
+
     {% include 'components/back_button.html' %}
     <!-- START Image and meta data -->
     <div class="flex flex-col mx-auto md:flex-row">
@@ -142,9 +143,9 @@
     <!-- START Reviews -->
     <div class="flex flex-col mt-10 md:w-9/12 lg:w-3/6 xl:w-2/6">
       {% if not product.review_set.all %}
-        <h1 class="text-2xl font-medium">No reviews yet.</h1>
+        <h1 class="text-2xl font-medium" id="reviews-header">No reviews yet.</h1> <!-- TODO: NO Reviews new review added change -->
       {% else %}
-        <h1 class="text-lg font-medium">Reviews</h1>
+        <h1 id="reviews-header" class="text-lg font-medium">Reviews</h1>
       {% endif %}
       <!-- Create new review -->
       {% if form is not None %}
@@ -152,8 +153,8 @@
           <h2 class="text-md mb-2">Please leave a review.</h2>
           <form method="post" class="flex flex-col" id="new-review-form">
             {% csrf_token %}
+            <h2 class="text-lg mb-2">Please leave a review.</h2>
             <div class="mb-1">
-              <div class="text-red-500 text-sm italic">{{ form.title.errors }}</div>
               <label for="{{ form.title.id_for_label }}"
                      class="block text-gray-700 text-base mb-1">Title</label>
               <input type="text" name="title"
@@ -161,7 +162,6 @@
                      maxlength="255" required="" id="id_title" placeholder="It was...">
             </div>
             <div class="mb-3">
-              <div class="text-red-500 text-sm italic">{{ form.stars.errors }}</div>
               <label for="{{ form.stars.id_for_label }}"
                      class="block text-gray-700 text-base mb-1">Stars</label>
               <div class="flex flex-row">
@@ -179,7 +179,6 @@
               </div>
             </div>
             <div class="mb-3">
-              <div class="text-red-500 text-sm italic">{{ form.review.errors }}</div>
               <label for="{{ form.review.id_for_label }}"
                      class="block text-gray-700 text-base mb-1">Review</label>
               <textarea name="review" cols="40" rows="5"
@@ -200,7 +199,7 @@
 
       <!-- START Single review -->
       {% for review in product.review_set.all %}
-        {% include 'components/product_review.html' with first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars picture=review.user.profile.picture %}
+        {% include 'components/product_review.html' with users_review=users_review id=review.id first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars picture=review.user.profile.picture %}
       {% endfor %}
       <!-- END Single review -->
     </div>
