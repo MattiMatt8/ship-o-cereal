@@ -35,6 +35,9 @@ class ProductDiscountAdmin(admin.ModelAdmin):
         final_price = Fraction(price - discount)
         return float(Fraction(math.floor(final_price*100), 100))
 
+    def has_add_permission(self, request):
+        return False
+
 
 
 class ProductDiscount(Product):
