@@ -44,10 +44,10 @@ class OrderDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
 
-        order = get_object_or_404(self.model, pk=self.kwargs['pk'])
-        context = {"order": order}
+        order = get_object_or_404(self.request.user.order_set, pk=self.kwargs['pk'])
+        order_items = OrderItem.objects.filter(order_id=order.id)
 
-        print(context)
+        context = {"order": order, "order_items": order_items}
         return context
 
 
