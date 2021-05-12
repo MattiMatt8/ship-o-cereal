@@ -1,9 +1,9 @@
 {% csrf_token %}
-<form id="search-form" class="flex self-center relative w-full sm:w-40 sm:justify-center sm:ml-auto md:w-52 lg:w-64">
+<form id="search-form" class="flex self-center relative w-full mt-3 sm:mt-0 sm:w-40 sm:justify-center sm:ml-auto md:w-52 lg:w-64 xl:w-72 2xl:w-96">
   <label class="hidden" for="search-form">Search</label>
   <input
       id="search-input"
-      class="relative z-30 py-3 px-6 shadow-inner w-full h-8 focus:outline-none sm:rounded sm:border-customGray sm:border"
+      class="relative z-30 py-3 px-6 shadow-inner w-full h-8 focus:outline-none sm:rounded-lg sm:border-customGray sm:border"
       placeholder="Search"
       type="text"
       autocomplete="off"
@@ -11,7 +11,7 @@
       required
       value="{{ search_str }}"
   />
-  <button class="z-30 absolute right-0 h-full w-10 bg-customGray focus:outline-none sm:rounded-r">
+  <button class="z-30 absolute right-0 h-full w-10 bg-customGray focus:outline-none sm:rounded-r-lg">
     <div class="flex justify-center items-center">
       <svg class="w-5 h-5 justify-center" fill="none" stroke="#fff" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

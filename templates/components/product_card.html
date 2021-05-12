@@ -1,17 +1,17 @@
 {% load static %}
 {% load product_card_extras %}
-<div class="rounded-md lg:w-44 xl:w-52 2xl:w-64 shadow-lg hover:shadow-xl bg-gray-50 text-customGray flex flex-col">
+<div class="rounded-md shadow-lg hover:shadow-xl bg-gray-50 text-customGray flex flex-col w-40 sm:w-48 md:w-56 2xl:w-64 mb-4">
 
   <!--div class="bg-customBlue h-2/3 rounded-t-md text-white flex justify-center items-center text-customViolet">Image</div -->
-  <a href="/products/{{ product.id }}" class="h-56 relative">
+  <a href="/products/{{ product.id }}" class="relative">
     {% if product.discounted_price is not None %}
-      <div class="absolute -right-5 -top-5">
+      <div class="absolute right-0 top-0 lg:-top-5 lg:-right-5">
         {% include 'components/icons/sale-logo.html' with discount=product.percentage_off|stringformat:"i" %}
       </div>
     {% endif %}
     <img
         src="{% static 'images/' %}{{ product.category }}/{{ product.image_set.first.name }}"
-        class="rounded-t-md object-cover object-center h-full w-full"
+        class="rounded-t-md object-cover object-center h-24 w-full sm:h-32 md:h-40 2xl:h-52"
     />
   </a>
   <div class="p-4 h-full flex flex-col justify-between">
@@ -23,7 +23,7 @@
           {% for label in product.labels.all %}
             {% with "components/icons/"|addstr:label.icon as template %}
               <span class="mr-2">
-            {% include template with classAttr="w-6 h-6" %}
+            {% include template with classAttr="w-4 h-4 sm:w-6 sm:h-6" %}
             </span>
             {% endwith %}
           {% endfor %}
@@ -31,7 +31,7 @@
 
       </div>
       <!-- END Label icons -->
-      <h3 class="text-xl break-words">{{ product.name }}</h3>
+      <h3 class="text-md break-words sm:text-lg md:text-2xl 2xl:text-3xl">{{ product.name|truncatechars:25 }}</h3>
       {% if product.weight != None %}
         <span class="text-sm text-thin">{{ product.weight }}gr</span>
       {% endif %}
@@ -41,23 +41,23 @@
       {% if product.discounted_price is not None %}
         <span class="text-lg 2xl:text-xl text-gray-400 line-through">${{ product.price }}</span>
       {% endif %}
-      <div class="flex  lx:flex-row justify-between items-center">
+      <div class="flex flex-col 2xl:flex-row 2xl:justify-between">
         {% if product.discounted_price is None %}
-          <span class="block text-xl 2xl:text-3xl">${{ product.price }}</span>
+          <span class="block text-xl sm:text-2xl md:text-3xl 2xl:text-3xl">${{ product.price }}</span>
         {% else %}
-          <span class="block text-xl 2xl:text-3xl text-customRed">${{ product.discounted_price }}</span>
+          <span class="block text-xl sm:text-2xl md:text-3xl 2xl:text-3xl text-customRed">${{ product.discounted_price }}</span>
         {% endif %}
         <!-- This shows only when user hasn't added this to their cart -->
         <button
-            class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} block bg-customGreen p-2 text-white rounded-md text-md 2xl:text-lg buy-btn w-30 h-10 flex justify-center items-center"
+            class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} mt-3 block bg-customGreen p-2 text-white rounded-md text-md md:text-lg buy-btn w-30 flex justify-center items-center 2xl:mt-0"
             data-product-id="{{ product.id }}"
         >Add to cart
         </button>
         <!-- This shows only when the user has added this to their cart -->
         <div
-            class="text-customGray amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% elif cart is None %} hidden {% endif %}">
-          <div class="custom-number-input w-30">
-            <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
+            class="text-customGray mt-3 amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% elif cart is None %} hidden {% endif %} 2xl:mt-0">
+          <div class="custom-number-input">
+            <div class="flex flex-row justify-center h-10 rounded-lg relative bg-transparent">
               <button
                   class="bg-gray-100 text-gray-600 h-full w-9 rounded-l outline-none cursor-pointer hover:text-gray-700 hover:bg-gray-200"
                   data-action="decrement"
@@ -67,7 +67,7 @@
               <input
                   type="text"
                   data-product-id="{{ product.id }}"
-                  class="outline-none focus:outline-none text-center w-10 bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
+                  class="outline-none focus:outline-none text-center bg-gray-100 font-semibold text-md flex items-center outline-none input-amount w-9 sm:w-12 md:w-16 2xl:w-9"
                   name="custom-input-number" value="{% if cart %}{{ cart|get_item:product.id }}{% else %}0{% endif %}"/>
 
               <button data-action="increment"

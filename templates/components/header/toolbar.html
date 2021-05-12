@@ -1,7 +1,7 @@
 <!-- Cart -->
 <a
     href="{% url 'cart' %}"
-    class="rounded-full bg-customGray w-10 h-10 flex items-center justify-center relative mx-2 sm:mx-0 sm:ml-3 md:ml-5 lg:w-11 lg:h-11"
+    class="rounded-full bg-customGray w-10 h-10 flex items-center justify-center relative mx-2 sm:mx-0 sm:ml-3 md:ml-5 lg:w-11 lg:h-11 xl:ml-8"
 >
   {% include "components/icons/header-cart-icon.html" %}
   <div
@@ -15,7 +15,7 @@
 <!-- User profile -->
 <a
     href="{% url 'profile' %}"
-    class="rounded-full bg-customGray h-10 w-10 flex items-center justify-center mx-2 sm:mx-0 sm:ml-3 md:ml-5 lg:w-11 lg:h-11"
+    class="rounded-full bg-customGray h-10 w-10 flex items-center justify-center mx-2 sm:mx-0 sm:ml-3 md:ml-5 lg:w-11 lg:h-11 xl:ml-8"
 >
 {% if user.is_authenticated %}
   {% include "components/icons/header-profile-icon.html" %}
