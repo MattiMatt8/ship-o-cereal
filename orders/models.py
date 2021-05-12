@@ -35,6 +35,10 @@ class Order(models.Model):
         max_length=255, blank=True, null=True
     )
 
+    @property
+    def order_items(self):
+        return self.orderitem_set.all()
+
     def __str__(self):
         return f"Order number: {self.id}"
 

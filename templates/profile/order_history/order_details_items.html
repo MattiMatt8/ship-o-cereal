@@ -1,10 +1,16 @@
 {% load static %}
+{% regroup order.order_items by product.category as order_items %}
 <!-- Products in order -->
+
+{% for category in order_items %}
 <ul class="flex flex-col mb-6 w-full">
-  {% for order_item in order_items %}
+  <h3 class="text-3xl mb-2">{{ category.grouper }}</h3>
+
+  {% for order_item in category.list %}
   <li class="inline shadow-lg self-start rounded mb-4 w-full">
     <div class="px-6 py-6 flex flex-row items-center justify-between">
       <!-- Product image & name -->
+
       <div class="flex flex-row items-center">
         <img
             src="{% static static %}images/{{ order_item.product.category }}/{{ order_item.product.image_set.first }}"
@@ -23,4 +29,5 @@
   </li>
   {% endfor %}
 </ul>
+{% endfor %}
 <!-- END Products in order -->

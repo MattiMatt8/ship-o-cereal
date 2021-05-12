@@ -18,7 +18,7 @@
     <span class="text-lg font-medium mr-2">Order status</span>
     <span class="text-lg font-light">{{ order.status }}</span>
   </div>
-{#          <hr>#}
+  <hr>
   <div class="flex flex-col">
     <span class="text-lg font-medium mr-2 mt-2">Products</span>
     <span class="text-lg font-light">${{ order.products_total }}</span>
@@ -28,7 +28,7 @@
     <span class="text-lg font-light">${% if order.shipping_cost == 0.0 %}0{% else %}
       {{ order.shipping_cost }}{% endif %}</span>
   </div>
-{#          <hr>#}
+  <hr>
   <div class="flex flex-col mt-4 text-center">
     <span class="text-2xl font-bold">Total amount</span>
     <span class="text-3xl">${{ order.total }}</span>
