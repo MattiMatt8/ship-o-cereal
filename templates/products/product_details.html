@@ -1,7 +1,10 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
   <main class="container mx-auto my-16 text-customGray w-72 sm:w-4/5 md:w-full">
-
+    <span class="md:hidden">md</span>
+    <span class="lg:hidden">lg</span>
+    <span class="xl:hidden">xl</span>
+    <span class="2xl:hidden">2xl</span>
     {% include 'components/back_button.html' %}
     <!-- START Image and meta data -->
     <div class="flex flex-col mx-auto md:flex-row">
@@ -18,7 +21,7 @@
         />
       </div>
       <!-- META DATA -->
-      <div class="flex flex-col justify-between mt-4 md:w-2/3 lg:w-3/6 xl:w-7/12">
+      <div class="flex flex-col justify-between mt-4 md:w-2/3 lg:w-3/6 xl:w-5/12 2xl:w-4/12">
         <!-- START Title and weight -->
         <div>
           <div class="flex flex-row items-end">
@@ -52,7 +55,7 @@
           <div class="flex flex-row mb-6">
             {% for label in product.labels.all %} {% with "components/icons/"|addstr:label.icon as template %}
               <span class="mr-2">
-            {% include template with classAttr="w-7 h-7 sm:w-8 sm:h-8" %}
+            {% include template with classAttr="w-7 h-7 sm:w-8 sm:h-8 xl:w-10 xl:h-10" %}
           </span>
             {% endwith %}
             {% endfor %}
@@ -60,7 +63,7 @@
         </div>
         <div class="mb-4">
           <h3 class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Product description</h3>
-          <p class="text-sm sm:text-md">{{ product.description }}</p>
+          <p class="text-sm sm:text-md md:text-lg">{{ product.description }}</p>
         </div>
         <div>
           <!-- START Add to cart button -->
@@ -69,7 +72,8 @@
               {% if product.discounted_price is None %}
                 <h3 class="text-xl mb-4 sm:text-2xl xl:text-3xl">${{ product.price }}</h3>
               {% else %}
-                <h3 class="text-xl mb-4 mr-2 text-customRed sm:text-2xl xl:text-3xl">${{ product.discounted_price }}</h3>
+                <h3 class="text-xl mb-4 mr-2 text-customRed sm:text-2xl xl:text-3xl">
+                  ${{ product.discounted_price }}</h3>
                 <h3 class="text-lg mb-4 text-gray-400 line-through sm:text-xl xl:text-2xl">${{ product.price }}</h3>
               {% endif %}
             </div>
@@ -133,9 +137,9 @@
 
     <!-- START Nutrition stuff -->
     {% if product.category_id == 1 %}
-      <div class="mt-10 lg:w-96">
+      <div class="mt-10 lg:w-96 xl:w-1/3">
         <h1 class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Ingredients</h1>
-        <p class="text-sm sm:text-md">{{ product.contents }}</p>
+        <p class="text-sm sm:text-md xl:text-lg">{{ product.contents }}</p>
       </div>
     {% endif %}
     <!-- END Nutrition stuff -->
@@ -143,14 +147,14 @@
     <!-- START Reviews -->
     <div class="flex flex-col mt-10 md:w-9/12 lg:w-3/6 xl:w-2/6">
       {% if not product.review_set.all %}
-        <h1 class="text-2xl font-medium" id="reviews-header">No reviews yet.</h1> <!-- TODO: NO Reviews new review added change -->
+        <h1 class="text-2xl font-medium" id="reviews-header">No reviews yet.</h1>
+        <!-- TODO: NO Reviews new review added change -->
       {% else %}
-        <h1 id="reviews-header" class="text-lg font-medium">Reviews</h1>
+        <h1 id="reviews-header" class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Reviews</h1>
       {% endif %}
       <!-- Create new review -->
       {% if form is not None %}
         <div class="mt-5" id="new-review">
-          <h2 class="text-md mb-2">Please leave a review.</h2>
           <form method="post" class="flex flex-col" id="new-review-form">
             {% csrf_token %}
             <h2 class="text-lg mb-2">Please leave a review.</h2>
