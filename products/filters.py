@@ -1,15 +1,14 @@
 from django.utils.translation import gettext_lazy as _
-
 from .models import Brand, Category, ProductLabel
+from .models import Product, Label
 from django_filters import (
     FilterSet,
     ModelMultipleChoiceFilter,
     ModelChoiceFilter,
     NumberFilter,
     OrderingFilter,
-    CharFilter,
+    CharFilter
 )
-from .models import Product, Label
 
 # Order by fields
 PRODUCT_ORDER_BY_FIELDS = (
@@ -23,14 +22,16 @@ PRODUCT_ORDER_BY_FIELDS = (
 
 def brands(request):
     """Returns only the brands that are relevant to the items being filtered."""
-    category = request.resolver_match.kwargs.get("category_name")
+
+    category = request.resolver_match.kwargs.get("category_name")  # match category name
     if category:
         return Brand.objects.filter(
             id__in=Product.objects.filter(
                 category_id=Category.objects.get(name=category)
             ).values_list("brand_id")
         )
-    search = request.resolver_match.kwargs.get("search_str")
+
+    search = request.resolver_match.kwargs.get("search_str")  #
     return Brand.objects.filter(
         id__in=Product.objects.filter(
             name__icontains=search
@@ -40,31 +41,28 @@ def brands(request):
 
 def labels(request):
     """Returns on the labels that are relevant to the items being filtered."""
+
     category = request.resolver_match.kwargs.get("category_name")
     if category:
         return Label.objects.filter(id__in=ProductLabel.objects.filter(
             product_id__in=Product.objects.filter(category_id=Category.objects.get(name=category))).values_list("label_id"))
+
     search = request.resolver_match.kwargs.get("search_str")
     return Label.objects.filter(id__in=ProductLabel.objects.filter(
         product_id__in=Product.objects.filter(name__icontains=search)).values_list("label_id"))
 
 
 class ProductFilter(FilterSet):
+
     # Filters
     price = NumberFilter(field_name="price")
     name = CharFilter(field_name="name")
     id = NumberFilter(field_name="newest")
     labels = ModelMultipleChoiceFilter(queryset=labels, conjoined=True)
-    brand = ModelChoiceFilter(
-        queryset=brands,
-        field_name="brand",
-        empty_label=_("Select brand..."),
-    )
+    brand = ModelChoiceFilter(queryset=brands, field_name="brand", empty_label=_("Select brand..."))
 
     # Order by filter
-    ordering = OrderingFilter(
-        label="Sort by", choices=PRODUCT_ORDER_BY_FIELDS, empty_label=_("Order by...")
-    )
+    ordering = OrderingFilter(label="Sort by", choices=PRODUCT_ORDER_BY_FIELDS, empty_label=_("Order by..."))
 
     class Meta:
         model = Product
