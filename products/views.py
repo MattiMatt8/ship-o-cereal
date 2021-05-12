@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
 from django.shortcuts import render, get_object_or_404
-
+from django.utils.timezone import now
 from orders.models import OrderItem
 from users.models import SearchHistory
 from .forms.ProductReviewForm import ProductReviewForm
@@ -110,28 +110,35 @@ def product_details(request, id):
         quantity = cart.get(str(id))
 
     form = None
-    if not request.user.review_set.filter(product_id=id) and request.user.order_set.filter(
-            id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")):
-        # Creates a add review if the user has purchased the product and has not already made a review on it
-        form = ProductReviewForm()
+    users_review = None
+    if request.user.is_authenticated:
+        try:
+            users_review = product.review_set.get(user_id=request.user.id)
+        except ObjectDoesNotExist:
+            if request.user.order_set.filter(id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")):
+                # Creates a review form if the user has purchased the product and has not already made a review on it
+                form = ProductReviewForm()
 
     return render(
         request,
         "products/product_details.html", {
             "product": product,
             "quantity": quantity,
-            "form": form
+            "form": form,
+            "users_review": users_review
         },
     )
 
 
 @login_required
-def add_review(request, id): # TODO: Make added review show automatically
+def add_review(request, id):  # TODO: Fix when reviews popup how they are formatted
+    # TODO: Delete button for a review?
+    # TODO: Update review ting?
     """Endpoint to post a new review."""
     if request.method == "POST":
         # If the user has made a review or has not already purchased the product
         if request.user.review_set.filter(product_id=id) or not request.user.order_set.filter(
-            id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
+                id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
         ):
             return JsonResponse({"message": "Error: Operation not allowed."}, status=403)
         body = json.loads(request.body.decode("utf-8"))
@@ -144,42 +151,23 @@ def add_review(request, id): # TODO: Make added review show automatically
             review = form.save(commit=False)
             review.user_id = request.user.id
             review.product_id = id
-            review.save()
+            # review.save()
             return JsonResponse(
                 {
                     "message": "Review has been added for the product.",
                     "data": {
+                        "id": review.id,
                         "full_name": f"{request.user.first_name} {request.user.last_name}",
-                        "profile_image": f"/static/media/{request.user.profile.picture}"
+                        "profile_image": f"/static/media/{request.user.profile.picture}" if request.user.profile.picture else None,
+                        "title": f"{review.title}",
+                        "stars": f"{review.stars}",
+                        "review": f"{review.review}",
+                        "date": review.date
                     }
-                 }, status=201
+                }, status=201
             )
         return JsonResponse({"message": "Review not valid."}, status=400)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
-
-
-# @login_required
-# def add_review(request, id):
-    # TODO: Maybe display what item is being review at the top?
-    # User has already created a review
-    if request.user.review_set.filter(product_id=id):
-        raise PermissionDenied
-    # User has not purchased the product
-    elif not request.user.order_set.filter(
-            id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
-    ):
-        raise PermissionDenied
-    if request.method == "POST":
-        form = ProductReviewForm(data=request.POST)
-        if form.is_valid():
-            review = form.save(commit=False)
-            review.user_id = request.user.id
-            review.product_id = id
-            review.save()
-            return redirect("product-details", id=id)
-    else:
-        form = ProductReviewForm()
-    return render(request, "products/add_review.html", {"form": form})
 
 
 def update_review(request, id):
@@ -187,10 +175,27 @@ def update_review(request, id):
         if request.user.is_authenticated:
             try:
                 review = request.user.review_set.get(product_id=id)
-                form = ProductReviewForm(data=request.POST, instance=review)
+                body = json.loads(request.body.decode("utf-8"))
+                form = ProductReviewForm(data={
+                    "stars": body.get("stars"),
+                    "title": body.get("title"),
+                    "review": body.get("review")
+                }, instance=review)
+                form.date = now()
                 if form.is_valid():
+                    form.date = now()
                     form.save()
-                    return JsonResponse({"message": "Updated the review."}, status=201)
+                    return JsonResponse({"message": "Updated the review.",
+                                         "data": {
+                                             "id": review.id,
+                                             "full_name": f"{request.user.first_name} {request.user.last_name}",
+                                             "profile_image": f"/static/media/{request.user.profile.picture}" if request.user.profile.picture else None,
+                                             "title": f"{review.title}",
+                                             "stars": f"{review.stars}",
+                                             "review": f"{review.review}",
+                                             "date": review.date
+                                         }
+                                         }, status=201)
             except ObjectDoesNotExist:
                 return JsonResponse({"message": "Error: Review does not exist."}, status=404)
             return JsonResponse({"message": "Review not valid."}, status=400)
