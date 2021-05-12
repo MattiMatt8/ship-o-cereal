@@ -24,28 +24,33 @@ import json
 
 
 class OrdersListView(ListView):
-    """Class based view for listing the order history of a given user."""
+    """A view for displaying a list of orders for a given user"""
 
-    template_name = "profile/order_history/orders.html"
     model = Order
+    template_name = "profile/order_history/orders.html"
 
     def get_context_data(self):
-        """Returns a context containing all orders for a given user."""
+        """Returns the context for this view. Context containing the orders for a given user"""
 
         orders = self.request.user.order_set.all()  # match orders by user in request
-
         return {"order_history": orders}
 
 
 class OrderDetailView(DetailView):
+    """A view for displaying details of a order for a given user"""
 
     model = Order
     template_name = "profile/order_history/order_details.html"
 
-    def get_context_data(self, **kwargs):
+    def get_context_data(self):
+        """
+        Returns the context for this view. Context containing the products and details of a
+        specific order for a given order
+        """
 
+        # Get an order matching a given order_id sent by a user
         order = get_object_or_404(self.request.user.order_set, pk=self.kwargs['pk'])
-        order_items = OrderItem.objects.filter(order_id=order.id)
+        order_items = OrderItem.objects.filter(order_id=order.id)  # Get the order items for the order
 
         context = {"order": order, "order_items": order_items}
         return context

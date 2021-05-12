@@ -1,8 +1,7 @@
 {% load static %}
-{% block content %}
 <!-- Products in order -->
 <ul class="flex flex-col mb-6 w-full">
-{% for order_item in order_items %}
+  {% for order_item in order_items %}
   <li class="inline shadow-lg self-start rounded mb-4 w-full">
     <div class="px-6 py-6 flex flex-row items-center justify-between">
       <!-- Product image & name -->
@@ -13,15 +12,15 @@
         <span class="block text-xl">{{ order_item.product.name }}</span>
       </div>
       <!-- END Product image & name -->
+
       <!-- Product price & QTY -->
       <div class="flex flex-row items-center ml-6">
         <span class="text-xl font-medium mr-6">${{ order_item.price }}</span>
         <span class="text-base font-light">QTY:&nbsp;{{ order_item.quantity }}</span>
       </div>
-      <!-- ENDProduct price & QTY -->
+      <!-- END Product price & QTY -->
     </div>
   </li>
-{% endfor %}
+  {% endfor %}
 </ul>
-<!-- Products in order -->
-{% endblock %}
+<!-- END Products in order -->
