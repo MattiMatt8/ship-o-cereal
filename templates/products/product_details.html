@@ -40,7 +40,11 @@
           </div>
           <!-- END Product rating -->
           <div class="text-sm font-medium">
-            <span>In stock</span>
+            {% if product.stock > 0 %}
+            <span class="text-customGreen">In stock</span>
+            {% else %}
+            <span class="text-customRed">Out of stock</span>
+            {% endif %}
             <span></span>
           </div>
           <div class="flex flex-row mb-16">
@@ -68,16 +72,24 @@
               {% endif %}
             </div>
             <div class="flex">
+
               <button
                       id="buy-btn"
                       data-product-id="{{ product.id }}"
-                      class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32"
+                      class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32 hover:shadow-md focus:outline-none {% if product.stock == 0 %}hidden{% endif %}"
               >
                 Add to cart
               </button>
+            {% if product.stock == 0 %}
+              <button
+                      class="cursor-not-allowed rounded p-2 text-white w-32 bg-gray-100 text-gray-400 hover:shadow-md focus:outline-none"
+              >
+                Out of stock
+              </button>
+            {% endif %}
               <div
                       id="amount-btns"
-                      class="{% if quantity is None %} hidden {% endif %} text-customGray"
+                      class="{% if quantity is None %} hidden {% endif %} {% if product.stock == 0 %}hidden{% endif %} text-customGray"
               >
                 <div class="custom-number-input w-32">
                   <div

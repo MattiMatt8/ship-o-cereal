@@ -88,6 +88,19 @@ def keep_order(request, order):
     request.session["order"] = serializers.serialize("json", [order])
 
 
+def are_products_in_stock(request):
+    errors = []
+    order_items = []
+    # Checks if the products are in stock the user is trying to purchase.
+    for obj in serializers.deserialize("json", request.session.get("order_items")):
+        order_item = obj.object
+        order_items.append(order_item)
+        product = order_item.product
+        if (order_item.quantity > product.stock):
+            errors.append(f"Not enough in stock to buy {product.name}.")
+    return (errors, order_items)
+
+
 @login_required
 def checkout_confirm(request):
     order = get_order(request)
@@ -103,13 +116,26 @@ def checkout_confirm(request):
     date_diff = now() - order.date
     if date_diff.days > 1:
         raise PermissionDenied
+    for obj in serializers.deserialize("json", request.session.get("checkout_card")):
+        card = obj.object
     if request.method == "POST":
+        stock_errors, order_items = are_products_in_stock(request)
+        if len(stock_errors) > 0:
+            # If a product or multiple product are not in stock it will cancel
+            # the order and return to the same screen with the errors up.
+            return render(
+                request,
+                "orders/checkout_confirm.html",
+                {"order": order, "order_items": order_items, "card": card, "stock_errors": stock_errors},
+            )
         order.date = now()
         order.status = Status.objects.get(name="Placed")
         order.save()
-        for obj in serializers.deserialize("json", request.session.get("order_items")):
-            order_item = obj.object
+        for order_item in order_items:
             order_item.order_id = order.id
+            product = order_item.product
+            product.stock -= order_item.quantity
+            product.save()
             order_item.save()
         request.session["last_order_completed"] = serializers.serialize("json", [order])
         del request.session["order"]
@@ -122,15 +148,13 @@ def checkout_confirm(request):
     order.phone_number = request.user.profile.phone
     order.user_id = request.user.id
     keep_order(request, order)
-    for obj in serializers.deserialize("json", request.session.get("checkout_card")):
-        card = obj.object
     order_items = []
     for obj in serializers.deserialize("json", request.session.get("order_items")):
         order_items.append(obj.object)
     return render(
         request,
         "orders/checkout_confirm.html",
-        {"order": order, "order_items": order_items, "card": card},
+        {"order": order, "order_items": order_items, "card": card, "stock_errors": None},
     )
 
 

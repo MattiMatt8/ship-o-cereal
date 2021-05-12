@@ -65,10 +65,23 @@
               <span class="text-2xl font-bold">Total amount</span>
               <span class="text-3xl">${{ order.total }}</span>
             </div>
-            <div class="flex justify-center mt-4">
-              <button type="submit" class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen">
-                Place order</button>
-            </div>
+            {% if stock_errors is not None %}
+              <div class="mt-2">
+              {% for error in stock_errors %}
+                <p class="text-customRed text-center">{{ error }}</p>
+              {% endfor %}
+                <p class="text-customRed text-center">Please go back to your cart to update the amount.</p>
+              </div>
+              <div class="flex justify-center mt-4">
+                <button type="button" class="cursor-not-allowed bg-gray-100 text-gray-400 rounded py-2 px-4 focus:outline-none hover:shadow-md">
+                  Place order</button>
+              </div>
+            {% else %}
+              <div class="flex justify-center mt-4">
+                <button type="submit" class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen">
+                  Place order</button>
+              </div>
+            {% endif %}
           </div>
         </div>
         <div class="flex flex-col">

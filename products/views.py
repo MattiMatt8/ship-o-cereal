@@ -8,7 +8,7 @@ from django.utils.timezone import now
 from orders.models import OrderItem
 from users.models import SearchHistory
 from .forms.ProductReviewForm import ProductReviewForm
-from .models import Category, Product, Review
+from .models import Category, Product
 from .filters import ProductFilter
 import json
 

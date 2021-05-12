@@ -49,13 +49,20 @@
         {% endif %}
         <!-- This shows only when user hasn't added this to their cart -->
         <button
-            class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} block bg-customGreen py-2 px-3 text-white rounded-md text-lg buy-btn w-30 h-10 flex justify-center items-center"
+            class="{% if product.id|stringformat:"i" in cart %} hidden {% endif %} {% if product.stock == 0 %}hidden{% endif %} hover:shadow-md focus:outline-none block bg-customGreen py-2 px-3 text-white rounded-md text-lg buy-btn w-30 h-10 flex justify-center items-center"
             data-product-id="{{ product.id }}"
         >Add to cart
         </button>
+        {% if product.stock == 0 %}
+          <button
+                  class="cursor-not-allowed rounded p-2 text-white w-32 bg-gray-100 text-gray-400 hover:shadow-md focus:outline-none"
+          >
+            Out of stock
+          </button>
+        {% endif %}
         <!-- This shows only when the user has added this to their cart -->
         <div
-            class="text-customGray amountParent {% if product.id|stringformat:"i" not in cart %} hidden {% elif cart is None %} hidden {% endif %}">
+            class="text-customGray amountParent {% if product.stock == 0 %}hidden{% endif %} {% if product.id|stringformat:"i" not in cart %} hidden {% elif cart is None %} hidden {% endif %}">
           <div class="custom-number-input w-30">
             <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
               <button
