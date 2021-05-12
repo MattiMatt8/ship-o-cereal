@@ -5,18 +5,22 @@ let stopHoverMove = false;
 document.getElementById("new-review-form").addEventListener("submit", submitReview);
 
 function submitReview(event) {
+    // When a new review is submitted, send to the server the request and if it's
+    // successful it will then update the view for the user with his review.
     event.preventDefault();
     let stars = document.getElementById("id_stars").value;
+    let title = document.getElementById("id_title").value;
     let review = document.getElementById("id_review").value;
-    let productId = event.currentTarget.dataset.productId;
     axios
         .post(
             "reviews/new/",
-            {stars: stars, review: review},
+            {stars: stars, title: title, review: review},
             {headers: {"X-CSRFToken": CSRF_TOKEN}}
         )
         .then((response) => {
-            console.log("SUCESS");
+            document.getElementById("new-review").classList.add("hidden");
+            console.log("Full name: " + response.data.data.full_name);
+            console.log("Image: " + response.data.data.profile_image);
         })
         .catch((error) => {
             console.log(error);

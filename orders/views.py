@@ -4,6 +4,8 @@ from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.shortcuts import render, redirect
 from django.utils.timezone import now
 
+from orders.models import Status
+
 
 @login_required
 def checkout_address(request):
@@ -103,7 +105,7 @@ def checkout_confirm(request):
         raise PermissionDenied
     if request.method == "POST":
         order.date = now()
-        order.status = "Placed"
+        order.status = Status.objects.get(name="Placed")
         order.save()
         for obj in serializers.deserialize("json", request.session.get("order_items")):
             order_item = obj.object

@@ -2,4 +2,18 @@ from django.contrib import admin
 
 from products.models import Product
 
-admin.site.register(Product)
+
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ('id','name', 'brand','active')
+    fields = ['name','brand','description','contents','weight','price', 'category','active','stock','percentage_off','discounted_price']
+    readonly_fields = ('id',)
+    list_filter = ('brand',)
+    list_editable = ('active',)
+    search_fields = ('id','name','brand')
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+admin.site.register(Product, ProductAdmin)
+

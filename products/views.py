@@ -7,15 +7,16 @@ from django.shortcuts import render, get_object_or_404
 
 from orders.models import OrderItem
 from users.models import SearchHistory
-from .forms.AddReview import AddReview
+from .forms.ProductReviewForm import AddReview
 from .models import Category, Product
 from .filters import ProductFilter
+import json
 
 
 class FilteredListView(FilterView):
     """
-    A parent class implementing ListView functionality with
-    added queryset filtering and pagination maintenance.
+    A parent class base view for implementing ListView functionality
+    with added queryset filtering and pagination maintenance.
     """
 
     def get_queryset(self):
@@ -54,7 +55,7 @@ class FilteredListView(FilterView):
 
 class ProductsInCategoryListView(FilteredListView):
     """
-    A class for listing and paginating products in a category, either
+    Class based view for listing and paginating products in a category, either
     all products or products matching query parameters.
     """
 
@@ -77,7 +78,7 @@ class ProductsInCategoryListView(FilteredListView):
 
 class ProductSearchView(FilteredListView):
     """
-    A class for listing and paginating search results
+    Class based view for listing and paginating search results
     plus products matching query parameters.
     """
 
@@ -124,9 +125,8 @@ def product_details(request, id):
     )
 
 
-
 @login_required
-def add_review(request, id):
+def add_review(request, id): # TODO: Make added review show automatically
     """Endpoint to post a new review."""
     if request.method == "POST":
         # If the user has made a review or has not already purchased the product
@@ -134,14 +134,25 @@ def add_review(request, id):
             id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
         ):
             return JsonResponse({"message": "Error: Operation not allowed."}, status=403)
-        form = AddReview(data=request.POST)
+        body = json.loads(request.body.decode("utf-8"))
+        form = AddReview(data={
+            "stars": body.get("stars"),
+            "title": body.get("title"),
+            "review": body.get("review")
+        })
         if form.is_valid():
             review = form.save(commit=False)
             review.user_id = request.user.id
             review.product_id = id
             review.save()
             return JsonResponse(
-                {"message": "Review has been added for the product."}, status=201
+                {
+                    "message": "Review has been added for the product.",
+                    "data": {
+                        "full_name": f"{request.user.first_name} {request.user.last_name}",
+                        "profile_image": f"/static/media/{request.user.profile.picture}"
+                    }
+                 }, status=201
             )
         return JsonResponse({"message": "Form not valid."}, status=400)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)

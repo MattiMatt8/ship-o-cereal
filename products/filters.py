@@ -40,7 +40,6 @@ def brands(request):
 
 def labels(request):
     """Returns on the labels that are relevant to the items being filtered."""
-    return Label.objects.all()
     category = request.resolver_match.kwargs.get("category_name")
     if category:
         return Label.objects.filter(id__in=ProductLabel.objects.filter(
