@@ -22,8 +22,8 @@
       >Orders
       </a>
     </div>
-    <section class="flex flex-col items-center lg:flex-row lg:items-start lg:justify-around lg:-mx-8">
-      <div class="w-72 sm:w-96 md:w-3/4 lg:w-72 lg:px-4 xl:w-3/12 2xl:w-5/12 2xl:pr-48">
+    <section class="flex flex-col items-center lg:flex-row lg:items-start lg:justify-start">
+      <div class="w-72 sm:w-96 md:w-3/4 lg:w-72 lg:mr-8 xl:w-3/12 2xl:w-5/12 2xl:pr-48">
         <h2 class="text-xl font-medium mb-2">General</h2>
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
@@ -69,7 +69,7 @@
           </div>
         </form>
       </div>
-      <div class="w-72 mt-8 sm:w-96 md:w-3/4 lg:w-72 lg:mt-0 lg:px-4 xl:w-4/12 2xl:w-4/12">
+      <div class="w-72 mt-8 sm:w-96 md:w-3/4 lg:w-72 lg:mr-8 lg:mt-0 xl:w-4/12 2xl:w-4/12">
         <h2 class="text-xl font-medium mb-4">Addresses</h2>
         <ul>
           {% for address in request.user.address_set.all %}
@@ -80,7 +80,7 @@
            href="{% url 'add_address' %}">New address
         </a>
       </div>
-      <div class="w-72 mt-8 sm:w-96 md:w-3/4 lg:w-72 lg:mt-0 lg:px-4 xl:w-4/12 2xl:w-4/12">
+      <div class="w-72 mt-8 sm:w-96 md:w-3/4 lg:w-72 lg:mr-8 lg:mt-0 xl:w-4/12 2xl:w-4/12">
         <h2 class="text-xl font-medium mb-4">Cards</h2>
         <ul>
           {% for card in request.user.card_set.all %}
