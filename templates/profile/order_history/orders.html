@@ -48,5 +48,10 @@ e{% block content %}
     <!-- END Orders -->
   </table>
   <!-- END Order history -->
+  <!-- Product page numbers -->
+  <div class="flex justify-center mt-8">
+    {% include 'components/pagination.html' with filters=filters is_paginated=is_paginated paginator=paginator page_obj=page_obj %}
+  </div>
+  <!-- END Product page numbers -->
 </main>
 {% endblock %}
