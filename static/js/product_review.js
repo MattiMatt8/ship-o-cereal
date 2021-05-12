@@ -166,14 +166,14 @@ function getReviewFilled(id, title, stars, review, picture, date, fullName) {
                         </div>`;
     }
     divTag.innerHTML = `
-        <div class="flex flex-row mt-8" id="review-${id}">
-          <div class="w-1/3 flex flex-col justify-center items-center mr-10">
+        <div class="flex flex-col my-8 items-center md:flex-row" id="review-${id}">
+          <div class="flex flex-col justify-center items-center md:w-1/3 md:mr-10">
             ${html_picture}
-            <h3 class="text-md font-medium mt-3">${fullName}</h3>
+            <h3 class="text-md font-medium mt-3 md:text-center">${fullName}</h3>
           </div>
-          <div class="w-2/3">
-            <div class="flex flex-col">
-              <div class="flex flex-row" id="review-stars-${id}" data-stars-total="${stars}">
+          <div class="md:w-2/3">
+            <div class="flex flex-col md:flex-row md:items-center">
+              <div class="flex flex-row justify-center my-2 md:justify-start" id="review-stars-${id}" data-stars-total="${stars}">
                 ${getStars(Number(stars))}
                 <h3 class="ml-4 text-md font-medium" id="review-title-${id}">${title}</h3>
               </div>

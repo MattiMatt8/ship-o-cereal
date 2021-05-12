@@ -5,22 +5,23 @@
     {% include 'components/back_button.html' %}
     <form method="post">
       {% csrf_token %}
-      <h1 class="text-3xl mb-2">Checkout</h1>
-      <h3 class="text-xl">Review your order</h3>
+      <h1 class="text-3xl mb-2 text-center md:text-left">Checkout</h1>
+      <h3 class="text-xl text-center md:text-left">Review your order</h3>
       <!-- START Card Container-->
-      <div class="flex flex-row justify-between mt-6">
-        <div class="w-2/5">
-          <h3 class="text-2xl mb-2">Items</h3>
+      <div class="flex flex-col-reverse items-center mt-6 lg:flex-row lg:items-start">
+        <div class="w-80 sm:w-96 md:w-8/12 lg:w-4/12 xl:w-2/6">
+          <h3 class="text-center text-2xl mb-2">Items</h3>
           <ul class="flex flex-col mb-6 w-full">
             {% for order_item in order_items %}
               <li class="inline shadow-lg self-start rounded mb-4 w-full">
-                <div class="px-6 py-6 flex flex-row items-center justify-between">
+                <div class="px-6 py-6 flex flex-col items-start justify-between">
                   <div class="flex flex-row items-center">
-                    <img src="{% static static %}images/{{ order_item.product.category }}/{{ order_item.product.image_set.first }}"
-                         class="block h-16 w-16 object-cover object-center mr-6"/>
-                    <span class="block text-xl">{{ order_item.product.name }}</span>
+                    <img
+                        src="{% static static %}images/{{ order_item.product.category }}/{{ order_item.product.image_set.first }}"
+                        class="block h-16 w-16 object-cover object-center mr-4"/>
+                    <span class="block text-xl w-full">{{ order_item.product.name }}</span>
                   </div>
-                  <div class="flex flex-row items-center ml-6">
+                  <div class="flex flex-row items-center mt-4">
                     <span class="text-xl font-medium mr-6">${{ order_item.price }}</span>
                     <span class="text-base font-light">QTY:&nbsp;{{ order_item.quantity }}</span>
                   </div>
@@ -29,21 +30,23 @@
             {% endfor %}
           </ul>
         </div>
-        <div class="w-2/6">
-          <h3 class="text-2xl mb-2">Summary</h3>
-          <div class="px-6 py-6 flex flex-col shadow-lg rounded mb-4">
-            <div class="flex flex-col">
-              <span class="text-lg font-medium mr-2">Full name</span>
-              <span class="text-lg font-light">{{ order.first_name }} {{ order.last_name }}</span>
-            </div>
-            <div class="flex flex-col">
-              <span class="text-lg font-medium mr-2">Phone number</span>
-              <span class="text-lg font-light">{{ order.phone_number }}</span>
-            </div>
-            <div class="flex flex-col">
-              <span class="text-lg font-medium mr-2">Billing address</span>
-              <span
-                  class="text-lg font-light">{{ order.address_street_name }} {{ order.address_house_number }}, {{ order.address_city }} {{ order.address_zip }}, {{ order.address_country }}{% if order.address_additional_comments is not None %},
+        <div class="flex flex-col w-80 mx-auto mt-4 sm:w-96 md:w-8/12 lg:mt-0 lg:w-6/12 xl:w-2/6">
+          <h3 class="text-center text-2xl mb-2">Summary</h3>
+          <div>
+            <div class="px-6 py-6 flex flex-col shadow-lg rounded mb-4">
+              <div class="flex flex-col">
+                <span class="text-lg font-medium mr-2">Full name</span>
+                <span class="text-lg font-light">{{ order.first_name }} {{ order.last_name }}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-lg font-medium mr-2">Phone number</span>
+                <span class="text-lg font-light">{{ order.phone_number }}</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-lg font-medium mr-2">Billing address</span>
+                <span
+                    class="text-lg font-light">{{ order.address_street_name }} {{ order.address_house_number }}, {{ order.address_city }} {{ order.address_zip }}, {{ order.address_country }}
+                  {% if order.address_additional_comments is not None %},
                     {{ order.address_additional_comments }}{% endif %}</span>
             </div>
             <div class="flex flex-col mb-4">
@@ -65,18 +68,31 @@
               <span class="text-2xl font-bold">Total amount</span>
               <span class="text-3xl">${{ order.total }}</span>
             </div>
-            <div class="flex justify-center mt-4">
-              <button type="submit" class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen">
-                Place order</button>
-            </div>
+            {% if stock_errors is not None %}
+              <div class="mt-2">
+              {% for error in stock_errors %}
+                <p class="text-customRed text-center">{{ error }}</p>
+              {% endfor %}
+                <p class="text-customRed text-center">Please go back to your cart to update the amount.</p>
+              </div>
+              <div class="flex justify-center mt-4">
+                <button type="button" class="cursor-not-allowed bg-gray-100 text-gray-400 rounded py-2 px-4 focus:outline-none hover:shadow-md">
+                  Place order</button>
+              </div>
+            {% else %}
+              <div class="flex justify-center mt-4">
+                <button type="submit" class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen">
+                  Place order</button>
+              </div>
+            {% endif %}
           </div>
         </div>
-        <div class="flex flex-col">
-          <div>
-            <h4 class="text-center mb-4 font-light text-sm">Step 3</h4>
-            <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
-            <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
-            <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
+        <div class="flex flex-col lg:ml-16">
+          <h4 class="text-center mb-4 font-light text-sm">Step 3</h4>
+          <div class="flex flex-row justify-center lg:flex-col">
+            <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
+            <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
+            <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
           </div>
         </div>
       </div>

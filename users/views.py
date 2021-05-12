@@ -296,17 +296,25 @@ def cart(request):
     if cart:
         for product_id, quantity in cart.items():
             try:
-                product = Product.objects.get(pk=int(product_id))
+                buy_quantity = quantity
+                product = Product.objects.get(pk=int(product_id), active=True)
                 price = product.discounted_price if product.discounted_price else product.price
+                if product.stock == 0:
+                    # If the product is not in stock skip it.
+                    continue
+                elif product.stock < quantity:
+                    # If the user has more in the cart than in stock
+                    # it will put his quantity to how much is in stock.
+                    buy_quantity = product.stock
                 order_items.append(
-                    OrderItem(quantity=quantity, product=product,
+                    OrderItem(quantity=buy_quantity, product=product,
                               price=price)
                 )
-                cart_total += quantity
+                cart_total += buy_quantity
                 products_amount_fraction += (
-                        Fraction.from_float(price) * quantity
+                        Fraction.from_float(price) * buy_quantity
                 )
-                updated_cart[product_id] = quantity
+                updated_cart[product_id] = buy_quantity
             except ObjectDoesNotExist:
                 pass
         request.session["cart_total"] = cart_total

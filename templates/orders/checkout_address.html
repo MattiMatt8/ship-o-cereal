@@ -5,24 +5,26 @@
     {% include 'components/back_button.html' %}
     <form method="post">
       {% csrf_token %}
-      <h1 class="text-3xl mb-2">Checkout</h1>
-      <h3 class="text-xl">Select a shipping address</h3>
+      <h1 class="text-3xl mb-2 text-center md:text-left">Checkout</h1>
+      <h3 class="text-xl text-center md:text-left">Select a shipping address</h3>
       <!-- START Card Container-->
-      <div class="flex flex-row justify-between">
+      <div class="flex flex-col-reverse justify-between md:flex-row">
         <div>
-          <ul class="flex flex-col mt-6 mb-4">
+          <ul class="flex flex-col mt-6 mb-4 w-80 mx-auto sm:w-96 lg:w-full lg:mx-0 xl:w-11/12">
             {% for address in user.address_set.all %}
 
               <li class="inline shadow-lg hover:shadow-xl self-start rounded mb-4">
                 <label class="cursor-pointer">
-                  <div class="px-4 py-6">
+                  <div class="px-4 py-6 mb-3 relative lg:mb-0">
                     <input value="{{ address.id }}" type="radio" name="address" class="mx-2 address-input"
-                      {% if select_address == address.id %}checked{% endif %}>
+                           {% if select_address == address.id %}checked{% endif %}>
                     <span class="text-md font-medium mr-2">Address {{ forloop.counter }}</span>
                     <span
-                            class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}{% if address.additional_comments is not None %}, {{ address.additional_comments }}{% endif %}</span>
+                        class="text-md font-light">{{ address.street_name }} {{ address.house_number }}, {{ address.city }} {{ address.zip }}, {{ address.country }}
+                      {% if address.additional_comments is not None %},
+                        {{ address.additional_comments }}{% endif %}</span>
 
-                    <span class="ml-2">
+                    <span class="absolute right-4 bottom-3 p-2 lg:relative lg:right-0 lg:bottom-0">
                       <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
                          href="{% url 'update_address' id=address.id %}?next=/checkout/address/">Change</a>
                     </span>
@@ -36,12 +38,12 @@
              href="{% url 'add_address' %}?next=/checkout/address/">New address
           </a>
         </div>
-        <div class="flex flex-col">
-          <div>
-            <h4 class="text-center mb-4 font-light text-sm">Step 1</h4>
-            <div class="h-10 w-10 rounded-full bg-customBlue mb-4"></div>
-            <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
-            <div class="h-10 w-10 rounded-full bg-gray-100 mb-4"></div>
+        <div class="flex flex-col lg:ml-16">
+          <h4 class="text-center my-4 font-light text-sm">Step 1</h4>
+          <div class="flex flex-row justify-center md:flex-col">
+            <div class="h-10 w-10 rounded-full bg-customBlue mx-4 md:my-4 md:mx-0"></div>
+            <div class="h-10 w-10 rounded-full bg-gray-100 mx-4 md:my-4 md:mx-0"></div>
+            <div class="h-10 w-10 rounded-full bg-gray-100 mx-4 md:my-4 md:mx-0"></div>
           </div>
         </div>
       </div>
@@ -50,15 +52,17 @@
         <a class="text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
            href="{% url 'cart' %}">Previous step
         </a>
-        <button id="next-disabled" type="button" class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
-           >Next step
+        <button id="next-disabled" type="button"
+                class="cursor-not-allowed text-xl rounded p-2 bg-gray-100 text-gray-400 py-1 px-4 focus:outline-none hover:shadow-md"
+        >Next step
         </button>
-        <button id="next-enabled" class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden"
-           type="submit">Next step
+        <button id="next-enabled"
+                class="text-xl rounded p-2 bg-customGreen text-white py-1 px-4 focus:outline-none hover:shadow-md hidden"
+                type="submit">Next step
         </button>
       </div>
       {% if error_message %}
-      <div class="text-red-500 mt-2 text-lg italic text-right">{{ error_message }}</div>
+        <div class="text-red-500 mt-2 text-lg italic text-right">{{ error_message }}</div>
       {% endif %}
       <h4 id="text-disabled" class="text-right mt-1">*Address required to continue</h4>
     </form>
