@@ -148,7 +148,6 @@
           <form method="post" class="flex flex-col" id="new-review-form">
             {% csrf_token %}
             <div class="mb-1">
-              <div class="text-red-500 text-sm italic">{{ form.title.errors }}</div>
               <label for="{{ form.title.id_for_label }}"
                      class="block text-gray-700 text-base mb-1">Title</label>
               <input type="text" name="title"
@@ -156,7 +155,6 @@
                      maxlength="255" required="" id="id_title" placeholder="It was...">
             </div>
             <div class="mb-3">
-              <div class="text-red-500 text-sm italic">{{ form.stars.errors }}</div>
               <label for="{{ form.stars.id_for_label }}"
                      class="block text-gray-700 text-base mb-1">Stars</label>
               <div class="flex flex-row">
@@ -174,7 +172,6 @@
               </div>
             </div>
             <div class="mb-3">
-              <div class="text-red-500 text-sm italic">{{ form.review.errors }}</div>
               <label for="{{ form.review.id_for_label }}"
                      class="block text-gray-700 text-base mb-1">Review</label>
               <textarea name="review" cols="40" rows="5"

@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django_filters.views import FilterView
@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404
 
 from orders.models import OrderItem
 from users.models import SearchHistory
-from .forms.ProductReviewForm import AddReview
+from .forms.ProductReviewForm import ProductReviewForm
 from .models import Category, Product
 from .filters import ProductFilter
 import json
@@ -113,7 +113,7 @@ def product_details(request, id):
     if not request.user.review_set.filter(product_id=id) and request.user.order_set.filter(
             id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")):
         # Creates a add review if the user has purchased the product and has not already made a review on it
-        form = AddReview()
+        form = ProductReviewForm()
 
     return render(
         request,
@@ -135,7 +135,7 @@ def add_review(request, id): # TODO: Make added review show automatically
         ):
             return JsonResponse({"message": "Error: Operation not allowed."}, status=403)
         body = json.loads(request.body.decode("utf-8"))
-        form = AddReview(data={
+        form = ProductReviewForm(data={
             "stars": body.get("stars"),
             "title": body.get("title"),
             "review": body.get("review")
@@ -154,50 +154,48 @@ def add_review(request, id): # TODO: Make added review show automatically
                     }
                  }, status=201
             )
-        return JsonResponse({"message": "Form not valid."}, status=400)
+        return JsonResponse({"message": "Review not valid."}, status=400)
     return JsonResponse({"message": "Error: Method not supported."}, status=405)
 
 
 # @login_required
 # def add_review(request, id):
-#     # TODO: Maybe display what item is being review at the top?
-#     # User has already created a review
-#     if request.user.review_set.filter(product_id=id):
-#         raise PermissionDenied
-#     # User has not purchased the product
-#     elif not request.user.order_set.filter(
-#             id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
-#     ):
-#         raise PermissionDenied
-#     if request.method == "POST":
-#         form = AddReview(data=request.POST)
-#         if form.is_valid():
-#             review = form.save(commit=False)
-#             review.user_id = request.user.id
-#             review.product_id = id
-#             review.save()
-#             return redirect("product-details", id=id)
-#     else:
-#         form = AddReview()
-#     return render(request, "products/add_review.html", {"form": form})
+    # TODO: Maybe display what item is being review at the top?
+    # User has already created a review
+    if request.user.review_set.filter(product_id=id):
+        raise PermissionDenied
+    # User has not purchased the product
+    elif not request.user.order_set.filter(
+            id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
+    ):
+        raise PermissionDenied
+    if request.method == "POST":
+        form = ProductReviewForm(data=request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.user_id = request.user.id
+            review.product_id = id
+            review.save()
+            return redirect("product-details", id=id)
+    else:
+        form = ProductReviewForm()
+    return render(request, "products/add_review.html", {"form": form})
 
 
-@login_required
-def update_review(request, id, review_id):
-    pass
-    # next_query = request.GET.get("next")
-    # card = get_object_or_404(request.user.card_set, pk=id)
-    # if request.method == "POST":
-    #     form = UpdateUserCardForm(data=request.POST, instance=card)
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect("profile" if next_query is None else next_query)
-    # else:
-    #     form = UpdateUserCardForm(instance=card)
-    # return render(
-    #     request, "users/update_card.html", {"form": form, "next_query": next_query}
-    # )
-    #
+def update_review(request, id):
+    if request.method == "POST":
+        if request.user.is_authenticated:
+            try:
+                review = request.user.review_set.get(product_id=id)
+                form = ProductReviewForm(data=request.POST, instance=review)
+                if form.is_valid():
+                    form.save()
+                    return JsonResponse({"message": "Updated the review."}, status=201)
+            except ObjectDoesNotExist:
+                return JsonResponse({"message": "Error: Review does not exist."}, status=404)
+            return JsonResponse({"message": "Review not valid."}, status=400)
+        return JsonResponse({"message": "Error: User not authorized."}, status=401)
+    return JsonResponse({"message": "Error: Method not supported."}, status=405)
 
 
 @login_required
