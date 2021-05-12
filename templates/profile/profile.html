@@ -2,26 +2,28 @@
 {% load static %}
 {% block content %}
   <main class="container mx-auto mt-10 mb-16 text-customGray">
+
     {% include 'components/back_button.html' %}
-    <div class="flex flex-col">
+    <div class="flex flex-col items-center lg:items-start">
       {% if user.profile.picture %}
-        <img class="w-40 h-40 rounded-full object-cover object-center" src="{% static static %}media/{{ user.profile.picture }}">
+        <img class="w-32 h-32 rounded-full object-cover object-center"
+             src="{% static static %}media/{{ user.profile.picture }}">
       {% else %}
         <div class="flex justify-center items-center bg-customGray w-24 h-24 rounded-full ">
           {% include 'components/icons/login-profile-icon.html' %}
         </div>
       {% endif %}
 
+      <h1 class="text-2xl font-medium mt-2">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
     </div>
-    <h1 class="text-2xl font-medium mt-2">{{ request.user.first_name }} {{ request.user.last_name }}</h1>
-    <div class="flex flex-row mt-3 mb-4">
+    <div class="flex flex-row mt-3 mb-4 justify-center lg:justify-start">
       <a class="rounded border border-customViolet text-base py-1 px-4 mb-3 mr-3 focus:outline-none hover:shadow-md"
          href="{% url 'order-history' %}"
       >Orders
-        </a>
+      </a>
     </div>
-    <section class="flex flex-row">
-      <div class="w-72">
+    <section class="flex flex-col items-center lg:flex-row lg:items-start lg:justify-around lg:-mx-8">
+      <div class="w-72 sm:w-96 md:w-3/4 lg:w-72 lg:px-4 xl:w-3/12 2xl:w-5/12 2xl:pr-48">
         <h2 class="text-xl font-medium mb-2">General</h2>
         <form method="post" enctype="multipart/form-data">
           {% csrf_token %}
@@ -56,7 +58,7 @@
             <input type="file" name="picture" accept="image/*" id="id_picture"
                    class="border border-customGray rounded px-4 py-1 shadow-inner w-full h-full placeholder-gray-300 focus:outline-none">
           </div>
-          <div class="flex flex-col w-36">
+          <div class="flex flex-col w-full items-center lg:items-start">
             <button
                 class="bg-customBlue hover:shadow-md rounded text-customViolet text-base py-1 px-4 mb-3 focus:outline-none"
                 type="submit">Save changes
@@ -67,7 +69,7 @@
           </div>
         </form>
       </div>
-      <div class="ml-20 w-72">
+      <div class="w-72 mt-8 sm:w-96 md:w-3/4 lg:w-72 lg:mt-0 lg:px-4 xl:w-4/12 2xl:w-4/12">
         <h2 class="text-xl font-medium mb-4">Addresses</h2>
         <ul>
           {% for address in request.user.address_set.all %}
@@ -78,7 +80,7 @@
            href="{% url 'add_address' %}">New address
         </a>
       </div>
-      <div class="ml-20 w-72">
+      <div class="w-72 mt-8 sm:w-96 md:w-3/4 lg:w-72 lg:mt-0 lg:px-4 xl:w-4/12 2xl:w-4/12">
         <h2 class="text-xl font-medium mb-4">Cards</h2>
         <ul>
           {% for card in request.user.card_set.all %}
