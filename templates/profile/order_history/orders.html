@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
-{% load static %}
-{% block content %}
+{% load static%}
+e{% block content %}
 <main class="container mx-auto">
   <h1 class="flex justify-center text-4xl text-customGray font-medium">Order history</h1>
-  <!-- Order history table -->
+
+  <!-- Order history -->
   <table class="w-4/5 mt-6 mx-auto">
     <thead class="border-b-2 border-customViolet">
       <tr class="text-left text-xl text-customViolet">
@@ -15,32 +16,36 @@
       </tr>
     </thead>
 
-    <!-- Previous orders -->
+    <!-- Orders -->
     <tbody>
-    {% for order in order_history %}
+      {% for order in order_history %}
       <tr class="border-b">
+        <!-- View order -->
         <td class="px-4 py-3">
           <div class="flex justify-around">
             <span class="font-medium ">{{ order.id }}</span>
             <a class="bg-customGreen py-2 px-3 text-white rounded-md text-l w-15 h-5 flex items-center"
-             href="{% url "order-details" order.id %}">View</a>
+               href="{% url "order-details" order.id %}">View</a>
           </div>
+        </td>
+        <!-- END View order -->
 
-          </td>
+        <!-- Order info -->
         <td class="px-4 py-3">
           <div class="flex flex-col justify-center">
-            <p>{{ order.first_name }} {{ order.last_name }}</p>
-            <p>{{ order.address_street_name }}</p>
-            <p>{{ order.address_country }} {{ order.address_city }} {{ order.address_zip }}</p>
+            <p>{{ order.first_name }} {{ order.last_name}}</p>
+            <p>{{ order.address_street_name}}</p>
+            <p>{{ order.address_country }} {{order.address_city }} {{ order.address_zip}}</p>
           </div>
         </td>
         <td class="px-4 py-3">{{ order.date }}</td>
         <td class="px-4 py-3">{{ order.status }}</td>
         <td class="px-4 py-3">${{ order.products_total }}</td>
+        <!-- END Order info -->
       </tr>
-    {% endfor %}
+      {% endfor %}
     </tbody>
-    <!-- END Previous orders -->
+    <!-- END Orders -->
   </table>
   <!-- END Order history -->
 </main>
