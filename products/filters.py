@@ -58,12 +58,12 @@ class ProductFilter(FilterSet):
     brand = ModelChoiceFilter(
         queryset=brands,
         field_name="brand",
-        empty_label=_("Select brand .."),
+        empty_label=_("Select brand..."),
     )
 
     # Order by filter
     ordering = OrderingFilter(
-        label="Sort by", choices=PRODUCT_ORDER_BY_FIELDS, empty_label=_("Order by..")
+        label="Sort by", choices=PRODUCT_ORDER_BY_FIELDS, empty_label=_("Order by...")
     )
 
     class Meta:
@@ -74,10 +74,10 @@ class ProductFilter(FilterSet):
         super().__init__(*args, **kwargs)
         # Adds classes to the brand dropdown menu to style it.
         self.form.fields["brand"].widget.attrs = {
-            "class": "filter-btn rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-64 h-9 pl-3 pr-10"
+            "class": "filter-btn appearance-none focus:outline-none   text-base pl-3    border-t w-full py-2 border-gray-300 sm:border sm:rounded"
         }
         # Adds classes to the order dropdown menu to style it.
         self.form.fields["ordering"].widget.attrs = {
-            "class": "filter-btn rounded border appearance-none border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base w-42 h-9 pl-3 pr-10"
+            "class": "filter-btn appearance-none focus:outline-none   text-base pl-3    border-t border-b w-full py-2 border-gray-300 sm:border sm:rounded"
         }
 

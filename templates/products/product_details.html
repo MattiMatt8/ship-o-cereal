@@ -1,40 +1,45 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
 
-  <main class="container mx-auto my-16 text-customGray">
+  <main class="container mx-auto my-16 text-customGray w-72 sm:w-4/5 md:w-full">
     {% include 'components/back_button.html' %}
     <!-- START Image and meta data -->
-    <div class="flex flex-row">
+    <div class="flex flex-col mx-auto md:flex-row">
       <!-- IMAGE -->
-      <div class="relative">
+      <div class="relative md:mr-8 md:w-1/3 lg:w-2/6">
         {% if product.discounted_price is not None %}
           <div class="absolute -right-5 -top-5">
             {% include 'components/icons/sale-logo.html' with discount=product.percentage_off|stringformat:"i" %}
           </div>
         {% endif %}
         <img
-                class="object-cover object-center w-96 h-full rounded-t-md"
-                src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
+            class="object-cover object-center w-full h-64 rounded-t-md sm:h-72 md:h-full xl:w-full"
+            src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
         />
       </div>
       <!-- META DATA -->
-      <div class="ml-16 flex flex-col justify-between w-96">
+      <div class="flex flex-col justify-between mt-4 md:w-2/3 lg:w-3/6 xl:w-5/12 2xl:w-4/12">
         <!-- START Title and weight -->
         <div>
           <div class="flex flex-row items-end">
-            <h1 class="font-medium text-5xl">{{ product.name }}</h1>
+            <h1 class="font-medium text-2xl sm:text-3xl lg:text-4xl">{{ product.name }}</h1>
             {% if product.weight != None %}
-              <span class="ml-4 font-light text-sm">{{ product.weight }}gr</span>
+              <span class="ml-4 font-light text-xs sm:text-base">{{ product.weight }}gr</span>
             {% endif %}
           </div>
           <!-- END Title and weight -->
           <!-- START Product rating -->
-          <div class="flex flex-row my-2">
+          <div class="flex flex-row my-2 items-center">
             <!-- START Stars -->
             <div class="flex flex-row">
-              {% for item in "x"|ljust:"5" %} {% include 'components/icons/star_filled.html' %} {% endfor %}
+              {% for item in product.review_calculated|times %}
+                {% include 'components/icons/star_filled.html' %}
+              {% endfor %}
+              {% for item in product.review_calculated|get_unfilled_stars %}
+                {% include 'components/icons/star_unfilled.html' %}
+              {% endfor %}
             </div>
             <!-- END Stars -->
-            <span class="ml-4 font-light text-sm"
+            <span class="ml-4 font-light text-xs sm:text-base"
             >{{ product.total_reviewers }} reviews</span
             >
           </div>
@@ -47,28 +52,29 @@
             {% endif %}
             <span></span>
           </div>
-          <div class="flex flex-row mb-16">
+          <div class="flex flex-row mb-6">
             {% for label in product.labels.all %} {% with "components/icons/"|addstr:label.icon as template %}
               <span class="mr-2">
-            {% include template with classAttr="w-12 h-12" %}
+            {% include template with classAttr="w-7 h-7 sm:w-8 sm:h-8 xl:w-10 xl:h-10" %}
           </span>
             {% endwith %}
             {% endfor %}
           </div>
         </div>
-        <div class="">
-          <h3 class="text-xl font-medium">Product description</h3>
-          <p>{{ product.description }}</p>
+        <div class="mb-4">
+          <h3 class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Product description</h3>
+          <p class="text-sm sm:text-md md:text-lg">{{ product.description }}</p>
         </div>
         <div>
           <!-- START Add to cart button -->
           <div class="">
             <div class="flex">
               {% if product.discounted_price is None %}
-                <h3 class="text-3xl mb-4">${{ product.price }}</h3>
+                <h3 class="text-xl mb-4 sm:text-2xl xl:text-3xl">${{ product.price }}</h3>
               {% else %}
-                <h3 class="text-3xl mb-4 mr-2 text-customRed">${{ product.discounted_price }}</h3>
-                <h3 class="text-xl mb-4 text-gray-400 line-through">${{ product.price }}</h3>
+                <h3 class="text-xl mb-4 mr-2 text-customRed sm:text-2xl xl:text-3xl">
+                  ${{ product.discounted_price }}</h3>
+                <h3 class="text-lg mb-4 text-gray-400 line-through sm:text-xl xl:text-2xl">${{ product.price }}</h3>
               {% endif %}
             </div>
             <div class="flex">
@@ -93,26 +99,26 @@
               >
                 <div class="custom-number-input w-32">
                   <div
-                          class="flex flex-row h-10 w-full rounded-lg relative bg-transparent"
+                      class="flex flex-row h-10 w-full rounded-lg relative bg-transparent"
                   >
                     <button
-                            class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none hover:text-gray-700 hover:bg-gray-200"
-                            data-action="decrement"
-                            type="button"
+                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none hover:text-gray-700 hover:bg-gray-200"
+                        data-action="decrement"
+                        type="button"
                     >
                       <span class="m-auto text-2xl font-thin">−</span>
                     </button>
                     <input
-                            id="amount-input"
-                            type="text"
-                            data-product-id="{{ product.id }}"
-                            class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
-                            name="custom-input-number"
-                            value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"
+                        id="amount-input"
+                        type="text"
+                        data-product-id="{{ product.id }}"
+                        class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none"
+                        name="custom-input-number"
+                        value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"
                     />
                     <button
-                            data-action="increment"
-                            class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer"
+                        data-action="increment"
+                        class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer"
                     >
                       <span class="m-auto text-2xl font-thin">+</span>
                     </button>
@@ -131,31 +137,32 @@
     <div class="flex flex-row w-96 mt-4 wrap">
       {% for image in product.image_set.all %}
         <img
-                class="object-cover object-center w-24 h-24 mr-4"
-                src="{% static 'images/' %}{{ product.category.name }}/{{ image }}"
+            class="object-cover object-center w-24 h-24 mr-4"
+            src="{% static 'images/' %}{{ product.category.name }}/{{ image }}"
         />
       {% endfor %}
     </div>
 
     <!-- START Nutrition stuff -->
     {% if product.category_id == 1 %}
-      <div class="mt-10 w-2/5">
-        <h1 class="text-2xl font-medium">Ingredients</h1>
-        <p class="w-full">{{ product.contents }}</p>
+      <div class="mt-10 lg:w-96 xl:w-1/3">
+        <h1 class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Ingredients</h1>
+        <p class="text-sm sm:text-md xl:text-lg">{{ product.contents }}</p>
       </div>
     {% endif %}
     <!-- END Nutrition stuff -->
 
     <!-- START Reviews -->
-    <div class="flex flex-col mt-10 w-1/3">
+    <div class="flex flex-col mt-10 md:w-9/12 lg:w-3/6 xl:w-2/6">
       {% if not product.review_set.all %}
-        <h1 class="text-2xl font-medium" id="reviews-header">No reviews yet.</h1> <!-- TODO: NO Reviews new review added change -->
+        <h1 class="text-2xl font-medium" id="reviews-header">No reviews yet.</h1>
+        <!-- TODO: NO Reviews new review added change -->
       {% else %}
-        <h1 class="text-2xl font-medium" id="reviews-header">Reviews</h1>
+        <h1 id="reviews-header" class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Reviews</h1>
       {% endif %}
       <!-- Create new review -->
       {% if form is not None %}
-        <div class="w-9/12 mt-5" id="new-review">
+        <div class="mt-5" id="new-review">
           <form method="post" class="flex flex-col" id="new-review-form">
             {% csrf_token %}
             <h2 class="text-lg mb-2">Please leave a review.</h2>
@@ -188,11 +195,13 @@
                      class="block text-gray-700 text-base mb-1">Review</label>
               <textarea name="review" cols="40" rows="5"
                         class="border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none"
-                        placeholder="I thought it was... because..." maxlength="500" required="" id="id_review"></textarea>
+                        placeholder="I thought it was... because..." maxlength="500" required=""
+                        id="id_review"></textarea>
             </div>
-            <div class="flex justify-end mb-3">
-              <button class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
-                      type="submit">Post review
+            <div class="flex justify-end mb-3 lg:mb-10">
+              <button
+                  class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
+                  type="submit">Post review
               </button>
             </div>
           </form>

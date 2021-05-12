@@ -27,13 +27,14 @@ class OrdersListView(ListView):
     """A view for displaying a list of orders for a given user"""
 
     model = Order
+    paginate_by = 10
+    context_object_name = "order_history"
     template_name = "profile/order_history/orders.html"
 
-    def get_context_data(self):
+    def get_queryset(self):
         """Returns the context for this view. Context containing the orders for a given user"""
 
-        orders = self.request.user.order_set.all()  # match orders by user in request
-        return {"order_history": orders}
+        return self.request.user.order_set.all()
 
 
 class OrderDetailView(DetailView):

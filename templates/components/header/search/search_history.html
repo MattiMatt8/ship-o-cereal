@@ -1,5 +1,5 @@
 <div id="search-dropdown"
-     class="z-20 overflow-y-auto absolute overflow-hidden w-full max-h-0 border-customGray rounded-xl border top-3 bg-white">
+     class="z-20 overflow-y-auto absolute overflow-hidden w-full max-h-0 top-3 bg-white border-b border-customGray sm:border sm:rounded">
   <ul
       class="w-full shadow-lg hover:shadow-xl text-customGray">
     {% for result in user.searchhistory_set.all|slice:":10" %}

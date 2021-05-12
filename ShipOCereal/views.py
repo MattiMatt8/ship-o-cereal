@@ -21,9 +21,8 @@ class HomePageView(View):
         # Fetching top 5 products for each category
         for category in categories:
             context["categories"][category] = Product.objects.filter(
-                category=category.id,
-                active=True
-            ).order_by("-review_calculated")[:5]
+                category=category.id
+            ).order_by("-review_calculated")[:10]
 
         return render(request, "index.html", context=context)
 

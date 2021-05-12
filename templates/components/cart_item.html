@@ -1,48 +1,51 @@
 {% load static %}
 
 <li id="product-id-{{ product.id }}"
-    class="shadow-lg hover:shadow-xl rounded flex flex-row items-center p-4 mb-4 justify-between min-h-20">
-  <div class="flex flex-row items-center">
+    class="shadow-lg hover:shadow-xl rounded flex flex-col items-center p-4 mb-4 justify-between min-h-20 w-80 sm:w-96 sm:items-start lg:flex-row lg:w-10/12 lg:items-center 2xl:w-8/12">
+  <div class="flex flex-col items-center sm:flex-row xl:w-full">
     <img src="{% static static %}images/{{ product.category }}/{{ product.image_set.first }}"
-         class="object-cover object-center w-16 h-16"/>
-    <h3 class="text-xl ml-4 w-full">{{ product.name }}</h3>
+         class="object-cover object-center w-16 h-16 sm:w-24 sm:h-24"/>
+    <h3 class="text-xl w-full my-2 sm:ml-4">{{ product.name }}</h3>
   </div>
-  <div class="flex flex-row items-center">
-
-    {% if product.discounted_price is None %}
-      <span class="ml-8 font-medium text-lg">${{ product.price }}</span>
-    {% else %}
-      <span class="ml-8 text-lg text-gray-400 line-through">${{ product.price }}</span>
-      <span class="ml-2 font-medium text-lg text-customRed">${{ product.discounted_price }}</span>
-    {% endif %}
-    <!-- START Select Amount -->
-    <div class="relative inline ml-4">
-      <div class="{% if quantity is None %} hidden {% endif %} text-customGray amountParent">
-        <div class="custom-number-input w-32">
-          <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
-            <button
-                {% if cart|get_item:product.id < 2 %} disabled {% endif %}
-                                                      class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none {% if cart|get_item:product.id < 2 %} cursor-not-allowed {% else %} hover:text-gray-700 hover:bg-gray-200 {% endif %}"
-                                                      data-action="decrement"
-                                                      type="button">
-              <span class="m-auto text-2xl font-thin">−</span>
-            </button>
-            <input
-                type="text"
-                data-product-id="{{ product.id }}"
-                class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
-                name="custom-input-number" value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"/>
-            <button data-action="increment"
-                    class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer">
-              <span class="m-auto text-2xl font-thin">+</span>
-            </button>
+  <div class="flex flex-col items-center sm:flex-row sm:mt-2 sm:justify-between sm:w-full lg:mt-0 lg:justify-end lg:w-2/4 xl:w-96">
+    <div class="flex flex-col items-center sm:flex-row">
+      <div class="flex flex-row">
+        {% if product.discounted_price is None %}
+          <span class="font-medium text-xl">${{ product.price }}</span>
+        {% else %}
+          <span class="text-base text-gray-400 line-through">${{ product.price }}</span>
+          <span class="font-medium text-xl text-customRed">${{ product.discounted_price }}</span>
+        {% endif %}
+      </div>
+      <!-- START Select Amount -->
+      <div class="relative inline my-2 sm:ml-8 lg:my-0 lg:ml-2">
+        <div class="{% if quantity is None %} hidden {% endif %} text-customGray amountParent">
+          <div class="custom-number-input w-32">
+            <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent">
+              <button
+                  {% if cart|get_item:product.id < 2 %} disabled {% endif %}
+                                                        class="bg-gray-100 text-gray-600 h-full w-20 rounded-l outline-none {% if cart|get_item:product.id < 2 %} cursor-not-allowed {% else %} hover:text-gray-700 hover:bg-gray-200 {% endif %}"
+                                                        data-action="decrement"
+                                                        type="button">
+                <span class="m-auto text-2xl font-thin">−</span>
+              </button>
+              <input
+                  type="text"
+                  data-product-id="{{ product.id }}"
+                  class="outline-none focus:outline-none text-center w-full bg-gray-100 font-semibold text-md flex items-center outline-none input-amount"
+                  name="custom-input-number" value="{% if quantity is None %}1{% else %}{{ quantity }}{% endif %}"/>
+              <button data-action="increment"
+                      class="bg-gray-100 text-gray-600 hover:text-gray-700 hover:bg-gray-200 h-full w-20 rounded-r cursor-pointer">
+                <span class="m-auto text-2xl font-thin">+</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- END Select Amount -->
-    <button data-product-id="{{ product.id }}" class="ml-4 focus:outline-none delete-btn">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <button data-product-id="{{ product.id }}" class="mt-2 focus:outline-none delete-btn lg:mt-0 lg:ml-2">
+      <svg class="w-6 h-6" fill="none" stroke="#FF6666" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>

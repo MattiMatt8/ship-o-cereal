@@ -1,11 +1,11 @@
 <!-- Cart -->
 <a
     href="{% url 'cart' %}"
-    class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6 relative"
+    class="rounded-full bg-customGray w-10 h-10 flex items-center justify-center relative mx-2 sm:mx-0 sm:ml-3 md:ml-5 lg:w-11 lg:h-11 xl:ml-8"
 >
   {% include "components/icons/header-cart-icon.html" %}
   <div
-      class="bg-customBlue rounded-full p-1 h-5 absolute -top-1 -right-1 flex items-center justify-center text-customGray"
+      class="bg-customBlue text-xs rounded-full p-1 h-5 absolute -top-1 -right-1 flex items-center justify-center text-customGray lg:text-sm"
   >
     <p id="cart_total">{{ total_in_cart }}</p>
   </div>
@@ -15,7 +15,7 @@
 <!-- User profile -->
 <a
     href="{% url 'profile' %}"
-    class="rounded-full bg-customGray w-12 h-12 flex items-center justify-center ml-6"
+    class="rounded-full bg-customGray h-10 w-10 flex items-center justify-center mx-2 sm:mx-0 sm:ml-3 md:ml-5 lg:w-11 lg:h-11 xl:ml-8"
 >
 {% if user.is_authenticated %}
   {% include "components/icons/header-profile-icon.html" %}
