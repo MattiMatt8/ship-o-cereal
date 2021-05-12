@@ -14,21 +14,30 @@
     <h3 class="text-md font-medium mt-3">{{ first_name }} {{ last_name }}</h3>
   </div>
   <div class="w-2/3">
-    <div class="flex flex-row" id="review-stars-{{ id }}" data-stars-total="{{ stars }}">
-      {% for item in "x"|ljust:"5" %}
-        {% if forloop.counter <= stars %}
-          {% include 'components/icons/star_filled.html' with hidden=False id=forloop.counter %}
-        {% else %}
-          {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
-        {% endif %}
-      {% endfor %}
-      <h3 class="ml-4 text-md font-medium" id="review-title-{{ id }}">{{ title }}</h3>
+    <div class="flex flex-col">
+      <div class="flex flex-row" id="review-stars-{{ id }}" data-stars-total="{{ stars }}">
+        {% for item in "x"|ljust:"5" %}
+          {% if forloop.counter <= stars %}
+            {% include 'components/icons/star_filled.html' with hidden=False id=forloop.counter %}
+          {% else %}
+            {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
+          {% endif %}
+        {% endfor %}
+        <h3 class="ml-4 text-md font-medium" id="review-title-{{ id }}">{{ title }}</h3>
+      </div>
+      <span class="block">Posted on {{ date }}</span>
+      <p class="mt-4" id="review-comments-{{ id }}">{{ comment }}</p>
     </div>
-    <span class="block">Posted on {{ date }}</span>
-    <p class="mt-4" id="review-comments-{{ id }}">{{ comment }}</p>
+    <!-- Change button if it's the users review -->
+    {% if users_review and users_review.id == id %}
+      <div class="flex flex-row justify-between mt-4">
+        <button class="text-customRed focus:outline-none border-b-2 border-customRed border-opacity-0 hover:border-opacity-75"
+                type="button" id="delete-review" data-review-id="{{ id }}">Delete
+        </button>
+        <button class="focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
+                type="button" id="change-review" data-review-id="{{ id }}">Change
+        </button>
+      </div>
+    {% endif %}
   </div>
-  <!-- Change button if it's the users review -->
-  {% if users_review and users_review.id == id %}
-  <button type="button" id="change-review" data-review-id="{{ id }}">Change</button>
-  {% endif %}
 </div>
