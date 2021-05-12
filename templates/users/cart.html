@@ -4,16 +4,12 @@
   <main class="container mx-auto my-10 text-customGray">
     {% include 'components/back_button.html' %}
   <span class="sm:hidden">sm</span>
-    <span class="md:hidden">md</span>
-    <span class="lg:hidden">lg</span>
-    <span class="xl:hidden">xl</span>
-    <span class="2xl:hidden">2xl</span>
     <h1 class="text-3xl mb-8">Cart</h1>
     <!-- START Cart Items & View Amount -->
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center md:flex-row md:items-start md:justify-between">
       <!-- START Cart Items -->
-      <div class="" id="cart">
-        <ul>
+      <div class="w-full lg:w-2/3" id="cart">
+        <ul class="flex flex-col items-center lg:items-start">
           <!-- START Item -->
           <h2 id="cart_empty" class="text-xl mb-72 {% if order_items is not None %}hidden{% endif %}">Your cart is empty.</h2>
           {% if order_items is not None %}
@@ -28,7 +24,7 @@
 
       <!-- START View Amount -->
       {% if order_items is not None %}
-      <div class="" id="amount_box">
+      <div class="w-80 sm:w-96 lg:w-1/3 xl:w-96" id="amount_box">
         <div class="flex justify-center items-center shadow-lg rounded">
           <div class="my-5 mx-8 w-72">
             <h1 class="text-center text-3xl">Amount</h1>

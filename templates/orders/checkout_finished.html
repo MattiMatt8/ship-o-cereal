@@ -2,11 +2,11 @@
 {% load static %}
 {% block content %}
   <main class="container mx-auto my-16 text-customGray">
-    <h1 class="text-4xl font-md text-center">Thank you for your purchase</h1>
-    <h2 class="text-2xl font-md text-center mt-4">Your order will ship soon!</h2>
-    <h3 class="text-xl font-extralight text-center">Order number: {{ order_id }}</h3>
+    <h1 class="text-xl md:text-3xl font-md text-center">Thank you for your purchase</h1>
+    <h2 class="text-md md:text-xl font-md text-center mt-4">Your order will ship soon!</h2>
+    <h3 class="text-sm md:text-md font-extralight text-center">Order number: {{ order_id }}</h3>
     <div class="flex justify-center mt-10">
-      <svg width="97" height="97" viewBox="0 0 97 97" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="h-16 w-16 md:h-32 md:w-32" viewBox="0 0 97 97" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path
             d="M42.4375 64.9112L27.2812 49.7519L31.5644 45.4688L42.4375 56.3388L65.4295 33.3438L69.7188 37.633L42.4375 64.9112Z"
             fill="#06B184"/>
@@ -15,7 +15,7 @@
             fill="#06B184"/>
       </svg>
     </div>
-    <div class="flex justify-center mt-36">
+    <div class="flex justify-center mt-16 md:mt-20">
       <a class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen"
                href="{% url 'index' %}">Home
             </a>
