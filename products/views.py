@@ -69,7 +69,7 @@ class ProductsInCategoryListView(FilteredListView):
         """Returns a queryset with products in a category matching given query parameters."""
 
         category = self.get_category()
-        return self.queryset.filter(category=category)
+        return self.queryset.filter(category=category, active=True)
 
     def get_category(self):
         """Returns category object matching keyword argument 'category_name'."""
@@ -98,7 +98,7 @@ class ProductSearchView(FilteredListView):
             user_search_history_item = SearchHistory(user=self.request.user, search=search)
             user_search_history_item.save()
 
-        return self.queryset.filter(name__icontains=search)
+        return self.queryset.filter(name__icontains=search, active=True)
 
 
 @ensure_csrf_cookie

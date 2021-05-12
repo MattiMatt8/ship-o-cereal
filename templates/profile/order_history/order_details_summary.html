@@ -14,7 +14,7 @@
       {{ order.address_street_name }} {{ order.address_house_number }}, {{ order.address_city }} {{ order.address_zip }}, {{ order.address_country }}{% if order.address_additional_comments is not None %},
           {{ order.address_additional_comments }}{% endif %}</span>
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col mb-4">
     <span class="text-lg font-medium mr-2">Order status</span>
     <span class="text-lg font-light">{{ order.status }}</span>
   </div>
