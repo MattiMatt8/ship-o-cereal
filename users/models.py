@@ -5,16 +5,19 @@ from products.models import Product
 
 
 def make_filename(instance, filename):
+    """Makes the filename of the users profile image nice."""
     return "profile_images/" + str(instance.user.id) + "." + filename.split(".")[-1]
 
 
 class Profile(models.Model):
+    """Extends the user."""
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     picture = models.ImageField(upload_to=make_filename, blank=True, null=True)
     phone = models.CharField(max_length=255)
 
 
 class Card(models.Model):
+    """Users cards."""
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     holder = models.CharField(max_length=255)
     number = models.CharField(max_length=255)
@@ -26,6 +29,7 @@ class Card(models.Model):
 
 
 class Country(models.Model):
+    """All countries available for addresses."""
     country = models.CharField(max_length=255, primary_key=True)
 
     def __str__(self):
@@ -33,6 +37,7 @@ class Country(models.Model):
 
 
 class Address(models.Model):
+    """User addresses."""
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     street_name = models.CharField(max_length=255)
     house_number = models.IntegerField()
@@ -46,6 +51,7 @@ class Address(models.Model):
 
 
 class SearchHistory(models.Model):
+    """Users search history."""
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(default=now)
     search = models.CharField(max_length=255)
