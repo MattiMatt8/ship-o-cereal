@@ -54,6 +54,7 @@ class OrderDetailView(DetailView):
 
 def register(request):
     """View for registering a new user."""
+
     if request.user.is_authenticated:
         return redirect("index")
     if request.method == "POST":
@@ -72,6 +73,7 @@ def register(request):
 @login_required
 def profile(request):
     """View for the users profile."""
+
     if request.method == "POST":
         # Updates the users profile if it's valid.
         form = UpdateUserForm(
@@ -98,6 +100,7 @@ def profile(request):
 @login_required
 def add_address(request):
     """View for adding a new address to the user."""
+
     # Gets the query if the user should be redirected to a different page
     next_query = request.GET.get("next")
 
@@ -120,6 +123,7 @@ def add_address(request):
 @login_required
 def update_address(request, id):
     """View to update users address."""
+
     next_query = request.GET.get("next")
     address = get_object_or_404(request.user.address_set, pk=id)
     if request.method == "POST":
@@ -139,6 +143,7 @@ def update_address(request, id):
 @login_required
 def delete_address(request, id):
     """View for deleting address off of users account."""
+
     next_query = request.GET.get("next")
     address = get_object_or_404(request.user.address_set, pk=id)
     address.delete()
@@ -148,6 +153,7 @@ def delete_address(request, id):
 @login_required
 def add_card(request):
     """View for adding a new card to the users account."""
+
     next_query = request.GET.get("next")
     if request.method == "POST":
         form = AddUserCardForm(data=request.POST)
@@ -167,6 +173,7 @@ def add_card(request):
 @login_required
 def update_card(request, id):
     """View for updating users card."""
+
     next_query = request.GET.get("next")
     card = get_object_or_404(request.user.card_set, pk=id)
     if request.method == "POST":
@@ -185,6 +192,7 @@ def update_card(request, id):
 @login_required
 def delete_card(request, id):
     """View for deleting a card from the users account."""
+
     next_query = request.GET.get("next")
     card = get_object_or_404(request.user.card_set, pk=id)
     card.delete()
@@ -194,6 +202,7 @@ def delete_card(request, id):
 def update_cart(request, id):
     """Endpoint to be able to update users cart, it changes the quantity
     of a product in the users basket and sends back a json response."""
+
     if request.method == "POST":
         # Gets the count of how many items are in the users count.
         cart_total = request.session.get("cart_total")
@@ -245,6 +254,7 @@ def update_cart(request, id):
 
 def delete_from_cart(request, id):
     """Endpoint for deleting items from the users cart."""
+
     if request.method == "POST":
         try:
             # Pareses the body of the post request.
@@ -275,6 +285,7 @@ def delete_from_cart(request, id):
 
 def cart_amount(request):
     """End point for getting the current cart amount."""
+
     cart = request.session.get("cart")
     # Create a Fraction object for more accurate calculations.
     products_amount_fraction = Fraction()
@@ -311,6 +322,7 @@ def cart_amount(request):
 @ensure_csrf_cookie
 def cart(request):
     """View for the users cart."""
+
     cart = request.session.get("cart")
     cart_total = 0
     updated_cart = {}
@@ -361,6 +373,7 @@ def cart(request):
 
 def new_search(request):
     """Endpoint to add a search to the users search history."""
+
     if request.method == "POST":
         if request.user.is_authenticated:
             # Loads the post request body and puts the search into a search
@@ -379,6 +392,7 @@ def new_search(request):
 
 def delete_search(request, id):
     """Endpoint to delete a search history off of a user."""
+
     if request.method == "POST":
         if request.user.is_authenticated:
             try:
