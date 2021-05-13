@@ -133,7 +133,9 @@ def product_details(request, id):
 @login_required
 def add_review(request, id):
     """Endpoint to post a new review."""
+
     if request.method == "POST":
+
         # If the user has made a review or has not already purchased the product
         if request.user.review_set.filter(product_id=id) or not request.user.order_set.filter(
                 id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
@@ -171,6 +173,7 @@ def add_review(request, id):
 
 def update_review(request, id):
     """Endpoint to update a review."""
+
     if request.method == "POST":
         if request.user.is_authenticated:
             try:
@@ -207,6 +210,7 @@ def update_review(request, id):
 @login_required
 def delete_review(request, id):
     """Endpoint to delete a review."""
+
     if request.method == "POST":
         if request.user.is_authenticated:
             try:

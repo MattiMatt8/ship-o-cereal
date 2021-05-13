@@ -242,6 +242,7 @@ function deleteSearchButtonListener () {
 
 // Wait for the DOM to load completely
 document.addEventListener("DOMContentLoaded", () => {
+
     // Listeners
     searchBarListener();
     deleteSearchButtonListener();

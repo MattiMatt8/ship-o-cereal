@@ -50,6 +50,7 @@ def checkout_address(request):
 @login_required
 def checkout_card(request):
     """View where the user selects the card he want's to use for his current order."""
+
     error_message = None
     order = get_order(request)
     cart = request.session.get("cart")
