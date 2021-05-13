@@ -39,18 +39,27 @@ function updateCartAmount() {
 }
 
 function decrement(e) {
+    // A decrement function that fires when a user presses the minus button for a given product
     const btn = e.target.parentNode.parentElement.querySelector(
         'button[data-action="decrement"]'
     );
     const target = btn.nextElementSibling;
     let value = Number(target.value);
+
+    // Check if the quantity is at least bigger than 1
+    // Else don't do anything
     if (value > 1) {
+
+        // This function creates the behaviour for the frontend when it gets a response
         const callback = (error) => {
+            // If an error occurs, display it to the user with a popup
             if (error) {
                 renderNotification(error, "error");
             } else {
+                // If the server responded without any errors we decrease the value
                 value--;
                 target.value = value;
+                // If the value now is 1, we disable the button
                 if (value === 1) {
                     btn.disabled = true;
                     btn.classList.remove(
@@ -60,10 +69,12 @@ function decrement(e) {
                     );
                     btn.classList.add("cursor-not-allowed");
                 }
+                // Update the cart value in the corner of the website
                 updateCartAmount();
             }
 
         };
+        // Get the id for the product that we want to decrease
         const id = target.dataset.productId;
         updateCart(id, Number(target.value) - 1, callback, true);
     }
@@ -71,18 +82,23 @@ function decrement(e) {
 }
 
 function increment(e) {
+    // An increment function that fires when a user presses the plus button for a given product
     const btn = e.target.parentNode.parentElement.querySelector(
         'button[data-action="decrement"]'
     );
     const target = btn.nextElementSibling;
     let value = Number(target.value);
+
+    // This function creates the behaviour for the frontend when it gets a response
     const callback = (error) => {
+        // If an error occurs, display it to the user with a popup
         if (error) {
             renderNotification(error, "error");
         } else {
+            // If the server responded without any errors we increase the value
             value++;
             target.value = value;
-
+            // Check if the quantity is at least bigger than 1
             if (value > 1) {
                 const leftBtn = e.target.parentNode.parentElement.querySelector(
                     'button[data-action="decrement"]'
