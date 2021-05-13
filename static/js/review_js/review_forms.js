@@ -15,7 +15,7 @@ function getNewReviewForm() {
 
     // Add a form for creating a new review
     divTag.innerHTML = `
-        <form method="post" class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12" id="new-review-form">
+        <form method="post" class="flex flex-col md:w-full lg:w-2/3 xl:w-9/12 2xl:w-10/12" id="new-review-form">
           <h2 class="text-lg mb-2">Please leave a review.</h2>
           <div class="mb-1">
             <label for="id_title"
@@ -61,7 +61,7 @@ function getUpdateReviewForm(id, title, stars, review) {
 
     // Add a form for updating a current review
     divTag.innerHTML = `
-        <form method = "post" class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12" id="new-review-form">
+        <form method = "post" class="flex flex-col md:w-full lg:w-2/3 xl:w-9/12 2xl:w-10/12" id="new-review-form">
           <div class="mb-1">
             <label for="id_title"
                    class="block text-gray-700 text-base mb-1">Title</label>     

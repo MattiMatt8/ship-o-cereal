@@ -6,7 +6,7 @@ function getReviewFilled(id, title, stars, review, picture, date, fullName) {
 
     // If user has a profile picture
     if (picture) {
-        htmlPicture = `<img className="w-16 h-16 rounded-full object-cover object-center" src="${picture}">`;
+        htmlPicture = `<img class="w-16 h-16 rounded-full object-cover object-center" src="${picture}">`;
     // If user does not have a profile picture, add the default icon
     } else {
         htmlPicture = `<div class="bg-customGray rounded-full w-16 h-16 flex justify-center items-center">
@@ -125,7 +125,7 @@ function renderDeleteReview(id) {
     let reviewsHeader = document.getElementById("reviews-header");
 
     if (reviewsHeader.parentNode.children.length === 1) reviewsHeader.innerText = "No reviews yet.";
-    document.getElementById("all-reviews").prepend(newReviewForm); // TODO: FIXME
+    document.getElementById("all-reviews").prepend(newReviewForm);
     addListenersToStars();
     addSubmitListener("new-review-form", submitNewReview);
 };
