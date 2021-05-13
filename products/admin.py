@@ -17,7 +17,7 @@ class ProductAdmin(admin.ModelAdmin):
     fields = ('name','review_calculated','stock','price','active', 'category','brand','description','info','weight','contents', 'label_info')
     readonly_fields = ('id','info','review_calculated','label_info')
     list_filter = ('brand',)
-    list_editable = ('active',)
+    list_editable = ('active','stock')
     search_fields = ('name','id','brand__name')
     inlines = (ProductLabelInlineAdmin, ImageInlineAdmin)
 
