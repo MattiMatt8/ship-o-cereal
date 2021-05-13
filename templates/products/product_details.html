@@ -159,13 +159,16 @@
     <!-- END Nutrition stuff -->
 
     <!-- START Reviews -->
-    <div class="flex flex-col mt-10">
+    <div class="flex flex-col mt-10"  id="reviews">
+
       {% if not product.review_set.all %}
         <h1 class="text-2xl font-medium" id="reviews-header">No reviews yet.</h1>
         <!-- TODO: NO Reviews new review added change -->
       {% else %}
         <h1 id="reviews-header" class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Reviews</h1>
       {% endif %}
+
+
       <!-- Create new review -->
       {% if form is not None %}
       <div class="mt-5" id="new-review">
@@ -225,10 +228,13 @@
     </div>
     <!-- END Reviews -->
   </main>
+
 {% endblock %} {% block page_scripts %}
   <script src="{% static 'js/product_details.js' %}"></script>
+  <script src="{% static 'js/review_js/new_review.js' %}"></script>
   <script src="{% static 'js/product_review.js' %}"></script>
 {% endblock %} {% block page_styles %}
+
   <style>
       input[type="number"]::-webkit-inner-spin-button,
       input[type="number"]::-webkit-outer-spin-button {
