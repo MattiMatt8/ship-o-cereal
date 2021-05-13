@@ -7,6 +7,7 @@ from users.models import Address, Card
 
 class Status(models.Model):
     """Model for the status of an order."""
+
     name = models.CharField(max_length=255, primary_key=True)
 
     def __str__(self):
@@ -18,6 +19,7 @@ class Status(models.Model):
 
 class Order(models.Model):
     """Model for users purchase order."""
+
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     total = models.FloatField()
     products_total = models.FloatField()
@@ -50,6 +52,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     """Model for each product a user buys and it connects to the order model."""
+
     order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     quantity = models.IntegerField()
