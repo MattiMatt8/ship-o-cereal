@@ -98,7 +98,8 @@ function increment(e) {
             // If the server responded without any errors we increase the value
             value++;
             target.value = value;
-            // Check if the quantity is at least bigger than 1
+
+            // Make sure to make the decrement button available if the value is larger than 1
             if (value > 1) {
                 const leftBtn = e.target.parentNode.parentElement.querySelector(
                     'button[data-action="decrement"]'
@@ -111,6 +112,7 @@ function increment(e) {
                 );
                 leftBtn.classList.remove("cursor-not-allowed");
             }
+            // Update the cart value in the corner of the website
             updateCartAmount();
         }
     };
@@ -118,18 +120,22 @@ function increment(e) {
     updateCart(id, Number(target.value) + 1, callback, true);
 }
 
+// Get all decrement buttons
 const decrementButtons = document.querySelectorAll(
     `button[data-action="decrement"]`
 );
 
+// Get all increment buttons
 const incrementButtons = document.querySelectorAll(
     `button[data-action="increment"]`
 );
 
+// Give decrement buttons their listener
 decrementButtons.forEach((btn) => {
     btn.addEventListener("click", decrement);
 });
 
+// Give increment buttons their listener
 incrementButtons.forEach((btn) => {
     btn.addEventListener("click", increment);
 });
@@ -139,7 +145,9 @@ incrementButtons.forEach((btn) => {
 
 const inputAmountFields = document.getElementsByClassName("input-amount");
 
+// Listen to all input amount fields (quantity)
 Array.from(inputAmountFields).forEach((item) => {
+    // Make sure the user does not input a non-integer
     setInputFilter(item, function (value) {
         return /^[0-9]+$/.test(value);
     });
@@ -148,9 +156,11 @@ Array.from(inputAmountFields).forEach((item) => {
         const decrementBtn = e.target.previousElementSibling;
         this.oldValue = this.value;
 
+        // Reset value to 1 if the user types in 0
         if (e.target.value == 0) {
             e.target.value = 1;
         }
+        // If the value is 1, disable the decrement button
         if (e.target.value == 1) {
             decrementBtn.disabled = true;
             decrementBtn.classList.remove(
@@ -160,6 +170,7 @@ Array.from(inputAmountFields).forEach((item) => {
             );
             decrementBtn.classList.add("cursor-not-allowed");
         }
+        // If the value is larger than 1, enable the decrement button
         if (e.target.value > 1) {
             decrementBtn.disabled = false;
             decrementBtn.classList.add(
@@ -169,6 +180,7 @@ Array.from(inputAmountFields).forEach((item) => {
             );
             decrementBtn.classList.remove("cursor-not-allowed");
         }
+        // Update the cart after each keystroke
         updateCart(id, Number(e.target.value), updateCartAmount, true);
     });
 });
