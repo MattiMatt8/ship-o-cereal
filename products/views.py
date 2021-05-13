@@ -103,22 +103,22 @@ class ProductSearchView(FilteredListView):
 
 @ensure_csrf_cookie
 def product_details(request, id):
+    """View for when a specific product is chosen and displayed."""
     cart = request.session.get("cart")
     quantity = None
     product = get_object_or_404(Product, pk=id)
     if cart:
         quantity = cart.get(str(id))
-
     form = None
     users_review = None
     if request.user.is_authenticated:
         try:
+            # If the user is authenticated it checks if the user already has a review on the product.
             users_review = product.review_set.get(user_id=request.user.id)
         except ObjectDoesNotExist:
             if request.user.order_set.filter(id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")):
-                # Creates a review form if the user has purchased the product and has not already made a review on it
+                # Creates a review form if the user has purchased the product and has not already made a review on it.
                 form = ProductReviewForm()
-
     return render(
         request,
         "products/product_details.html", {
@@ -131,9 +131,7 @@ def product_details(request, id):
 
 
 @login_required
-def add_review(request, id):  # TODO: Fix when reviews popup how they are formatted
-    # TODO: Delete button for a review?
-    # TODO: Update review ting?
+def add_review(request, id):
     """Endpoint to post a new review."""
     if request.method == "POST":
         # If the user has made a review or has not already purchased the product
@@ -141,6 +139,7 @@ def add_review(request, id):  # TODO: Fix when reviews popup how they are format
                 id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")
         ):
             return JsonResponse({"message": "Error: Operation not allowed."}, status=403)
+        # Loads the data sent with the post request.
         body = json.loads(request.body.decode("utf-8"))
         form = ProductReviewForm(data={
             "stars": body.get("stars"),
@@ -171,10 +170,12 @@ def add_review(request, id):  # TODO: Fix when reviews popup how they are format
 
 
 def update_review(request, id):
+    """Endpoint to update a review."""
     if request.method == "POST":
         if request.user.is_authenticated:
             try:
                 review = request.user.review_set.get(product_id=id)
+                # Loads the data sent with the post request.
                 body = json.loads(request.body.decode("utf-8"))
                 form = ProductReviewForm(data={
                     "stars": body.get("stars"),
@@ -205,6 +206,7 @@ def update_review(request, id):
 
 @login_required
 def delete_review(request, id):
+    """Endpoint to delete a review."""
     if request.method == "POST":
         if request.user.is_authenticated:
             try:

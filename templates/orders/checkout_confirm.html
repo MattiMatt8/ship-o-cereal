@@ -3,7 +3,7 @@
 {% block content %}
   <main class="container mx-auto mb-16 mt-10 text-customGray">
     {% include 'components/back_button.html' %}
-    <form method="post">
+    <form method="post" class="relative">
       {% csrf_token %}
       <h1 class="text-3xl mb-2 text-center md:text-left">Checkout</h1>
       <h3 class="text-xl text-center md:text-left">Review your order</h3>
@@ -30,8 +30,8 @@
             {% endfor %}
           </ul>
         </div>
-        <div class="flex flex-col w-80 mx-auto mt-4 sm:w-96 md:w-8/12 lg:mt-0 lg:w-6/12 xl:w-2/6">
-          <h3 class="text-center text-2xl mb-2">Summary</h3>
+        <div class="flex flex-col-reverse w-80 mx-auto mt-4 sm:w-96 md:w-8/12 lg:mt-0 lg:w-6/12 xl:w-2/6">
+
           <div>
             <div class="px-6 py-6 flex flex-col shadow-lg rounded mb-4">
               <div class="flex flex-col">
@@ -48,54 +48,59 @@
                     class="text-lg font-light">{{ order.address_street_name }} {{ order.address_house_number }}, {{ order.address_city }} {{ order.address_zip }}, {{ order.address_country }}
                   {% if order.address_additional_comments is not None %},
                     {{ order.address_additional_comments }}{% endif %}</span>
-            </div>
-            <div class="flex flex-col mb-4">
-              <span class="text-lg font-medium mr-2">Card</span>
-              <span class="text-lg font-light">XXXX-XXXX-XXXX-{{ card.number|slice:"-4:" }}</span>
-            </div>
-            <hr>
-            <div class="flex flex-col">
-              <span class="text-lg font-medium mr-2 mt-2">Products</span>
-              <span class="text-lg font-light">${{ order.products_total }}</span>
-            </div>
-            <div class="flex flex-col mb-4">
-              <span class="text-lg font-medium mr-2 mt-2">Shipping</span>
-              <span class="text-lg font-light">${% if order.shipping_cost == 0.0 %}0{% else %}
-                {{ order.shipping_cost }}{% endif %}</span>
-            </div>
-            <hr>
-            <div class="flex flex-col mt-4 text-center">
-              <span class="text-2xl font-bold">Total amount</span>
-              <span class="text-3xl">${{ order.total }}</span>
-            </div>
-            {% if stock_errors is not None %}
-              <div class="mt-2">
-              {% for error in stock_errors %}
-                <p class="text-customRed text-center">{{ error }}</p>
-              {% endfor %}
-                <p class="text-customRed text-center">Please go back to your cart to update the amount.</p>
               </div>
-              <div class="flex justify-center mt-4">
-                <button type="button" class="cursor-not-allowed bg-gray-100 text-gray-400 rounded py-2 px-4 focus:outline-none hover:shadow-md">
-                  Place order</button>
+              <div class="flex flex-col mb-4">
+                <span class="text-lg font-medium mr-2">Card</span>
+                <span class="text-lg font-light">XXXX-XXXX-XXXX-{{ card.number|slice:"-4:" }}</span>
               </div>
-            {% else %}
-              <div class="flex justify-center mt-4">
-                <button type="submit" class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen">
-                  Place order</button>
+              <hr>
+              <div class="flex flex-col">
+                <span class="text-lg font-medium mr-2 mt-2">Products</span>
+                <span class="text-lg font-light">${{ order.products_total }}</span>
               </div>
-            {% endif %}
+              <div class="flex flex-col mb-4">
+                <span class="text-lg font-medium mr-2 mt-2">Shipping</span>
+                <span class="text-lg font-light">${% if order.shipping_cost == 0.0 %}0{% else %}
+                  {{ order.shipping_cost }}{% endif %}</span>
+              </div>
+              <hr>
+              <div class="flex flex-col mt-4 text-center">
+                <span class="text-2xl font-bold">Total amount</span>
+                <span class="text-3xl">${{ order.total }}</span>
+              </div>
+              {% if stock_errors is not None %}
+                <div class="mt-2">
+                  {% for error in stock_errors %}
+                    <p class="text-customRed text-center">{{ error }}</p>
+                  {% endfor %}
+                  <p class="text-customRed text-center">Please go back to your cart to update the amount.</p>
+                </div>
+                <div class="flex justify-center mt-4">
+                  <button type="button"
+                          class="cursor-not-allowed bg-gray-100 text-gray-400 rounded py-2 px-4 focus:outline-none hover:shadow-md">
+                    Place order
+                  </button>
+                </div>
+              {% else %}
+                <div class="flex justify-center mt-4">
+                  <button type="submit"
+                          class="text-lg text-white rounded py-2 px-4 focus:outline-none hover:shadow-md bg-customGreen">
+                    Place order
+                  </button>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+          <h3 class="text-center text-2xl my-6 lg:my-0 lg:mb-2">Summary</h3>
+          <div class="flex flex-col lg:ml-16 lg:absolute lg:right-0 lg:top-20">
+            <h4 class="text-center mb-4 font-light text-sm">Step 3</h4>
+            <div class="flex flex-row justify-center lg:flex-col">
+              <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
+              <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
+              <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
+            </div>
           </div>
         </div>
-        <div class="flex flex-col lg:ml-16">
-          <h4 class="text-center mb-4 font-light text-sm">Step 3</h4>
-          <div class="flex flex-row justify-center lg:flex-col">
-            <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
-            <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
-            <div class="h-10 w-10 rounded-full bg-customBlue mx-4 lg:my-4 lg:mx-0"></div>
-          </div>
-        </div>
-      </div>
     </form>
   </main>
 {% endblock %}
