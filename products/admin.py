@@ -10,8 +10,7 @@ class ProductLabelInlineAdmin(admin.TabularInline):
 class ImageInlineAdmin(admin.TabularInline):
     model = Image
 
-# TODO: Review calculated maybe check it out more?
-# TODO: Fix text on label selector
+
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id','name','brand','active','stock')
     fields = ('id','name','review_calculated','stock','price','active', 'category','brand','description','info','weight','contents', 'label_info')

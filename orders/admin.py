@@ -1,10 +1,8 @@
 from django.contrib import admin
 from django.utils.html import format_html
-
 from orders.models import Order
 
 
-# TODO: Maybe change read only fields?
 class OrderAdmin(admin.ModelAdmin):
     list_display = ('id', 'full_name', 'date', 'status', 'total')
     readonly_fields = (
@@ -24,8 +22,6 @@ class OrderAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return False
 
-    # TODO: Check out, maybe skip id?
-    # TODO: Maybe fix style, add image?
     def order_products(self, obj):
         """Creates a table with all the order items that are in the order."""
         table = """<table id="result_list">
