@@ -1,5 +1,4 @@
 from fractions import Fraction
-
 from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
@@ -7,7 +6,6 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import ListView, DetailView
-
 from ShipOCereal import settings
 from orders.models import OrderItem, Order
 from orders.views import get_order, keep_order
@@ -73,7 +71,7 @@ def register(request):
 
 @login_required
 def profile(request):
-    '''View for the users profile.'''
+    """View for the users profile."""
     if request.method == "POST":
         # Updates the users profile if it's valid.
         form = UpdateUserForm(
@@ -99,7 +97,7 @@ def profile(request):
 
 @login_required
 def add_address(request):
-    '''View for adding a new address to the user.'''
+    """View for adding a new address to the user."""
     # Gets the query if the user should be redirected to a different page
     next_query = request.GET.get("next")
 
@@ -140,6 +138,7 @@ def update_address(request, id):
 
 @login_required
 def delete_address(request, id):
+    """View for deleting address off of users account."""
     next_query = request.GET.get("next")
     address = get_object_or_404(request.user.address_set, pk=id)
     address.delete()
@@ -148,6 +147,7 @@ def delete_address(request, id):
 
 @login_required
 def add_card(request):
+    """View for adding a new card to the users account."""
     next_query = request.GET.get("next")
     if request.method == "POST":
         form = AddUserCardForm(data=request.POST)
@@ -156,6 +156,7 @@ def add_card(request):
             card.user_id = request.user.id
             card.save()
             if next_query:
+                # If there's a next query he gets redirected to that page else his profile.
                 return redirect(f"{next_query}?select={card.id}")
             return redirect("profile")
     else:
@@ -165,12 +166,14 @@ def add_card(request):
 
 @login_required
 def update_card(request, id):
+    """View for updating users card."""
     next_query = request.GET.get("next")
     card = get_object_or_404(request.user.card_set, pk=id)
     if request.method == "POST":
         form = UpdateUserCardForm(data=request.POST, instance=card)
         if form.is_valid():
             form.save()
+            # If there's a next query he gets redirected to that page else his profile.
             return redirect("profile" if next_query is None else next_query)
     else:
         form = UpdateUserCardForm(instance=card)
@@ -181,6 +184,7 @@ def update_card(request, id):
 
 @login_required
 def delete_card(request, id):
+    """View for deleting a card from the users account."""
     next_query = request.GET.get("next")
     card = get_object_or_404(request.user.card_set, pk=id)
     card.delete()
@@ -242,6 +246,7 @@ def update_cart(request, id):
 
 
 def delete_from_cart(request, id):
+    """Endpoint for deleting items from the users cart."""
     if request.method == "POST":
         try:
             body = json.loads(request.body.decode("utf-8"))
