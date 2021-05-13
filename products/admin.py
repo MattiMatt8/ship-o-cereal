@@ -1,20 +1,25 @@
 import math
 from fractions import Fraction
 from django.contrib import admin
-from products.models import Product
+from products.models import Product, ProductLabel
 
 
 
+# TODO: Review calculated maybe check it out more?
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id','name','brand','active','stock')
-    fields = ['name','brand','description','contents','weight','price', 'category','active','stock','percentage_off','discounted_price']
-    readonly_fields = ('id',)
+    fields = ('name','review_calculated','stock','price','active', 'category','brand','description','info','weight','contents')
+    readonly_fields = ('id','info','review_calculated')
     list_filter = ('brand',)
     list_editable = ('active',)
     search_fields = ('name','id','brand__name')
 
     def has_delete_permission(self, request, obj=None):
         return False
+
+    def info(self, obj):
+        return "If the product is not cereal please leave weight & contents fields empty."
+
 
 
 class ProductDiscountAdmin(admin.ModelAdmin):
@@ -56,7 +61,6 @@ class ProductDiscountAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
-
 
 
 class ProductDiscount(Product):
