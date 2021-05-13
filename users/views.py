@@ -75,7 +75,7 @@ def register(request):
 def profile(request):
     '''View for the users profile.'''
     if request.method == "POST":
-        # Updates the users profile if it's valid
+        # Updates the users profile if it's valid.
         form = UpdateUserForm(
             data=request.POST, files=request.FILES, instance=request.user
         )
@@ -86,7 +86,7 @@ def profile(request):
             )
             profile_form.save()
     else:
-        # Creates a form with the users current information
+        # Creates a form with the users current information.
         form = UpdateUserForm(
             instance=request.user,
             initial={
@@ -188,35 +188,50 @@ def delete_card(request, id):
 
 
 def update_cart(request, id):
+    """Endpoint to be able to update users cart, it changes the quantity
+    of a product in the users basket and sends back a json response."""
     if request.method == "POST":
+        # Gets the count of how many items are in the users count.
         cart_total = request.session.get("cart_total")
+        # Parses the body of the post request made.
         body = json.loads(request.body.decode("utf-8"))
         in_cart = body.get("in_cart")
         quantity = body.get("quantity")
+        # Gets the users cart.
         cart = request.session.get("cart")
         str_id = str(id)
+        # If we don't have a cart or it's not a valid cart it creates a new cart.
         if not cart or not isinstance(cart, dict):
             cart = dict()
             request.session["cart"] = cart
             request.session["cart_total"] = 0
             cart_total = 0
         old_quantity = cart.get(str_id)
+        # If the count of items in the cart after the update is greater than the
+        # maximum allowed total of items for a cart, then it will throw an error.
         if (
                 cart_total + quantity - (old_quantity if old_quantity else 0)
         ) > settings.MAX_ITEMS_IN_CART:
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
+        try:
+            product = Product.objects.get(pk=id)
+            if product.stock < quantity:
+                return JsonResponse({"message": "Product amount exceeds current stock."}, status=400)
+        except ObjectDoesNotExist:
+            return JsonResponse({"message": "Error: Product does not exist."}, status=404)
+        # Removes old quantity to make the insert of the new quantity correct
         if old_quantity:
             request.session["cart_total"] -= old_quantity
         cart[str_id] = quantity
         if in_cart:
             order_items = []
-            for obj in serializers.deserialize(
-                    "json", request.session.get("order_items")
-            ):
+            # Gets all the order items that are used to store products that are going to be bought
+            for obj in serializers.deserialize("json", request.session.get("order_items")):
                 order_item = obj.object
                 if order_item.product.id == id:
                     order_item.quantity = quantity
                 order_items.append(order_item)
+            # Stores the order items
             request.session["order_items"] = serializers.serialize("json", order_items)
         request.session.modified = True
         request.session["cart_total"] += quantity
