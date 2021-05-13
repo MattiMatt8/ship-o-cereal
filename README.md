@@ -4,11 +4,19 @@ Web store that sells everything related to cereal.
 # Requirements
 - Recent version of Python
 - Python packages:
-    - pip install django
-    - pip install django-filter
-    - pip install Pillow 
-    - pip install psycopg2-binary
-    - pip install python-dotenv
+    - django
+    - django-filter
+    - Pillow 
+    - psycopg2-binary
+    - python-dotenv
+
+## Installing requirements
+
+1. Change directory to the directory where requirements.txt is located.  
+
+2. Activate your virtualenv.  
+
+3. Run: pip install -r requirements.txt in your shell.  
 
 # Run
 - Command to run the server:
