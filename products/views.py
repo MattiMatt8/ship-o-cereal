@@ -106,7 +106,7 @@ def product_details(request, id):
     """View for when a specific product is chosen and displayed."""
     cart = request.session.get("cart")
     quantity = None
-    product = get_object_or_404(Product, pk=id)
+    product = get_object_or_404(Product, pk=id, active=True)
     if cart:
         quantity = cart.get(str(id))
     form = None
