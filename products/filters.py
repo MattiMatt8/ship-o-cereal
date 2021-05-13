@@ -23,18 +23,23 @@ PRODUCT_ORDER_BY_FIELDS = (
 def brands(request):
     """Returns only the brands that are relevant to the items being filtered."""
 
-    category = request.resolver_match.kwargs.get("category_name")  # match category name
+    # If located at one of the category pages in returns a specific brand filter
+    # taking the category currently on into consideration.
+    category = request.resolver_match.kwargs.get("category_name")
     if category:
         return Brand.objects.filter(
             id__in=Product.objects.filter(
-                category_id=Category.objects.get(name=category)
+                category_id=Category.objects.get(name=category),
+                active=True
             ).values_list("brand_id")
         )
-
-    search = request.resolver_match.kwargs.get("search_str")  #
+    # If we are on the search page it returns a filter taking into consideration
+    # the name of the product that is being searched.
+    search = request.resolver_match.kwargs.get("search_str")
     return Brand.objects.filter(
         id__in=Product.objects.filter(
-            name__icontains=search
+            name__icontains=search,
+            active=True
         ).values_list("brand_id")
     )
 
@@ -45,11 +50,12 @@ def labels(request):
     category = request.resolver_match.kwargs.get("category_name")
     if category:
         return Label.objects.filter(id__in=ProductLabel.objects.filter(
-            product_id__in=Product.objects.filter(category_id=Category.objects.get(name=category))).values_list("label_id"))
+            product_id__in=Product.objects.filter(category_id=Category.objects.get(name=category),
+                                                  active=True)).values_list("label_id"))
 
     search = request.resolver_match.kwargs.get("search_str")
     return Label.objects.filter(id__in=ProductLabel.objects.filter(
-        product_id__in=Product.objects.filter(name__icontains=search)).values_list("label_id"))
+        product_id__in=Product.objects.filter(name__icontains=search, active=True)).values_list("label_id"))
 
 
 class ProductFilter(FilterSet):
