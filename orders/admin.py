@@ -52,7 +52,7 @@ class OrderAdmin(admin.ModelAdmin):
                       <tbody>"""
         for order_item in obj.order_items.all():
             table += f"""<tr>
-                            <td class="field-id">{order_item.id}</td>
+                            <td class="field-id">{order_item.product.id}</td>
                             <td class="field-name">{order_item.product.name}</td>
                             <td class="field-quantity">{order_item.quantity}</td>
                             <td class="field-price">{order_item.price}</td>
