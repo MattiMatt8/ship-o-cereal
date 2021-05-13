@@ -65,6 +65,8 @@ const setInputFilter = (textbox, inputFilter) => {
 };
 
 function updateCart(id, quantity, callback = undefined, in_cart = false) {
+    // Sends request to the server to update the quantity of a product in the users cart and
+    // if it is successful it calls the callback function if one was passed in.
     axios
         .post(
             CART_URL + id + "/",
@@ -86,6 +88,8 @@ function updateCart(id, quantity, callback = undefined, in_cart = false) {
 }
 
 function deleteFromCart(id, callback = undefined, in_cart = false) {
+    // Sends request to the server to delete a product from the users cart and
+    // if it is successful it calls the callback function if one was passed in.
     axios
         .post(
             CART_URL + id + "/delete/",
@@ -107,6 +111,8 @@ function deleteFromCart(id, callback = undefined, in_cart = false) {
 }
 
 function deleteSearch(id, callback = undefined) {
+    // Sends request to the server to delete a search from the users search history and
+    // if it is successful it calls the callback function if one was passed in.
     axios
         .post(
             "/profile/search/" + id + "/delete/",
@@ -124,11 +130,13 @@ function deleteSearch(id, callback = undefined) {
 }
 
 function cartUpdateTotal(quantity, oldQuantity) {
+    // Updates the cart total in the browser.
     cartTotal += quantity - Number(oldQuantity);
     cartTotalElement.innerText = cartTotal;
 }
 
 function cartDeleteFromTotal(quantity = 1) {
+    // Deletes from the cart total in the browser.
     cartTotal -= quantity;
     cartTotalElement.innerText = cartTotal;
 }
