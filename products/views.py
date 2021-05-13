@@ -106,7 +106,7 @@ def product_details(request, id):
     """View for when a specific product is chosen and displayed."""
     cart = request.session.get("cart")
     quantity = None
-    product = get_object_or_404(Product, pk=id)
+    product = get_object_or_404(Product, pk=id, active=True)
     if cart:
         quantity = cart.get(str(id))
     form = None
@@ -153,6 +153,12 @@ def add_review(request, id):
             review.user_id = request.user.id
             review.product_id = id
             review.save()
+            # Updates the products total score.
+            product = review.product
+            product.total_reviewers += 1
+            product.total_review_score += review.stars
+            product.review_calculated = product.total_review_score / product.total_reviewers
+            product.save()
             return JsonResponse(
                 {
                     "message": "Review has been added for the product.",
@@ -178,6 +184,7 @@ def update_review(request, id):
         if request.user.is_authenticated:
             try:
                 review = request.user.review_set.get(product_id=id)
+                old_score = review.stars
                 # Loads the data sent with the post request.
                 body = json.loads(request.body.decode("utf-8"))
                 form = ProductReviewForm(data={
@@ -189,6 +196,12 @@ def update_review(request, id):
                 if form.is_valid():
                     form.date = now()
                     form.save()
+                    # Updates the products total score.
+                    product = review.product
+                    review.product.total_review_score -= old_score
+                    product.total_review_score += review.stars
+                    product.review_calculated = product.total_review_score / product.total_reviewers
+                    product.save()
                     return JsonResponse({"message": "Updated the review.",
                                          "data": {
                                              "id": review.id,
@@ -215,8 +228,15 @@ def delete_review(request, id):
         if request.user.is_authenticated:
             try:
                 review = request.user.review_set.get(product_id=id)
+                old_score = review.stars
                 review_id = review.id
                 review.delete()
+                # Updates the products total score.
+                product = review.product
+                review.product.total_review_score -= old_score
+                review.product.total_reviewers -= 1
+                product.review_calculated = product.total_review_score / product.total_reviewers
+                product.save()
                 return JsonResponse({"message": "Review deleted successfully.","data": {"id": review_id}}, status=200)
             except ObjectDoesNotExist:
                 return JsonResponse({"message": "Error: Review does not exist."}, status=404)

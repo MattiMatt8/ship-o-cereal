@@ -13,7 +13,7 @@
         {% endif %}
         <img
             class="object-cover object-center w-full h-64 rounded-t-md sm:h-72 md:h-full xl:w-full"
-            src="{% static 'images/' %}{{ product.category.name }}/{{ product.image_set.first.name }}"
+            src="{% static 'media/' %}{{ product.image_set.first.name }}"
         />
       </div>
       <!-- META DATA -->
@@ -138,7 +138,7 @@
       {% for image in product.image_set.all %}
         <img
             class="object-cover object-center w-24 h-24 mr-4"
-            src="{% static 'images/' %}{{ product.category.name }}/{{ image }}"
+            src="{% static 'media/' %}{{ image.name }}"
         />
       {% endfor %}
     </div>
@@ -150,11 +150,7 @@
         <p class="text-sm sm:text-md xl:text-lg">{{ product.contents }}</p>
       </div>
     {% endif %}
-    <div class="sm:hidden">sm</div>
-    <div class="md:hidden">md</div>
-    <div class="lg:hidden">lg</div>
-    <div class="xl:hidden">xl</div>
-    <div class="2xl:hidden">2xl</div>
+
     <!-- END Nutrition stuff -->
 
     <!-- START Reviews -->
@@ -170,7 +166,6 @@
 
       <!-- Create new review -->
       {% if form is not None %}
-
       <div class="mt-5" id="new-review">
         <form method="post" class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12" id="new-review-form">
           {% csrf_token %}
@@ -216,7 +211,7 @@
         </form>
       </div>
       {% endif %}
-      <!-- END Create new review -->
+      <!-- END of new review -->
 
       <!-- START Single review -->
       <div class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12">
@@ -231,12 +226,8 @@
 
 {% endblock %} {% block page_scripts %}
   <script src="{% static 'js/product_details.js' %}"></script>
-  <script src="{% static 'js/review_js/review_forms.js' %}"></script>
-  <script src="{% static 'js/review_js/render_review.js' %}"></script>
+  <script src="{% static 'js/review_js/new_review.js' %}"></script>
   <script src="{% static 'js/product_review.js' %}"></script>
-
-
-
 {% endblock %} {% block page_styles %}
 
   <style>
