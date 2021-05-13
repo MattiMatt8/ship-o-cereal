@@ -1,7 +1,6 @@
 from fractions import Fraction
 import math
 from django.contrib import admin
-from django.db import models
 from products.models import Product
 
 
