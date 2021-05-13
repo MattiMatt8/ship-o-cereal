@@ -5,9 +5,11 @@ from products.models import Product, Image
 
 
 class ProductLabelInlineAdmin(admin.TabularInline):
+    """Selection to select labels for a product."""
     model = Product.labels.through
 
 class ImageInlineAdmin(admin.TabularInline):
+    """Selection to select images for a product."""
     model = Image
 
 

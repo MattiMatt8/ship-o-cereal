@@ -163,58 +163,57 @@
         <h1 id="reviews-header" class="text-md font-medium sm:text-lg lg:text-xl xl:text-2xl">Reviews</h1>
       {% endif %}
 
-
-      <!-- Create new review -->
-      {% if form is not None %}
-      <div class="mt-5" id="new-review">
-        <form method="post" class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12" id="new-review-form">
-          {% csrf_token %}
-          <h2 class="text-lg mb-2">Please leave a review.</h2>
-          <div class="mb-1">
-            <label for="{{ form.title.id_for_label }}"
-                   class="block text-gray-700 text-base mb-1">Title</label>
-            <input type="text" name="title"
-                   class="border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
-                   maxlength="255" required="" id="id_title" placeholder="It was...">
-          </div>
-          <div class="mb-3">
-            <label for="{{ form.stars.id_for_label }}"
-                   class="block text-gray-700 text-base mb-1">Stars</label>
-            <div class="flex flex-row">
-              {% for item in "x"|ljust:"5" %}
-                <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
-                  {% if forloop.counter == 1 %}
-                    {% include 'components/icons/star_filled.html' with hidden=False id=forloop.counter %}
-                  {% else %}
-                    {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
-                    {% include 'components/icons/star_filled.html' with hidden=True id=forloop.counter %}
-                  {% endif %}
-                </button>
-              {% endfor %}
-              <input value="1" type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="{{ form.review.id_for_label }}"
-                   class="block text-gray-700 text-base mb-1">Review</label>
-            <textarea name="review" cols="40" rows="5"
-                      class="border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none"
-                      placeholder="I thought it was... because..." maxlength="500" required=""
-                      id="id_review"></textarea>
-          </div>
-          <div class="flex justify-end mb-3 lg:mb-10">
-            <button
-                class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
-                type="submit">Post review
-            </button>
-          </div>
-        </form>
-      </div>
-      {% endif %}
-      <!-- END of new review -->
-
       <!-- START Single review -->
       <div id="all-reviews" class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12">
+        <!-- Create new review -->
+        {% if form is not None %}
+        <div class="mt-5" id="new-review">
+          <form method="post" class="flex flex-col md:w-full lg:w-2/3 xl:w-9/12 2xl:w-10/12" id="new-review-form">
+            {% csrf_token %}
+            <h2 class="text-lg mb-2">Please leave a review.</h2>
+            <div class="mb-1">
+              <label for="id_title"
+                     class="block text-gray-700 text-base mb-1">Title</label>
+              <input type="text" name="title"
+                     class="border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
+                     maxlength="255" required="" id="id_title" placeholder="It was...">
+            </div>
+            <div class="mb-3">
+              <label for="id_stars"
+                     class="block text-gray-700 text-base mb-1">Stars</label>
+              <div class="flex flex-row">
+                {% for item in "x"|ljust:"5" %}
+                  <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
+                    {% if forloop.counter == 1 %}
+                      {% include 'components/icons/star_filled.html' with hidden=False id=forloop.counter %}
+                    {% else %}
+                      {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
+                      {% include 'components/icons/star_filled.html' with hidden=True id=forloop.counter %}
+                    {% endif %}
+                  </button>
+                {% endfor %}
+                <input value="1" type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="id_review"
+                     class="block text-gray-700 text-base mb-1">Review</label>
+              <textarea name="review" cols="40" rows="5"
+                        class="border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none"
+                        placeholder="I thought it was... because..." maxlength="500" required=""
+                        id="id_review"></textarea>
+            </div>
+            <div class="flex justify-end mb-3 lg:mb-10">
+              <button
+                  class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
+                  type="submit">Post review
+              </button>
+            </div>
+          </form>
+        </div>
+        {% endif %}
+        <!-- END of new review -->
+
         {% for review in product.review_set.all %}
           {% include 'components/product_review.html' with users_review=users_review id=review.id first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars picture=review.user.profile.picture %}
         {% endfor %}
