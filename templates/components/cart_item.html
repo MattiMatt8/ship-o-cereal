@@ -3,7 +3,7 @@
 <li id="product-id-{{ product.id }}"
     class="shadow-lg hover:shadow-xl rounded flex flex-col items-center p-4 mb-4 justify-between min-h-20 w-80 sm:w-96 sm:items-start lg:flex-row lg:w-10/12 lg:items-center 2xl:w-8/12">
   <div class="flex flex-col items-center sm:flex-row xl:w-full">
-    <img src="{% static static %}images/{{ product.category }}/{{ product.image_set.first }}"
+    <img src="{% static 'media/' %}{{ product.image_set.first.name }}"
          class="object-cover object-center w-16 h-16 sm:w-24 sm:h-24"/>
     <h3 class="text-xl w-full my-2 sm:ml-4">{{ product.name }}</h3>
   </div>

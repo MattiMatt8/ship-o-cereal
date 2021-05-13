@@ -27,7 +27,7 @@
                     <input id="card-id-{{ card.id }}" type="text"
                            class="border border-customRed rounded w-12 text-center ml-3 hidden focus:outline-none"
                            maxlength="3" placeholder="CVC" name="CVCfield"
-                           pattern="\d*" disabled>
+                           pattern="\d*" autocomplete="off" disabled>
                     <span class="ml-1 lg:relative lg:right-0 lg:bottom-0">
                       <a class="font-medium text-sm focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
                          href="{% url 'update_card' id=card.id %}?next=/checkout/card/">Change</a>

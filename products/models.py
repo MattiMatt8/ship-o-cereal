@@ -61,13 +61,16 @@ class Product(models.Model):
         indexes = [models.Index(fields=["name"])]
 
 
+def make_filename(instance, filename):
+    """Makes the filename for product image uploaded."""
+    return "product_images/" + str(instance.product.category) + "/" + filename
+
+
 class Image(models.Model):
     """Product images, each product can have many images."""
-    name = models.CharField(max_length=255)
+    # name = models.CharField(max_length=255)
+    name = models.ImageField(upload_to=make_filename, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
-
-    def __str__(self):
-        return self.name
 
 
 class ProductLabel(models.Model):

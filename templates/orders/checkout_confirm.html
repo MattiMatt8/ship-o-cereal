@@ -17,7 +17,7 @@
                 <div class="px-6 py-6 flex flex-col items-start justify-between">
                   <div class="flex flex-row items-center">
                     <img
-                        src="{% static static %}images/{{ order_item.product.category }}/{{ order_item.product.image_set.first }}"
+                        src="{% static 'media/' %}{{ order_item.product.image_set.first.name }}"
                         class="block h-16 w-16 object-cover object-center mr-4"/>
                     <span class="block text-xl w-full">{{ order_item.product.name }}</span>
                   </div>
