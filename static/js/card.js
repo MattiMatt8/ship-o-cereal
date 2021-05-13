@@ -1,4 +1,6 @@
 function fixCardFormatting(e) {
+    // Formats card to a maximum of 16 digits and
+    // puts - between every four numbers.
     let new_str = "";
     let numbers = 0;
     for(let i = 0; i<e.target.value.length; i++) {
