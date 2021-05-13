@@ -39,18 +39,27 @@ function updateCartAmount() {
 }
 
 function decrement(e) {
+    // A decrement function that fires when a user presses the minus button for a given product
     const btn = e.target.parentNode.parentElement.querySelector(
         'button[data-action="decrement"]'
     );
     const target = btn.nextElementSibling;
     let value = Number(target.value);
+
+    // Check if the quantity is at least bigger than 1
+    // Else don't do anything
     if (value > 1) {
+
+        // This function creates the behaviour for the frontend when it gets a response
         const callback = (error) => {
+            // If an error occurs, display it to the user with a popup
             if (error) {
                 renderNotification(error, "error");
             } else {
+                // If the server responded without any errors we decrease the value
                 value--;
                 target.value = value;
+                // If the value now is 1, we disable the button
                 if (value === 1) {
                     btn.disabled = true;
                     btn.classList.remove(
@@ -60,10 +69,12 @@ function decrement(e) {
                     );
                     btn.classList.add("cursor-not-allowed");
                 }
+                // Update the cart value in the corner of the website
                 updateCartAmount();
             }
 
         };
+        // Get the id for the product that we want to decrease
         const id = target.dataset.productId;
         updateCart(id, Number(target.value) - 1, callback, true);
     }
@@ -71,18 +82,24 @@ function decrement(e) {
 }
 
 function increment(e) {
+    // An increment function that fires when a user presses the plus button for a given product
     const btn = e.target.parentNode.parentElement.querySelector(
         'button[data-action="decrement"]'
     );
     const target = btn.nextElementSibling;
     let value = Number(target.value);
+
+    // This function creates the behaviour for the frontend when it gets a response
     const callback = (error) => {
+        // If an error occurs, display it to the user with a popup
         if (error) {
             renderNotification(error, "error");
         } else {
+            // If the server responded without any errors we increase the value
             value++;
             target.value = value;
 
+            // Make sure to make the decrement button available if the value is larger than 1
             if (value > 1) {
                 const leftBtn = e.target.parentNode.parentElement.querySelector(
                     'button[data-action="decrement"]'
@@ -95,6 +112,7 @@ function increment(e) {
                 );
                 leftBtn.classList.remove("cursor-not-allowed");
             }
+            // Update the cart value in the corner of the website
             updateCartAmount();
         }
     };
@@ -102,18 +120,22 @@ function increment(e) {
     updateCart(id, Number(target.value) + 1, callback, true);
 }
 
+// Get all decrement buttons
 const decrementButtons = document.querySelectorAll(
     `button[data-action="decrement"]`
 );
 
+// Get all increment buttons
 const incrementButtons = document.querySelectorAll(
     `button[data-action="increment"]`
 );
 
+// Give decrement buttons their listener
 decrementButtons.forEach((btn) => {
     btn.addEventListener("click", decrement);
 });
 
+// Give increment buttons their listener
 incrementButtons.forEach((btn) => {
     btn.addEventListener("click", increment);
 });
@@ -123,7 +145,9 @@ incrementButtons.forEach((btn) => {
 
 const inputAmountFields = document.getElementsByClassName("input-amount");
 
+// Listen to all input amount fields (quantity)
 Array.from(inputAmountFields).forEach((item) => {
+    // Make sure the user does not input a non-integer
     setInputFilter(item, function (value) {
         return /^[0-9]+$/.test(value);
     });
@@ -132,9 +156,11 @@ Array.from(inputAmountFields).forEach((item) => {
         const decrementBtn = e.target.previousElementSibling;
         this.oldValue = this.value;
 
+        // Reset value to 1 if the user types in 0
         if (e.target.value == 0) {
             e.target.value = 1;
         }
+        // If the value is 1, disable the decrement button
         if (e.target.value == 1) {
             decrementBtn.disabled = true;
             decrementBtn.classList.remove(
@@ -144,6 +170,7 @@ Array.from(inputAmountFields).forEach((item) => {
             );
             decrementBtn.classList.add("cursor-not-allowed");
         }
+        // If the value is larger than 1, enable the decrement button
         if (e.target.value > 1) {
             decrementBtn.disabled = false;
             decrementBtn.classList.add(
@@ -153,6 +180,7 @@ Array.from(inputAmountFields).forEach((item) => {
             );
             decrementBtn.classList.remove("cursor-not-allowed");
         }
+        // Update the cart after each keystroke
         updateCart(id, Number(e.target.value), updateCartAmount, true);
     });
 });
