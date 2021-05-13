@@ -1,7 +1,6 @@
 from fractions import Fraction
 import math
 from django.contrib import admin
-from django.db import models
 from products.models import Product
 
 
@@ -35,7 +34,7 @@ class ProductDiscountAdmin(admin.ModelAdmin):
         """Returns and sets the discounted price for a given product object."""
 
         # If percentage_off exceeds 100, reset the price
-        if obj.percentage_off > 100:
+        if obj.percentage_off > 100 or obj.percentage_off <= 0:
             obj.percentage_off = 0
             obj.discounted_price = None
             obj.save()

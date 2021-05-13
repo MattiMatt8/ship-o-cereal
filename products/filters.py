@@ -23,8 +23,8 @@ PRODUCT_ORDER_BY_FIELDS = (
 def brands(request):
     """Returns only the brands that are relevant to the items being filtered."""
 
-    # If located at one of the category pages in returns a specific brand filter
-    # taking the category currently on into consideration.
+    # If currently on a category site it will return all brands available in
+    # that category.
     category = request.resolver_match.kwargs.get("category_name")
     if category:
         return Brand.objects.filter(
@@ -33,8 +33,8 @@ def brands(request):
                 active=True
             ).values_list("brand_id")
         )
-    # If we are on the search page it returns a filter taking into consideration
-    # the name of the product that is being searched.
+    # If currently searching for an item it will return all brands available
+    # to the items that have similar names to the searched name.
     search = request.resolver_match.kwargs.get("search_str")
     return Brand.objects.filter(
         id__in=Product.objects.filter(
@@ -47,12 +47,16 @@ def brands(request):
 def labels(request):
     """Returns on the labels that are relevant to the items being filtered."""
 
+    # If currently on a category site it will return all labels available in
+    # that category.
     category = request.resolver_match.kwargs.get("category_name")
     if category:
         return Label.objects.filter(id__in=ProductLabel.objects.filter(
             product_id__in=Product.objects.filter(category_id=Category.objects.get(name=category),
                                                   active=True)).values_list("label_id"))
 
+    # If currently searching for an item it will return all labels available
+    # to the items that have similar names to the searched name.
     search = request.resolver_match.kwargs.get("search_str")
     return Label.objects.filter(id__in=ProductLabel.objects.filter(
         product_id__in=Product.objects.filter(name__icontains=search, active=True)).values_list("label_id"))

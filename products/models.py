@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class Label(models.Model):
+    """All product labels (e.g. Healthy, Glutenfree...)"""
     name = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
 
@@ -12,6 +13,7 @@ class Label(models.Model):
 
 
 class Category(models.Model):
+    """All product categories (e.g. Cereal, Bowls...)"""
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -19,6 +21,7 @@ class Category(models.Model):
 
 
 class Brand(models.Model):
+    """All product brands."""
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -29,6 +32,7 @@ class Brand(models.Model):
 
 
 class Product(models.Model):
+    """Product with all its relative information."""
     name = models.CharField(max_length=255)
     description = models.TextField()
     contents = models.TextField(blank=True, null=True)
@@ -53,10 +57,12 @@ class Product(models.Model):
         return self.name
 
     class Meta:
+        """To make the search faster by having an index on the name field."""
         indexes = [models.Index(fields=["name"])]
 
 
 class Image(models.Model):
+    """Product images, each product can have many images."""
     name = models.CharField(max_length=255)
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
 
@@ -65,6 +71,7 @@ class Image(models.Model):
 
 
 class ProductLabel(models.Model):
+    """Product labels, each product can have many labels."""
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     label = models.ForeignKey(Label, on_delete=models.DO_NOTHING)
 
@@ -73,6 +80,7 @@ class ProductLabel(models.Model):
 
 
 class Review(models.Model):
+    """Product reviews made by users."""
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(default=now)
@@ -81,6 +89,8 @@ class Review(models.Model):
     title = models.CharField(max_length=255)
 
     class Meta:
+        # Unique together so it enforces that each user
+        # can only make one review on each product.
         unique_together = ("user", "product")
         ordering = ["-id"]
 
