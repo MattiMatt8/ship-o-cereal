@@ -8,14 +8,14 @@
     <h1 class=" text-4xl text-customGray font-medium">Order #{{ order.id }}</h1>
     <h3 class="text-l">Placed on {{ order.date }}</h3>
 
-    <div class="flex flex-row justify-between mt-6">
+    <div class="flex flex-col justify-between mt-6 lg:flex-row">
       <!-- Items in order -->
-      <div class="w-2/5">
+      <div class="px-2 lg:w-2/5 lg:px-0">
         {% include "profile/order_history/order_details_items.html" %}
       </div>
       <!-- END Items in order -->
       <!-- Order summary -->
-      <div class="w-2/6">
+      <div class="px-2 lg:w-2/6 lg:px-0">
         {% include "profile/order_history/order_details_summary.html" %}
       </div>
       <!-- END Order summary -->

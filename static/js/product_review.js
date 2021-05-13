@@ -133,7 +133,7 @@ function submitUpdateReview(event) {
     // and with the correct callback function to then render it in the browser.
     submitReview(event, "update", renderUpdateOldReview);
 }
-
+// TODO: Fix the HTML to match the new responsive HTML
 function renderUpdateOldReview(data) {
     // Updates the old form in the browser with the new data received from the server
     // and hides the update form.
@@ -151,6 +151,7 @@ function renderUpdateOldReview(data) {
     review.classList.remove("hidden");
 }
 
+// TODO: Fix the HTML to match the new responsive HTML
 function getReviewFilled(id, title, stars, review, picture, date, fullName) {
     // Returns a review formatted with everything filled out and ready.
     let divTag = document.createElement("div");
@@ -193,6 +194,7 @@ function getReviewFilled(id, title, stars, review, picture, date, fullName) {
     return divTag;
 }
 
+// TODO: Fix the HTML to match the new responsive HTML
 function getNewReviewForm() {
     // Returns a form to create a new review with.
     let divTag = document.createElement("div");
@@ -232,6 +234,7 @@ function getNewReviewForm() {
     return divTag;
 }
 
+// TODO: Fix the HTML to match the new responsive HTML
 function getUpdateReviewForm(id, title, stars, review) {
     // Returns a form to update a review with and with all the old information in it.
     let divTag = document.createElement("div");
