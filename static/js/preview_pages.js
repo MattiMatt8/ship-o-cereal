@@ -24,6 +24,7 @@ Array.from(buttons).forEach(buyButton => {
 })
 
 function decrement(e) {
+    // A decrement function that fires when a user presses the minus button for a given product
     const btn = e.target.parentNode.parentElement.querySelector(
         'button[data-action="decrement"]'
     );
@@ -106,7 +107,9 @@ incrementButtons.forEach((btn) => {
 
 const inputAmountFields = document.getElementsByClassName('input-amount');
 
+// Get all input amount fields (quantities) and setup their filters so users can only type integers
 Array.from(inputAmountFields).forEach((item) => {
+    // Initial value is given to let javascript revert back to a valid input
     item.oldValue = item.value;
     setInputFilter(item, function (value) {
         return /^[0-9]+$/.test(value);
