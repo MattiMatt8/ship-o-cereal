@@ -13,7 +13,7 @@ function newProfileContainer (picture, fullName) {
     // Parent container for profile info
     let profileContainer = document.createElement("div");
 
-    // Child container for profile image & full name of user
+    // Child container for image & full name of user
     let imageContainer = document.createElement("div");
 
     // Child container for full name
@@ -28,7 +28,7 @@ function newProfileContainer (picture, fullName) {
 
     // If user has a profile picture
     if (picture) {
-        html_picture = `<img className="w-16 h-16 rounded-full object-cover object-center" src="${picture}">`;
+        HtmlPicture = `<img className="w-16 h-16 rounded-full object-cover object-center" src="${picture}">`;
     // If user does not have a profile picture, add the default icon
     } else {
         HtmlPicture = `<div class="bg-customGray rounded-full w-16 h-16 flex justify-center items-center">
