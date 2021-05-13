@@ -17,6 +17,7 @@ PRODUCT_ORDER_BY_FIELDS = (
     ("name", "Name: A to Z"),
     ("-name", "Name: Z to A"),
     ("-id", "Newest arrivals"),
+    ("-percentage_off", "On sale"),
 )
 
 
@@ -65,6 +66,7 @@ def labels(request):
 class ProductFilter(FilterSet):
 
     # Filters
+    percentage_off = NumberFilter(field_name="percentage_off")
     price = NumberFilter(field_name="price")
     name = CharFilter(field_name="name")
     id = NumberFilter(field_name="newest")
@@ -76,7 +78,7 @@ class ProductFilter(FilterSet):
 
     class Meta:
         model = Product
-        fields = ["price", "name"]
+        fields = ["price", "name", "percentage_off"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
