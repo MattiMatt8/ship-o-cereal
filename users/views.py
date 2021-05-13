@@ -249,17 +249,19 @@ def delete_from_cart(request, id):
     """Endpoint for deleting items from the users cart."""
     if request.method == "POST":
         try:
+            # Pareses the body of the post request.
             body = json.loads(request.body.decode("utf-8"))
             in_cart = body.get("in_cart")
             quantity = request.session["cart"][str(id)]
+            # Deletes the item from the cart and fixes the total count of items.
             del request.session["cart"][str(id)]
             request.session.modified = True
             request.session["cart_total"] -= quantity
             if in_cart:
+                # If we are currently in the cart view we also need to update the order items stored.
                 order_items = []
-                for obj in serializers.deserialize(
-                        "json", request.session.get("order_items")
-                ):
+                # Goes through all the order items and skips the one deleted and saves them.
+                for obj in serializers.deserialize("json", request.session.get("order_items")):
                     order_item = obj.object
                     if order_item.product.id != id:
                         order_items.append(order_item)
@@ -274,18 +276,23 @@ def delete_from_cart(request, id):
 
 
 def cart_amount(request):
+    """End point for getting the current cart amount."""
     cart = request.session.get("cart")
+    # Create a Fraction object for more accurate calculations.
     products_amount_fraction = Fraction()
     if cart:
+        # If there is a cart it goes through all the items and calculates the amounts.
         for obj in serializers.deserialize("json", request.session.get("order_items")):
             order_item = obj.object
             products_amount_fraction += (
                     Fraction.from_float(order_item.price) * order_item.quantity
             )
+    # Total amount calculations, rounding and calculate if the shipping fee should be paid.
     products_amount = round(float(products_amount_fraction), 2)
     shipping_amount = 0 if products_amount > 20 else settings.DEFAULT_SHIPPING_AMOUNT
     total_amount = round(float(products_amount_fraction + Fraction(shipping_amount)), 2)
-    if products_amount != 0:
+    if products_amount > 0:
+        # Add the new amounts calculated to the current order.
         order = get_order(request)
         order.total = total_amount
         order.shipping_cost = shipping_amount
@@ -305,19 +312,24 @@ def cart_amount(request):
 
 @ensure_csrf_cookie
 def cart(request):
+    """View for the users cart."""
     cart = request.session.get("cart")
     cart_total = 0
     updated_cart = {}
     order_items = []
+    # Create a Fraction object for more accurate calculations.
     products_amount_fraction = Fraction()
     order = get_order(request)
+    # Create a order if one does not already exist.
     if order is None:
         order = Order()
     if cart:
+        # If we have a cart goes through all the products and gets them.
         for product_id, quantity in cart.items():
             try:
                 buy_quantity = quantity
                 product = Product.objects.get(pk=int(product_id), active=True)
+                # Uses the discounted price if the product is on discount else the normal price.
                 price = product.discounted_price if product.discounted_price else product.price
                 if product.stock == 0:
                     # If the product is not in stock skip it.
@@ -326,30 +338,22 @@ def cart(request):
                     # If the user has more in the cart than in stock
                     # it will put his quantity to how much is in stock.
                     buy_quantity = product.stock
-                order_items.append(
-                    OrderItem(quantity=buy_quantity, product=product,
-                              price=price)
-                )
+                order_items.append(OrderItem(quantity=buy_quantity, product=product, price=price))
                 cart_total += buy_quantity
-                products_amount_fraction += (
-                        Fraction.from_float(price) * buy_quantity
-                )
+                products_amount_fraction += (Fraction.from_float(price) * buy_quantity)
                 updated_cart[product_id] = buy_quantity
             except ObjectDoesNotExist:
                 pass
         request.session["cart_total"] = cart_total
     request.session["cart"] = updated_cart
+    # Total amount calculations, rounding and calculate if the shipping fee should be paid.
     order.products_total = round(float(products_amount_fraction), 2)
-    order.shipping_cost = (
-        0 if order.products_total > 20 else settings.DEFAULT_SHIPPING_AMOUNT
-    )
-    order.total = round(
-        float(products_amount_fraction + Fraction(order.shipping_cost)), 2
-    )
+    order.shipping_cost = (0 if order.products_total > 20 else settings.DEFAULT_SHIPPING_AMOUNT)
+    order.total = round(float(products_amount_fraction + Fraction(order.shipping_cost)), 2)
     if len(order_items) > 0:
+        # If we have order items it puts them into temporary storage.
         keep_order(request, order)
         request.session["order_items"] = serializers.serialize("json", order_items)
-
     else:
         order_items = None
     return render(
@@ -358,8 +362,11 @@ def cart(request):
 
 
 def new_search(request):
+    """Endpoint to add a search to the users search history."""
     if request.method == "POST":
         if request.user.is_authenticated:
+            # Loads the post request body and puts the search into a search
+            # history form to validate it.
             body = json.loads(request.body.decode("utf-8"))
             form = AddSearchHistoryForm(data={"search": body.get("search")})
             if form.is_valid():
@@ -373,6 +380,7 @@ def new_search(request):
 
 
 def delete_search(request, id):
+    """Endpoint to delete a search history off of a user."""
     if request.method == "POST":
         if request.user.is_authenticated:
             try:
