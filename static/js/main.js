@@ -216,7 +216,8 @@ function searchBarListener () {
 function deleteSearchButtonListener () {
 
     // Search history entries contained in a list with a delete button
-    let searchDeleteButtons = document.getElementsByClassName(".search-delete-button");
+    let searchDeleteButtons = document.getElementsByClassName("search-delete-button");
+    let searchEntryList = searchDropdown.querySelector("ul");
 
     // Add an event listener to each delete button
     Array.from(searchDeleteButtons).forEach(btn => {
@@ -241,6 +242,8 @@ function deleteSearchButtonListener () {
                 }
             };
         // Call axios request with call back
+            console.log("hi")
+            console.log(id)
         deleteSearch(id, callback);
         })
     });

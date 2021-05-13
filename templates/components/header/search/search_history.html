@@ -1,7 +1,7 @@
 <div id="search-dropdown"
      class="z-20 overflow-y-auto absolute overflow-hidden w-full max-h-0 top-3 bg-white border-b border-customGray sm:border sm:rounded">
   <ul
-      class="w-full shadow-lg hover:shadow-xl text-customGray">
+      class="w-full shadow-lg hover:shadow-xl text-customGray" id="search-dropdown-ul">
     {% for result in user.searchhistory_set.all|slice:":10" %}
       <li class="flex items-center justify-between border-b p-3 border-gray-300">
         <button class="w-full text-left search-term-button" type="button" data-search-value="{{ result.search }}">{{ result.search }}</button>
