@@ -14,7 +14,7 @@ class ImageInlineAdmin(admin.TabularInline):
 # TODO: Fix text on label selector
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('id','name','brand','active','stock')
-    fields = ('name','review_calculated','stock','price','active', 'category','brand','description','info','weight','contents', 'label_info')
+    fields = ('id','name','review_calculated','stock','price','active', 'category','brand','description','info','weight','contents', 'label_info')
     readonly_fields = ('id','info','review_calculated','label_info')
     list_filter = ('brand',)
     list_editable = ('active','stock')

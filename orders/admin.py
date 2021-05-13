@@ -32,7 +32,7 @@ class OrderAdmin(admin.ModelAdmin):
                       <thead>
                       <tr>
                         <th scope="col">
-                          <div class="text"><span>ID</span></div>
+                          <div class="text"><span>Product ID</span></div>
                           <div class="clear"></div>
                         </th>
                         <th scope="col">
