@@ -31,7 +31,7 @@
         </div>
       </div>
       <span class="block text-center md:text-left">Posted on {{ date }}</span>
-      <p class="mt-2 text-center italic md:text-left md:mt-4">{{ comment }}</p>
+      <p id="review-comments-{{ id }}" class="mt-2 text-center italic md:text-left md:mt-4">{{ comment }}</p>
     </div>
     <!-- Change button if it's the users review -->
     {% if users_review and users_review.id == id %}
