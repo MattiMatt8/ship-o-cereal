@@ -83,6 +83,7 @@ class Image(models.Model):
 
 class ProductLabel(models.Model):
     """Product labels, each product can have many labels."""
+
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     label = models.ForeignKey(Label, on_delete=models.DO_NOTHING)
 
@@ -95,6 +96,7 @@ class ProductLabel(models.Model):
 
 class Review(models.Model):
     """Product reviews made by users."""
+
     user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     date = models.DateTimeField(default=now)
