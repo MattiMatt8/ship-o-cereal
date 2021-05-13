@@ -47,7 +47,6 @@ const setInputFilter = (textbox, inputFilter) => {
                 } else {
                     this.value = "";
                 }
-                // TODO: Display error notification
                 renderNotification(error, "error");
             };
 
@@ -148,7 +147,7 @@ const renderNotification = (object, type) => { // Render a notification to be di
             errorNotification.classList.remove("right-6");
             errorNotification.classList.add("-right-96");
         }, 5000);
-    }     // TODO: Make this dynamic, prehaps if type is success, have the notification green or something similar
+    }
 };
 
 // Listen for a search from search history dropdown

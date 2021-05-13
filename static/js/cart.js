@@ -4,6 +4,7 @@ const shippingAmount = document.getElementById("shipping_amount");
 const totalAmount = document.getElementById("total_amount");
 
 for (let button of deleteButtons) {
+    // Adds event listeners to all add to cart buttons.
     button.addEventListener("click", (e) => {
         const id = Number(button.dataset.productId);
         const parent = document.getElementById(`product-id-${id}`);
@@ -16,13 +17,17 @@ for (let button of deleteButtons) {
 }
 
 function updateCartAmount() {
+    // Sends request to the server to get the current amount everything
+    // in his cart will cost and then updates it in the browser.
     axios
         .get(CART_URL + "amount")
         .then((response) => {
+            // When success comes from the server it updates the numbers in the browser.
             let data = response.data.data;
             productAmount.innerText = `Products: \$${data.products_amount}`;
             shippingAmount.innerText = `Shipping: \$${data.shipping_amount}`;
             totalAmount.innerText = `\$${data.total_amount}`;
+            // If there are no items left it changes the screen to display that there are no items in the cart.
             if (data.products_amount === 0) {
                 document.getElementById("amount_box").classList.add("hidden");
                 document.getElementById("cart_empty").classList.remove("hidden");
@@ -73,7 +78,6 @@ function increment(e) {
     let value = Number(target.value);
     const callback = (error) => {
         if (error) {
-            // TODO: Display an error notification with a message
             renderNotification(error, "error");
         } else {
             value++;
@@ -152,8 +156,3 @@ Array.from(inputAmountFields).forEach((item) => {
         updateCart(id, Number(e.target.value), updateCartAmount, true);
     });
 });
-
-// inputAmountField.addEventListener('input', (e) => {
-//     const id = Number(buyButton.dataset.productId);
-//     updateCart(id, Number(e.target.value))
-// })

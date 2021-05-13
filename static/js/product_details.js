@@ -6,7 +6,6 @@ buyButton.addEventListener("click", (e) => {
 
     const callback = (error) => {
         if (error) {
-            // TODO: Display error message to user
             renderNotification(error, "error");
 
         } else {
@@ -28,7 +27,6 @@ function decrement(e) {
     if (value > 1) {
         const callback = (error) => {
             if (error) {
-                // TODO: Display error message to user
                 renderNotification(error, "error");
             } else {
                 value--;
@@ -40,7 +38,6 @@ function decrement(e) {
     } else {
         const callback = (error) => {
             if (error) {
-                // TODO: Display error message to user
                 renderNotification(error, "error");
             } else {
                 buyButton.classList.remove("hidden");
@@ -59,7 +56,6 @@ function increment(e) {
     let value = Number(target.value);
     const callback = (error) => {
         if (error) {
-            // TODO: Display error message to user
             renderNotification(error, "error");
         } else {
             value++;

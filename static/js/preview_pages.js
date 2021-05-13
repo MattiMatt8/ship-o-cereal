@@ -7,7 +7,6 @@ Array.from(buttons).forEach(buyButton => {
         amountSelect.getElementsByTagName('input')[0].value = 1;
         const callback = (error) => {
             if (error) {
-                // TODO: Display error message to user
                 renderNotification(error, "error");
             } else {
                 buyButton.classList.add("hidden");
@@ -28,7 +27,6 @@ function decrement(e) {
     if (value > 1) {
         const callback = (error) => {
             if (error) {
-                // TODO: Display error message to user
                 renderNotification(error, "error");
             } else {
                 value--;
@@ -43,7 +41,6 @@ function decrement(e) {
 
         const callback = (error) => {
             if (error) {
-                // TODO: Display error message to user
                 renderNotification(error, "error");
             } else {
                 buyBtn.classList.remove('hidden');
@@ -62,7 +59,6 @@ function increment(e) {
     let value = Number(target.value);
     const callback = (error) => {
         if (error) {
-            // TODO: Display an error notification with a message
             renderNotification(error, "error");
         } else {
             value++;
