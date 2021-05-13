@@ -52,9 +52,7 @@ function starPress(event) {
 }
 ;
 
-
 // -- Review add, update & delete calls --
-
 function addSubmitListener(elementId, callback) {
     // Adds a submit listener if the element exists
     let element = document.getElementById(elementId);
@@ -100,143 +98,6 @@ function deleteReview(callback) {
         .catch((error) => {
             console.log(error);
         });
-}
-
-function renderDeleteReview(id) {
-    // Deletes the review and renders a form to submit a new review.
-    document.getElementById(`review-${id}`).remove();
-    let newReviewForm = getNewReviewForm();
-    let reviewsHeader = document.getElementById("reviews-header");
-    if (reviewsHeader.parentNode.children.length === 1) reviewsHeader.innerText = "No reviews yet.";
-    reviewsHeader.parentNode.insertBefore(newReviewForm, reviewsHeader.nextSibling);
-    addListenersToStars();
-    addSubmitListener("new-review-form", submitNewReview);
-}
-
-function submitNewReview(event) {
-    submitReview(event, "new", renderNewReview);
-}
-
-function renderNewReview(data) {
-    // Renders the new review for the user and removes the form it was submitted in.
-    let newReview = getReviewFilled(data.id, data.title, data.stars, data.review, data.profile_image, data.date, data.full_name);
-    let reviewsHeader = document.getElementById("reviews-header");
-    document.getElementById("new-review").remove();
-    reviewsHeader.parentNode.insertBefore(newReview, reviewsHeader.nextSibling);
-    addClickListener("change-review", renderUpdateReviewForm);
-    addClickListener("delete-review", deleteReview);
-    if (reviewsHeader.innerText === "No reviews yet.") reviewsHeader.innerText = "Reviews";
-}
-
-function submitUpdateReview(event) {
-    // Calls the submit axios function to update the review on the backend
-    // and with the correct callback function to then render it in the browser.
-    submitReview(event, "update", renderUpdateOldReview);
-}
-// TODO: Fix the HTML to match the new responsive HTML
-
-function renderUpdateOldReview(data) {
-    // Updates the old form in the browser with the new data received from the server
-    // and hides the update form.
-    let review = document.getElementById(`review-${data.id}`);
-    let reviewElements = document.getElementById(`review-stars-${data.id}`).parentNode;
-    reviewElements.innerHTML = `
-    <div class="flex flex-row" id="review-stars-${data.id}" data-stars-total="${data.stars}">
-        ${getStars(data.stars)}
-        <h3 class="ml-4 text-md font-medium" id="review-title-${data.id}">${data.title}</h3>
-      </div>
-      <span class="block">Posted on ${getDateTimeFormatted(data.date)}</span>
-      <p class="mt-4" id="review-comments-${data.id}">${data.review}</p>
-    `;
-    document.getElementById("update-review").remove();
-    review.classList.remove("hidden");
-}
-
-// TODO: Fix the HTML to match the new responsive HTML
-function getReviewFilled(id, title, stars, review, picture, date, fullName) {
-    // Returns a review formatted with everything filled out and ready.
-    let divTag = document.createElement("div");
-    divTag.setAttribute("class", "flex flex-row mt-8");
-    divTag.setAttribute("id", `review-${id}`);
-    if (picture) {
-        html_picture = `<img className="w-16 h-16 rounded-full object-cover object-center" src="${picture}">`;
-    } else {
-        html_picture = `<div class="bg-customGray rounded-full w-16 h-16 flex justify-center items-center">
-                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M30.1817 26.8453C29.5185 25.2744 28.5561 23.8475 27.3481 22.6441C26.1438 21.4373 24.7171 20.475 23.147 19.8105C23.1329 19.8035 23.1188 19.8 23.1048 19.793C25.295 18.2109 26.7188 15.634 26.7188 12.7266C26.7188 7.91016 22.8165 4.00781 18.0001 4.00781C13.1837 4.00781 9.28134 7.91016 9.28134 12.7266C9.28134 15.634 10.7052 18.2109 12.8954 19.7965C12.8813 19.8035 12.8673 19.807 12.8532 19.8141C11.2782 20.4785 9.86493 21.4312 8.65204 22.6477C7.44516 23.852 6.48292 25.2786 5.81845 26.8488C5.16567 28.386 4.81362 30.0341 4.78134 31.7039C4.7804 31.7414 4.78698 31.7788 4.80069 31.8137C4.81441 31.8486 4.83498 31.8805 4.86119 31.9073C4.8874 31.9342 4.91872 31.9556 4.95331 31.9701C4.9879 31.9847 5.02505 31.9922 5.06259 31.9922H7.17196C7.32665 31.9922 7.4497 31.8691 7.45321 31.718C7.52353 29.0039 8.61337 26.4621 10.5399 24.5355C12.5333 22.5422 15.1806 21.4453 18.0001 21.4453C20.8196 21.4453 23.4669 22.5422 25.4602 24.5355C27.3868 26.4621 28.4767 29.0039 28.547 31.718C28.5505 31.8727 28.6735 31.9922 28.8282 31.9922H30.9376C30.9751 31.9922 31.0123 31.9847 31.0469 31.9701C31.0815 31.9556 31.1128 31.9342 31.139 31.9073C31.1652 31.8805 31.1858 31.8486 31.1995 31.8137C31.2132 31.7788 31.2198 31.7414 31.2188 31.7039C31.1837 30.0234 30.8356 28.3887 30.1817 26.8453ZM18.0001 18.7734C16.3864 18.7734 14.8677 18.1441 13.7251 17.0016C12.5825 15.859 11.9532 14.3402 11.9532 12.7266C11.9532 11.1129 12.5825 9.59414 13.7251 8.45156C14.8677 7.30898 16.3864 6.67969 18.0001 6.67969C19.6138 6.67969 21.1325 7.30898 22.2751 8.45156C23.4177 9.59414 24.047 11.1129 24.047 12.7266C24.047 14.3402 23.4177 15.859 22.2751 17.0016C21.1325 18.1441 19.6138 18.7734 18.0001 18.7734Z" fill="white"/>
-                        </svg>
-                        </div>`;
-    }
-    divTag.innerHTML = `
-        <div class="flex flex-col my-8 items-center md:flex-row" id="review-${id}">
-          <div class="flex flex-col justify-center items-center md:w-1/3 md:mr-10">
-            ${html_picture}
-            <h3 class="text-md font-medium mt-3 md:text-center">${fullName}</h3>
-          </div>
-          <div class="md:w-2/3">
-            <div class="flex flex-col md:flex-row md:items-center">
-              <div class="flex flex-row justify-center my-2 md:justify-start" id="review-stars-${id}" data-stars-total="${stars}">
-                ${getStars(Number(stars))}
-                <h3 class="ml-4 text-md font-medium" id="review-title-${id}">${title}</h3>
-              </div>
-              <span class="block">Posted on ${getDateTimeFormatted(date)}</span>
-              <p class="mt-4" id="review-comments-${id}">${review}</p>
-            </div>
-            <div class="flex flex-row justify-between mt-4">
-              <button class="text-customRed focus:outline-none border-b-2 border-customRed border-opacity-0 hover:border-opacity-75"
-                      type="button" id="delete-review" data-review-id="${id}">Delete
-              </button>
-              <button class="focus:outline-none border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
-                      type="button" id="change-review" data-review-id="${id}">Change
-              </button>
-            </div>
-          </div>
-        </div>`;
-    return divTag;
-}
-
-// TODO: Fix the HTML to match the new responsive HTML
-function getUpdateReviewForm(id, title, stars, review) {
-    // Returns a form to update a review with and with all the old information in it.
-    let divTag = document.createElement("div");
-    divTag.setAttribute("class", "mt-5");
-    divTag.setAttribute("id", "update-review");
-    divTag.innerHTML = `
-        <form method = "post" class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12" id="new-review-form">
-          <div class="mb-1">
-            <label for="id_title"
-                   class="block text-gray-700 text-base mb-1">Title</label>     
-            <input type="text" name="title" value="${title}"
-                   class="border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
-                   maxlength="255" required="" id="id_title">
-          </div>
-          <div class="mb-3">
-            <label for="id_stars"
-                   class="block text-gray-700 text-base mb-1">Stars</label>
-            <div class="flex flex-row">
-              ${getFormStars(Number(stars))}
-              <input value="${stars}" type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="id_review"
-                   class="block text-gray-700 text-base mb-1">Review</label>
-            <textarea name="review" cols="40" rows="5"
-                      class="border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none"
-                      maxlength="500" required="" id="id_review">${review}</textarea>
-            </div>
-          <div class="flex justify-between mb-3">
-            <button id="review-update-cancel"
-                    class="text-center text-base text-customViolet rounded border border-customViolet py-1 px-4 focus:outline-none hover:shadow-md"
-                    type="button" data-review-id="${id}">Cancel
-            </button>
-            <button
-                class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-36 py-1 px-4 focus:outline-none"
-                type="submit">Update review
-            </button>
-          </div>
-        </form>`;
-    return divTag
 }
 
 function getStars(totalStars) {
@@ -304,7 +165,7 @@ function renderUpdateReviewForm(event) {
     addSubmitListener("update-review", submitUpdateReview);
     addClickListener("review-update-cancel", cancelUpdateReview);
     addListenersToStars();
-}
+} //TODO: move
 
 function cancelUpdateReview(event) {
     // Removes the update form for a review from the screen
@@ -335,6 +196,18 @@ function getDateTimeFormatted(datetime) {
     });
     return formatted.replace("AM", "a.m.").replace("PM", "p.m.");
 }
+
+function renderDeleteReview(id) {
+    // Deletes the review and renders a form to submit a new review.
+    document.getElementById(`review-${id}`).remove();
+    let newReviewForm = getNewReviewForm();
+    let reviewsHeader = document.getElementById("reviews-header");
+    if (reviewsHeader.parentNode.children.length === 1) reviewsHeader.innerText = "No reviews yet.";
+    reviewsHeader.parentNode.insertBefore(newReviewForm, reviewsHeader.nextSibling);
+    addListenersToStars();
+    addSubmitListener("new-review-form", submitNewReview);
+}
+
 
 
 // If there is a new review form this will add the stars to it
