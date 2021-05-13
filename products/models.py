@@ -73,6 +73,7 @@ def make_filename(instance, filename):
 
 class Image(models.Model):
     """Product images, each product can have many images."""
+
     name = models.ImageField(upload_to=make_filename, blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
 
