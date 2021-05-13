@@ -18,6 +18,10 @@ Web store that sells everything related to cereal.
 
 3. Run: pip install -r requirements.txt in your shell.  
 
+## Required credentials
+The application uses Google Cloud for the PostgreSQL database hosting.  
+Contact us for the correct credentials that you have to put in a .env file.
+
 # Run
 - Command to run the server:
     - python manage.py runserver
