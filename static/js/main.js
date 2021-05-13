@@ -2,6 +2,12 @@ const CART_URL = "/cart/";
 const cartTotalElement = document.getElementById("cart_total");
 let cartTotal = Number(cartTotalElement.innerText);
 
+// Searchbar variables
+const searchForm = document.getElementById('search-form');
+const searchInput = document.getElementById("search-input");
+const searchDropdown = document.getElementById("search-dropdown");
+let isHoveringDropdown = false;
+
 // Function getCookie from: https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
 function getCookie(name) {
     let cookieValue = null;
@@ -20,6 +26,44 @@ function getCookie(name) {
 }
 
 const CSRF_TOKEN = getCookie("csrftoken");
+
+// Input filter used for validation
+// Restricts input for the given textbox to the given inputFilter function.
+const setInputFilter = (textbox, inputFilter) => {
+    //["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
+    textbox.addEventListener("input", function (e) {
+        if (inputFilter(this.value) && this.value != 0) {
+            // If a number was an input, it's safe to make the request to the server
+            const callback = (error) => {
+                if (!error) {
+                    // If success then mark the new number as an old number we can revert to if something fails.
+                    this.oldValue = this.value;
+                    this.oldSelectionStart = this.selectionStart;
+                    this.oldSelectionEnd = this.selectionEnd;
+                    return;
+                } else if (this.hasOwnProperty("oldValue")) {
+                    this.value = this.oldValue;
+                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+                } else {
+                    this.value = "";
+                }
+                // TODO: Display error notification
+                renderNotification(error, "error");
+            };
+
+            const id = e.target.dataset.productId;
+            updateCart(id, Number(e.target.value), callback);
+            return;
+        }
+
+        if (this.hasOwnProperty("oldValue")) {
+            this.value = this.oldValue;
+            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
+        } else {
+            this.value = "";
+        }
+    });
+};
 
 function updateCart(id, quantity, callback = undefined, in_cart = false) {
     axios
@@ -63,23 +107,6 @@ function deleteFromCart(id, callback = undefined, in_cart = false) {
         });
 }
 
-function newSearch(search, callback = undefined) {
-    axios
-        .post(
-            "/profile/search/new/",
-            {search: search},
-            {headers: {"X-CSRFToken": CSRF_TOKEN}}
-        )
-        .then((response) => {
-            if (callback) {
-                callback();
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
 function deleteSearch(id, callback = undefined) {
     axios
         .post(
@@ -107,60 +134,7 @@ function cartDeleteFromTotal(quantity = 1) {
     cartTotalElement.innerText = cartTotal;
 }
 
-
-// Searchbar
-const searchForm = document.getElementById('search-form');
-const searchBtn = document.getElementById("search-btn");
-const searchInput = document.getElementById("search-input");
-const searchDropdown = document.getElementById("search-dropdown");
-let isHoveringDropdown = false;
-
-
-searchForm.addEventListener("submit", submitSearch);
-
-function submitSearch(event) {
-    // Redirects the user to the search page when he searches
-    event.preventDefault();
-    window.location.href = `/search/${searchInput.value}`;
-}
-
-
-// Only available for users, searchdropdown is not rendered for non-users
-if (searchDropdown) {
-    // When a logged in user focuses on the search bar, a dropdown list with their search history should happen
-    searchInput.addEventListener("focusin", (e) => {
-        searchDropdown.classList.add("animate-searchDropdownOpen");
-        searchDropdown.classList.remove("animate-searchDropdownClose");
-    });
-
-    // If user is no longer focusing on search input, only hide the dropdown if he's not hovering over it
-    searchInput.addEventListener("focusout", (e) => {
-        if (!isHoveringDropdown) {
-            searchDropdown.classList.remove("animate-searchDropdownOpen");
-            searchDropdown.classList.add("animate-searchDropdownClose");
-        }
-    });
-
-    // Listen if user enters the dropdown and set isHoveringDropdown to true
-    searchDropdown.addEventListener("mouseover", (e) => {
-        isHoveringDropdown = true;
-    });
-
-    // Listen if user leaves the dropdown and set isHoveringDropdown to false, but only remove the
-    // dropdown if he's not focused on the input
-    searchDropdown.addEventListener("mouseleave", (e) => {
-        isHoveringDropdown = false;
-        if (!(document.activeElement === searchInput)) {
-            searchDropdown.classList.remove("animate-searchDropdownOpen");
-            searchDropdown.classList.add("animate-searchDropdownClose");
-        }
-    });
-}
-
-// Render a notification to be displayed for the user
-// TODO: Make this dynamic, prehaps if type is success, have the notification green or something similar
-// Maybe we don't need a green notification?
-const renderNotification = (object, type) => {
+const renderNotification = (object, type) => { // Render a notification to be displayed for the user
     if (type === "error") {
         const errorNotification = document.getElementById("error-notification");
         const messageSpan = document.getElementById("error-notification-message");
@@ -174,88 +148,102 @@ const renderNotification = (object, type) => {
             errorNotification.classList.remove("right-6");
             errorNotification.classList.add("-right-96");
         }, 5000);
-    }
+    }     // TODO: Make this dynamic, prehaps if type is success, have the notification green or something similar
 };
 
-// Input filter used for validation
+// Listen for a search from search history dropdown
+function searchFromHistoryListener () {
+    let searchTermButtons = document.getElementsByClassName('search-term-button');
 
-// Restricts input for the given textbox to the given inputFilter function.
-const setInputFilter = (textbox, inputFilter) => {
-    //["input", "keydown", "keyup", "mousedown", "mouseup", "select", "contextmenu", "drop"].forEach(function (event) {
-    textbox.addEventListener("input", function (e) {
-        if (inputFilter(this.value) && this.value != 0) {
-            // If a number was an input, it's safe to make the request to the server
-            const callback = (error) => {
+    Array.from(searchTermButtons).forEach(btn => {
+        btn.addEventListener("click", () => window.location.href = `/search/${btn.dataset.searchValue}`
+        );
+    })
+
+    // Only available for users, search dropdown is not rendered for non-users
+    if (searchDropdown) {
+        // When a logged in user focuses on the search bar, a dropdown list with their search history should happen
+        searchInput.addEventListener("focusin", (e) => {
+            searchDropdown.classList.add("animate-searchDropdownOpen");
+            searchDropdown.classList.remove("animate-searchDropdownClose");
+        });
+
+        // If user is no longer focusing on search input, only hide the dropdown if he's not hovering over it
+        searchInput.addEventListener("focusout", (e) => {
+            if (!isHoveringDropdown) {
+                searchDropdown.classList.remove("animate-searchDropdownOpen");
+                searchDropdown.classList.add("animate-searchDropdownClose");
+            }
+        });
+
+        // Listen if user enters the dropdown and set isHoveringDropdown to true
+        searchDropdown.addEventListener("mouseover", (e) => {
+            isHoveringDropdown = true;
+        });
+
+        // Listen if user leaves the dropdown and set isHoveringDropdown to false, but only remove the
+        // dropdown if he's not focused on the input
+        searchDropdown.addEventListener("mouseleave", (e) => {
+            isHoveringDropdown = false;
+            if (!(document.activeElement === searchInput)) {
+                searchDropdown.classList.remove("animate-searchDropdownOpen");
+                searchDropdown.classList.add("animate-searchDropdownClose");
+            }
+        });
+    };
+};
+
+// Listen for search by text input
+function searchBarListener () {
+
+    // Handle search submission
+    function submitSearch(event) {
+        // Redirects the user to the search page when he searches
+        event.preventDefault();
+        window.location.href = `/search/${searchInput.value}`;
+    }
+    searchForm.addEventListener("submit", submitSearch);
+};
+
+// Listen for deleting an entry from search history
+function deleteSearchButtonListener () {
+
+    // Search history entries contained in a list with a delete button
+    let searchEntryList = searchDropdown.querySelector("ul");
+    let searchDeleteButtons = searchEntryList.querySelectorAll(".search-delete-button");
+
+    // Add an event listener to each delete button
+    searchDeleteButtons.forEach(btn => {
+        btn.addEventListener('click', e => {
+            let id = btn.dataset.searchId;
+
+            // Callback function for further request
+            let callback = (error) => {
                 if (!error) {
-                    // If success then mark the new number as an old number we can revert to if something fails.
-                    this.oldValue = this.value;
-                    this.oldSelectionStart = this.selectionStart;
-                    this.oldSelectionEnd = this.selectionEnd;
-                    return;
-                } else if (this.hasOwnProperty("oldValue")) {
-                    this.value = this.oldValue;
-                    this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-                } else {
-                    this.value = "";
+                    // Manipulate DOM based on num of search entries available
+                    let numOfListItemsAfterDelete = searchEntryList.childElementCount - 1;
+
+                    // If search history is empty this should remove the whole dropdown box
+                    if (numOfListItemsAfterDelete === 0) {
+                        searchDropdown.classList.add('hidden');
+
+                    }
+                    else {
+                        // If search entry deletion was successful, remove from DOM
+                        btn.parentElement.remove();
+                    }
                 }
-                // TODO: Display error notification
-                renderNotification(error, "error");
             };
-
-            const id = e.target.dataset.productId;
-            updateCart(id, Number(e.target.value), callback);
-            return;
-        }
-
-        if (this.hasOwnProperty("oldValue")) {
-            this.value = this.oldValue;
-            this.setSelectionRange(this.oldSelectionStart, this.oldSelectionEnd);
-        } else {
-            this.value = "";
-        }
+        // Call axios request with call back
+        deleteSearch(id, callback);
+        })
     });
 };
 
-function searchListener() {
-    function handleForm(event) {
-        event.target.form.submit();
-    }
-
-    document
-        .getElementsByTagName("form")[0]
-        .addEventListener("submit", handleForm);
-}
-
-
-// Listen for delete search history
-const searchDeleteButtons = document.getElementsByClassName('search-delete-button');
-Array.from(searchDeleteButtons).forEach(button => {
-    button.addEventListener('click', e => {
-        const id = button.dataset.searchId;
-
-        const callback = (error) => {
-            if (!error) {
-                const numOfListItems = button.parentElement.parentElement.childElementCount;
-                const numOfListItemsAfterDelete = numOfListItems - 1;
-
-                // If search history is empty this hould remove the whole dropdown box
-                if (numOfListItemsAfterDelete === 0) {
-                    button.parentElement.parentElement.parentElement.classList.add('hidden');
-                } else {
-                    // If search got deleted on the backend then remove the list item
-                    button.parentElement.remove()
-                }
-            }
-        }
-        deleteSearch(id, callback);
-    })
+// Wait for the DOM to load completely
+document.addEventListener("DOMContentLoaded", () => {
+    // Listeners
+    searchBarListener();
+    deleteSearchButtonListener();
+    searchFromHistoryListener();
 });
-
-
-// Search history buttons
-const searchTermButtons = document.getElementsByClassName('search-term-button');
-Array.from(searchTermButtons).forEach(btn => {
-    btn.addEventListener("click", () => window.location.href = `/search/${btn.dataset.searchValue}`
-    );
-})
-
