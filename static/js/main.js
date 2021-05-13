@@ -209,11 +209,10 @@ function searchBarListener () {
 function deleteSearchButtonListener () {
 
     // Search history entries contained in a list with a delete button
-    let searchEntryList = searchDropdown.querySelector("ul");
-    let searchDeleteButtons = searchEntryList.querySelectorAll(".search-delete-button");
+    let searchDeleteButtons = document.getElementsByClassName(".search-delete-button");
 
     // Add an event listener to each delete button
-    searchDeleteButtons.forEach(btn => {
+    Array.from(searchDeleteButtons).forEach(btn => {
         btn.addEventListener('click', e => {
             let id = btn.dataset.searchId;
 
