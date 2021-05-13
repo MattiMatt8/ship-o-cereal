@@ -213,9 +213,7 @@ def update_cart(request, id):
         old_quantity = cart.get(str_id)
         # If the count of items in the cart after the update is greater than the
         # maximum allowed total of items for a cart, then it will throw an error.
-        if (
-                cart_total + quantity - (old_quantity if old_quantity else 0)
-        ) > settings.MAX_ITEMS_IN_CART:
+        if (cart_total + quantity - (old_quantity if old_quantity else 0)) > settings.MAX_ITEMS_IN_CART:
             return JsonResponse({"message": "Cart item amount exceeded."}, status=400)
         try:
             product = Product.objects.get(pk=id)

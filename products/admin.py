@@ -1,5 +1,5 @@
-from fractions import Fraction
 import math
+from fractions import Fraction
 from django.contrib import admin
 from products.models import Product
 
@@ -60,6 +60,8 @@ class ProductDiscountAdmin(admin.ModelAdmin):
 
 
 class ProductDiscount(Product):
+    """Proxy model so we can use the Product model
+    on two different admin pages."""
     class Meta:
         proxy = True
 
