@@ -34,6 +34,7 @@ def brands(request):
                 active=True
             ).values_list("brand_id")
         )
+
     # If currently searching for an item it will return all brands available
     # to the items that have similar names to the searched name.
     search = request.resolver_match.kwargs.get("search_str")
@@ -64,6 +65,7 @@ def labels(request):
 
 
 class ProductFilter(FilterSet):
+    """Filterset class for filtering products."""
 
     # Filters
     percentage_off = NumberFilter(field_name="percentage_off")
@@ -82,10 +84,12 @@ class ProductFilter(FilterSet):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         # Adds classes to the brand dropdown menu to style it.
         self.form.fields["brand"].widget.attrs = {
             "class": "filter-btn appearance-none focus:outline-none   text-base pl-3    border-t w-full py-2 border-gray-300 sm:border sm:rounded"
         }
+
         # Adds classes to the order dropdown menu to style it.
         self.form.fields["ordering"].widget.attrs = {
             "class": "filter-btn appearance-none focus:outline-none   text-base pl-3    border-t border-b w-full py-2 border-gray-300 sm:border sm:rounded"

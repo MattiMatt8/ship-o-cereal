@@ -21,4 +21,5 @@ def product_labels(request):
 
 def get_cart(request):
     """Context processor to be able to access the cart on every page."""
+
     return {"cart": request.session.get("cart")}

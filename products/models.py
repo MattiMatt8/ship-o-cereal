@@ -13,7 +13,8 @@ class Label(models.Model):
 
 
 class Category(models.Model):
-    """All product categories (e.g. Cereal, Bowls...)"""
+    """All product categories (e.g. Cereal, Bowls...)."""
+
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -22,6 +23,7 @@ class Category(models.Model):
 
 class Brand(models.Model):
     """All product brands."""
+
     name = models.CharField(max_length=255)
 
     def __str__(self):
@@ -33,6 +35,7 @@ class Brand(models.Model):
 
 class Product(models.Model):
     """Product with all its relative information."""
+
     name = models.CharField(max_length=255)
     description = models.TextField()
     contents = models.TextField(blank=True, null=True)
@@ -58,11 +61,13 @@ class Product(models.Model):
 
     class Meta:
         """To make the search faster by having an index on the name field."""
+
         indexes = [models.Index(fields=["name"])]
 
 
 def make_filename(instance, filename):
     """Makes the filename for product image uploaded."""
+
     return "product_images/" + str(instance.product.category) + "/" + filename
 
 
