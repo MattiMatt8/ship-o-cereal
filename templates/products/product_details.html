@@ -46,9 +46,9 @@
           <!-- END Product rating -->
           <div class="text-sm font-medium">
             {% if product.stock > 0 %}
-            <span class="text-customGreen">In stock</span>
+              <span class="text-customGreen">In stock</span>
             {% else %}
-            <span class="text-customRed">Out of stock</span>
+              <span class="text-customRed">Out of stock</span>
             {% endif %}
             <span></span>
           </div>
@@ -80,22 +80,22 @@
             <div class="flex">
 
               <button
-                      id="buy-btn"
-                      data-product-id="{{ product.id }}"
-                      class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32 hover:shadow-md focus:outline-none {% if product.stock == 0 %}hidden{% endif %}"
+                  id="buy-btn"
+                  data-product-id="{{ product.id }}"
+                  class="{% if quantity is not None %} hidden {% endif %} rounded p-2 bg-customGreen text-white w-32 hover:shadow-md focus:outline-none {% if product.stock == 0 %}hidden{% endif %}"
               >
                 Add to cart
               </button>
-            {% if product.stock == 0 %}
-              <button
-                      class="cursor-not-allowed rounded p-2 text-white w-32 bg-gray-100 text-gray-400 hover:shadow-md focus:outline-none"
-              >
-                Out of stock
-              </button>
-            {% endif %}
+              {% if product.stock == 0 %}
+                <button
+                    class="cursor-not-allowed rounded p-2 text-white w-32 bg-gray-100 text-gray-400 hover:shadow-md focus:outline-none"
+                >
+                  Out of stock
+                </button>
+              {% endif %}
               <div
-                      id="amount-btns"
-                      class="{% if quantity is None %} hidden {% endif %} {% if product.stock == 0 %}hidden{% endif %} text-customGray"
+                  id="amount-btns"
+                  class="{% if quantity is None %} hidden {% endif %} {% if product.stock == 0 %}hidden{% endif %} text-customGray"
               >
                 <div class="custom-number-input w-32">
                   <div
@@ -150,10 +150,16 @@
         <p class="text-sm sm:text-md xl:text-lg">{{ product.contents }}</p>
       </div>
     {% endif %}
+    <div class="sm:hidden">sm</div>
+    <div class="md:hidden">md</div>
+    <div class="lg:hidden">lg</div>
+    <div class="xl:hidden">xl</div>
+    <div class="2xl:hidden">2xl</div>
+
     <!-- END Nutrition stuff -->
 
     <!-- START Reviews -->
-    <div class="flex flex-col mt-10 md:w-9/12 lg:w-3/6 xl:w-2/6">
+    <div class="flex flex-col mt-10">
       {% if not product.review_set.all %}
         <h1 class="text-2xl font-medium" id="reviews-header">No reviews yet.</h1>
         <!-- TODO: NO Reviews new review added change -->
@@ -162,57 +168,59 @@
       {% endif %}
       <!-- Create new review -->
       {% if form is not None %}
-        <div class="mt-5" id="new-review">
-          <form method="post" class="flex flex-col" id="new-review-form">
-            {% csrf_token %}
-            <h2 class="text-lg mb-2">Please leave a review.</h2>
-            <div class="mb-1">
-              <label for="{{ form.title.id_for_label }}"
-                     class="block text-gray-700 text-base mb-1">Title</label>
-              <input type="text" name="title"
-                     class="border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
-                     maxlength="255" required="" id="id_title" placeholder="It was...">
+      <div class="mt-5" id="new-review">
+        <form method="post" class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12" id="new-review-form">
+          {% csrf_token %}
+          <h2 class="text-lg mb-2">Please leave a review.</h2>
+          <div class="mb-1">
+            <label for="{{ form.title.id_for_label }}"
+                   class="block text-gray-700 text-base mb-1">Title</label>
+            <input type="text" name="title"
+                   class="border border-customGray rounded px-4 shadow-inner w-full h-8 placeholder-gray-300 focus:outline-none"
+                   maxlength="255" required="" id="id_title" placeholder="It was...">
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.stars.id_for_label }}"
+                   class="block text-gray-700 text-base mb-1">Stars</label>
+            <div class="flex flex-row">
+              {% for item in "x"|ljust:"5" %}
+                <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
+                  {% if forloop.counter == 1 %}
+                    {% include 'components/icons/star_filled.html' with hidden=False id=forloop.counter %}
+                  {% else %}
+                    {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
+                    {% include 'components/icons/star_filled.html' with hidden=True id=forloop.counter %}
+                  {% endif %}
+                </button>
+              {% endfor %}
+              <input value="1" type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
             </div>
-            <div class="mb-3">
-              <label for="{{ form.stars.id_for_label }}"
-                     class="block text-gray-700 text-base mb-1">Stars</label>
-              <div class="flex flex-row">
-                {% for item in "x"|ljust:"5" %}
-                  <button type="button" value="{{ forloop.counter }}" class="star-btn focus:outline-none">
-                    {% if forloop.counter == 1 %}
-                      {% include 'components/icons/star_filled.html' with hidden=False id=forloop.counter %}
-                    {% else %}
-                      {% include 'components/icons/star_unfilled.html' with hidden=False id=forloop.counter %}
-                      {% include 'components/icons/star_filled.html' with hidden=True id=forloop.counter %}
-                    {% endif %}
-                  </button>
-                {% endfor %}
-                <input value="1" type="number" name="stars" class="hidden" step="any" required="" id="id_stars">
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="{{ form.review.id_for_label }}"
-                     class="block text-gray-700 text-base mb-1">Review</label>
-              <textarea name="review" cols="40" rows="5"
-                        class="border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none"
-                        placeholder="I thought it was... because..." maxlength="500" required=""
-                        id="id_review"></textarea>
-            </div>
-            <div class="flex justify-end mb-3 lg:mb-10">
-              <button
-                  class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
-                  type="submit">Post review
-              </button>
-            </div>
-          </form>
-        </div>
+          </div>
+          <div class="mb-3">
+            <label for="{{ form.review.id_for_label }}"
+                   class="block text-gray-700 text-base mb-1">Review</label>
+            <textarea name="review" cols="40" rows="5"
+                      class="border border-customGray rounded py-4 px-4 shadow-inner w-full placeholder-gray-300 focus:outline-none"
+                      placeholder="I thought it was... because..." maxlength="500" required=""
+                      id="id_review"></textarea>
+          </div>
+          <div class="flex justify-end mb-3 lg:mb-10">
+            <button
+                class="bg-customBlue hover:shadow-md rounded text-customViolet text-base w-32 py-1 px-4 focus:outline-none"
+                type="submit">Post review
+            </button>
+          </div>
+        </form>
+      </div>
       {% endif %}
       <!-- END of new review -->
 
       <!-- START Single review -->
-      {% for review in product.review_set.all %}
-        {% include 'components/product_review.html' with users_review=users_review id=review.id first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars picture=review.user.profile.picture %}
-      {% endfor %}
+      <div class="flex flex-col md:w-2/3 lg:w-2/3 xl:w-6/12 2xl:w-5/12">
+        {% for review in product.review_set.all %}
+          {% include 'components/product_review.html' with users_review=users_review id=review.id first_name=review.user.first_name last_name=review.user.last_name date=review.date title=review.title comment=review.review stars=review.stars picture=review.user.profile.picture %}
+        {% endfor %}
+      </div>
       <!-- END Single review -->
     </div>
     <!-- END Reviews -->
