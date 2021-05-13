@@ -7,9 +7,7 @@ from django.views.generic import View
 
 
 class HomePageView(View):
-    """
-    Renders the top 5 products for each category on the home page.
-    """
+    """Renders the top 5 products for each category on the home page."""
 
     @method_decorator(ensure_csrf_cookie)
     def get(self, request, *args, **kwargs):

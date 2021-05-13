@@ -14,10 +14,8 @@ import json
 
 
 class FilteredListView(FilterView):
-    """
-    A parent class base view for implementing ListView functionality
-    with added queryset filtering and pagination maintenance.
-    """
+    """A parent class base view for implementing ListView functionality
+    with added queryset filtering and pagination maintenance."""
 
     def get_queryset(self):
         """Returns a filtered queryset corresponding to query parameters."""
@@ -54,10 +52,8 @@ class FilteredListView(FilterView):
 
 
 class ProductsInCategoryListView(FilteredListView):
-    """
-    Class based view for listing and paginating products in a category, either
-    all products or products matching query parameters.
-    """
+    """Class based view for listing and paginating products in a category, either
+    all products or products matching query parameters."""
 
     paginate_by = 20  # Display 20 products at a time
     filterset_class = ProductFilter  # Filter to apply
@@ -77,10 +73,8 @@ class ProductsInCategoryListView(FilteredListView):
 
 
 class ProductSearchView(FilteredListView):
-    """
-    Class based view for listing and paginating search results
-    plus products matching query parameters.
-    """
+    """Class based view for listing and paginating search results
+    plus products matching query parameters."""
 
     paginate_by = 20  # Display 20 products at a time
     filterset_class = ProductFilter  # Filter to apply
@@ -104,6 +98,7 @@ class ProductSearchView(FilteredListView):
 @ensure_csrf_cookie
 def product_details(request, id):
     """View for when a specific product is chosen and displayed."""
+
     cart = request.session.get("cart")
     quantity = None
     product = get_object_or_404(Product, pk=id, active=True)
@@ -113,12 +108,14 @@ def product_details(request, id):
     users_review = None
     if request.user.is_authenticated:
         try:
+
             # If the user is authenticated it checks if the user already has a review on the product.
             users_review = product.review_set.get(user_id=request.user.id)
         except ObjectDoesNotExist:
             if request.user.order_set.filter(id__in=OrderItem.objects.filter(product_id=id).values_list("order_id")):
                 # Creates a review form if the user has purchased the product and has not already made a review on it.
                 form = ProductReviewForm()
+
     return render(
         request,
         "products/product_details.html", {
