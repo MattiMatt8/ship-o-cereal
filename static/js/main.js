@@ -235,7 +235,6 @@ function deleteSearchButtonListener() {
                     // If search history is empty this should remove the whole dropdown box
                     if (numOfListItemsAfterDelete === 0) {
                         searchDropdown.classList.add('hidden');
-
                     } else {
                         // If search entry deletion was successful, remove from DOM
                         btn.parentElement.remove();

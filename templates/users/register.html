@@ -50,7 +50,8 @@
         {{ form.password2 }}
       </div>
       <div class="flex items-center justify-between">
-        <a class="inline-block align-baseline text-base text-customViolet border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75" href="{% url 'login' %}">Sign in</a>
+        <a class="inline-block align-baseline text-base text-customViolet border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
+           href="{% url 'login' %}{% for k, v in request.GET.items %}?{{ k }}={{ v }}{% endfor %}">Sign in</a>
         <button class="bg-customBlue rounded-full text-customViolet text-base py-1 px-4 focus:outline-none hover:shadow-md"
                 type="submit">Register
         </button>
