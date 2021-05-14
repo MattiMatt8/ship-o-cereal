@@ -21,7 +21,8 @@
         {{ form.password }}
       </div>
       <div class="flex items-center justify-between">
-        <a class="inline-block align-baseline text-base text-customViolet border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75" href="{% url 'register' %}">Register</a>
+        <a class="inline-block align-baseline text-base text-customViolet border-b-2 border-customViolet border-opacity-0 hover:border-opacity-75"
+           href="{% url 'register' %}{% for k, v in request.GET.items %}?{{ k }}={{ v }}{% endfor %}">Register</a>
         <button class="bg-customBlue rounded-full text-customViolet text-base py-1 px-4 focus:outline-none hover:shadow-md"
                 type="submit">Sign In
         </button>

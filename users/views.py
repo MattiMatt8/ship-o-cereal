@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import ListView, DetailView
 from ShipOCereal import settings
@@ -54,7 +54,6 @@ class OrderDetailView(DetailView):
 
 def register(request):
     """View for registering a new user."""
-
     if request.user.is_authenticated:
         return redirect("index")
     if request.method == "POST":
@@ -64,6 +63,10 @@ def register(request):
             user = form.save()
             user_profile = Profile(user=user, phone=request.POST["phone"])
             user_profile.save()
+            # If there is a redirect send it forwards to the login
+            next = request.GET.get("next")
+            if next:
+                return redirect(reverse("login") + f"?next={next}")
             return redirect("login")
     else:
         form = RegisterForm()
