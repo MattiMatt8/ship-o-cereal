@@ -159,7 +159,7 @@ const renderNotification = (object, type) => { // Render a notification to be di
 };
 
 // Listen for a search from search history dropdown
-function searchFromHistoryListener () {
+function searchFromHistoryListener() {
     let searchTermButtons = document.getElementsByClassName('search-term-button');
 
     Array.from(searchTermButtons).forEach(btn => {
@@ -197,11 +197,12 @@ function searchFromHistoryListener () {
                 searchDropdown.classList.add("animate-searchDropdownClose");
             }
         });
-    };
+    }
+    ;
 };
 
 // Listen for search by text input
-function searchBarListener () {
+function searchBarListener() {
 
     // Handle search submission
     function submitSearch(event) {
@@ -209,11 +210,12 @@ function searchBarListener () {
         event.preventDefault();
         window.location.href = `/search/${searchInput.value}`;
     }
+
     searchForm.addEventListener("submit", submitSearch);
 };
 
 // Listen for deleting an entry from search history
-function deleteSearchButtonListener () {
+function deleteSearchButtonListener() {
 
     // Search history entries contained in a list with a delete button
     let searchDeleteButtons = document.getElementsByClassName("search-delete-button");
@@ -234,17 +236,14 @@ function deleteSearchButtonListener () {
                     if (numOfListItemsAfterDelete === 0) {
                         searchDropdown.classList.add('hidden');
 
-                    }
-                    else {
+                    } else {
                         // If search entry deletion was successful, remove from DOM
                         btn.parentElement.remove();
                     }
                 }
             };
-        // Call axios request with call back
-            console.log("hi")
-            console.log(id)
-        deleteSearch(id, callback);
+            // Call axios request with call back
+            deleteSearch(id, callback);
         })
     });
 };
@@ -254,6 +253,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Listeners
     searchBarListener();
-    deleteSearchButtonListener();
-    searchFromHistoryListener();
+    if (searchDropdown) {
+        deleteSearchButtonListener();
+        searchFromHistoryListener();
+    }
 });
